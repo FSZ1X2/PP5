@@ -209,9 +209,9 @@ DEMO_APP::DEMO_APP(HINSTANCE hinst, WNDPROC proc)
 	w = XMMatrixTranspose(w);
 	toShader.World = w;
 
-	 XMVECTORF32 eye = { 0.0f, 0.7f, -1.5f, 0.0f };
-	 XMVECTORF32 at = { 0.0f, -0.1f, 0.0f, 0.0f };
-	 XMVECTORF32 up = { 0.0f, 1.0f, 0.0f, 0.0f };
+	XMVECTORF32 eye = { 0.0f, 0.7f, -1.5f, 0.0f };
+	XMVECTORF32 at = { 0.0f, -0.1f, 0.0f, 0.0f };
+	XMVECTORF32 up = { 0.0f, 1.0f, 0.0f, 0.0f };
 	v = XMMatrixLookAtLH(eye, at, up);		// creates a view matrix that is already inversed
 	//v = XMMatrixInverse(nullptr, v);
 	v = XMMatrixTranspose(v);
@@ -236,7 +236,7 @@ DEMO_APP::DEMO_APP(HINSTANCE hinst, WNDPROC proc)
 bool DEMO_APP::Run()
 {
 
-	 theContext->OMSetRenderTargets(1, &theRTV, NULL);
+	theContext->OMSetRenderTargets(1, &theRTV, NULL);
 	
 	theContext->RSSetViewports(1, &theViewPort);
 	
@@ -250,7 +250,6 @@ bool DEMO_APP::Run()
 	theContext->Unmap(shadercombuffer, 0);
 	
 	theContext->VSSetConstantBuffers(0, 1, &shadercombuffer);
-	
 	
 	theContext->VSSetShader(vertexShader, NULL, 0);
 	theContext->PSSetShader(pixelShader, NULL, 0);

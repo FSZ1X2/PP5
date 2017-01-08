@@ -1,4 +1,2 @@
-﻿  main.cpp
-cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
-  PP5.vcxproj -> C:\Users\Josue\Documents\GitHub\PP5\PP5\Debug\PP5.exe
-  PP5.vcxproj -> C:\Users\Josue\Documents\GitHub\PP5\PP5\Debug\PP5.pdb (Full PDB)
+﻿  PP5.vcxproj -> E:\STUDY\PP5\PP5\PP5\Debug\PP5.exe
+  PP5.vcxproj -> E:\STUDY\PP5\PP5\PP5\Debug\PP5.pdb (Full PDB)
