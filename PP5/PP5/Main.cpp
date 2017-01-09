@@ -61,13 +61,16 @@ class DEMO_APP
 	ID3D11Resource *resource;
 	ID3D11Buffer *shadercombuffer;
 	ID3D11Buffer *gridConstBuffer;
+
+	XMFLOAT4X4 camera;
 	
+
 	struct SEND_TO_VRAM
 	{
 		XMVECTORF32 constantColor;
-		XMMATRIX World; 
-		XMMATRIX View;
-		XMMATRIX Projection;
+		XMFLOAT4X4 World; 
+		XMFLOAT4X4 View;
+		XMFLOAT4X4 Projection;
 	};
 	
 	SEND_TO_VRAM toShader;
@@ -80,6 +83,7 @@ public:
 	};
 	SIMPLE_VERTEX velocity;
 	DEMO_APP(HINSTANCE hinst, WNDPROC proc);
+	void UpdateCamera();
 	bool Run();
 	bool ShutDown();
 };
@@ -199,7 +203,7 @@ DEMO_APP::DEMO_APP(HINSTANCE hinst, WNDPROC proc)
 	shaderdesc.MiscFlags = 0;
 
 	XMMATRIX w
-	{ 1,0,0,0,
+	  { 1,0,0,0,
 		0,1,0,0,
 		0,0,1,0,
 		0,0,0,1 };
@@ -207,21 +211,18 @@ DEMO_APP::DEMO_APP(HINSTANCE hinst, WNDPROC proc)
 	XMMATRIX v;
 
 	w = XMMatrixTranspose(w);
-	toShader.World = w;
-
+	XMStoreFloat4x4(&toShader.World, w);
 	 XMVECTORF32 eye = { 0.0f, 0.7f, -1.5f, 0.0f };
 	 XMVECTORF32 at = { 0.0f, -0.1f, 0.0f, 0.0f };
 	 XMVECTORF32 up = { 0.0f, 1.0f, 0.0f, 0.0f };
-	v = XMMatrixLookAtLH(eye, at, up);		// creates a view matrix that is already inversed
-	//v = XMMatrixInverse(nullptr, v);
-	v = XMMatrixTranspose(v);
-	toShader.View = v;
+	 XMStoreFloat4x4(&camera, XMMatrixInverse(nullptr, XMMatrixLookAtLH(eye, at, up)));	// creates a view matrix that is already inversed
+	 XMStoreFloat4x4(&toShader.View, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
 
 	float aspectR = BACKBUFFER_WIDTH / BACKBUFFER_HEIGHT;
 	float fov = 70.0f*PI / 180.0f;
 	XMMATRIX p = XMMatrixPerspectiveFovLH(fov, aspectR, 0.01f, 100.0f);
-	p = XMMatrixTranspose(p);
-	toShader.Projection = p;
+	XMStoreFloat4x4(&toShader.Projection, XMMatrixTranspose(p));
+
 	toShader.constantColor = Colors::Gray;
 
 	D3D11_SUBRESOURCE_DATA shadersourceData;
@@ -233,16 +234,71 @@ DEMO_APP::DEMO_APP(HINSTANCE hinst, WNDPROC proc)
 
 }
 
+void DEMO_APP::UpdateCamera()
+{
+	float moveSpd = 0.0005f;
+	if (GetAsyncKeyState('W'))
+	{
+		XMMATRIX translation = XMMatrixTranslation(0.0f, 0.0f, moveSpd);
+		XMMATRIX temp_camera = XMLoadFloat4x4(&camera);
+		XMMATRIX result = XMMatrixMultiply(translation, temp_camera);
+		XMStoreFloat4x4(&camera, result);
+		//XMStoreFloat4x4(&toShader.View, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&camera))));
+	}
+	if (GetAsyncKeyState('S'))
+	{
+		XMMATRIX translation = XMMatrixTranslation(0.0f, 0.0f, -moveSpd);
+		XMMATRIX temp_camera = XMLoadFloat4x4(&camera);
+		XMMATRIX result = XMMatrixMultiply(translation, temp_camera);
+		XMStoreFloat4x4(&camera, result);
+		//XMStoreFloat4x4(&toShader.View, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&camera))));
+	}
+	if (GetAsyncKeyState('A'))
+	{
+		XMMATRIX translation = XMMatrixTranslation(-moveSpd, 0.0f, 0.0f);
+		XMMATRIX temp_camera = XMLoadFloat4x4(&camera);
+		XMMATRIX result = XMMatrixMultiply(translation, temp_camera);
+		XMStoreFloat4x4(&camera, result);
+		//XMStoreFloat4x4(&toShader.View, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&camera))));
+	}
+	if (GetAsyncKeyState('D'))
+	{
+		XMMATRIX translation = XMMatrixTranslation(moveSpd, 0.0f, 0.0f);
+		XMMATRIX temp_camera = XMLoadFloat4x4(&camera);
+		XMMATRIX result = XMMatrixMultiply(translation, temp_camera);
+		XMStoreFloat4x4(&camera, result);
+		//XMStoreFloat4x4(&toShader.View, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&camera))));
+	}
+	if (GetAsyncKeyState(VK_SPACE))
+	{
+		XMMATRIX translation = XMMatrixTranslation(0.0f, moveSpd, 0.0f);
+		XMMATRIX temp_camera = XMLoadFloat4x4(&camera);
+		XMMATRIX result = XMMatrixMultiply(translation, temp_camera);
+		XMStoreFloat4x4(&camera, result);
+		//XMStoreFloat4x4(&toShader.View, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&camera))));
+	}
+	if (GetAsyncKeyState(VK_SHIFT))
+	{
+		XMMATRIX translation = XMMatrixTranslation(0.0f, -moveSpd, 0.0f);
+		XMMATRIX temp_camera = XMLoadFloat4x4(&camera);
+		XMMATRIX result = XMMatrixMultiply(translation, temp_camera);
+		XMStoreFloat4x4(&camera, result);
+		//XMStoreFloat4x4(&toShader.View, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&camera))));
+	}
+}
+
 bool DEMO_APP::Run()
 {
+	UpdateCamera();
 
+	XMStoreFloat4x4(&toShader.View, XMMatrixTranspose(XMMatrixInverse(nullptr, XMLoadFloat4x4(&camera))));
 	 theContext->OMSetRenderTargets(1, &theRTV, NULL);
 	
 	theContext->RSSetViewports(1, &theViewPort);
 	
 	theContext->ClearRenderTargetView(theRTV, Colors::CornflowerBlue);
 
-	
+
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 	hr = theContext->Map(shadercombuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -278,12 +334,12 @@ bool DEMO_APP::ShutDown()
 	pixelShader->Release();
 	layout->Release();
 	shadercombuffer->Release();
-	resource->Release();
-	gridConstBuffer->Release();
-	gridLayout->Release();
-	theGridBuffer->Release();
-	vertexShader->Release();
-	pixelShader->Release();
+	SAFE_RELEASE(resource);
+	SAFE_RELEASE(gridConstBuffer);
+	SAFE_RELEASE(gridLayout);
+	SAFE_RELEASE(theGridBuffer);
+	//SAFE_RELEASE(vertexShader);
+	//pixelShader->Release();
 	UnregisterClass( L"DirectXApplication", application ); 
 	return true;
 }
