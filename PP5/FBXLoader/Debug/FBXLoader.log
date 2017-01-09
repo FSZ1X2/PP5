@@ -1,0 +1,37 @@
+﻿  FBXLoader.cpp
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(32): warning C4101: 'attributeType': unreferenced local variable
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(110): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(111): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(112): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(196): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(197): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(204): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(205): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(221): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(222): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(247): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(248): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(249): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(256): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(257): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(258): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(274): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(275): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(276): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(283): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(284): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(285): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(312): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(313): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(314): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(321): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(322): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(323): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(339): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(340): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(341): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(348): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(349): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(350): warning C4244: '=': conversion from 'fbxsdk::FbxDouble' to 'float', possible loss of data
+  FBXLoader.vcxproj -> E:\STUDY\PP5\PP5\PP5\Debug\FBXLoader.dll
+  FBXLoader.vcxproj -> E:\STUDY\PP5\PP5\PP5\Debug\FBXLoader.pdb (Full PDB)

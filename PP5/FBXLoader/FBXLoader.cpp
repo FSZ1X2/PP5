@@ -114,7 +114,7 @@ namespace fbxloader
 
 	void FBXLoader::ReadColor(FbxMesh* pMesh, int ctrlPointIndex, int vertexCounter, XMFLOAT4* pColor)
 	{
-		if (pMesh->GetElementVertexColorCount < 1)
+		if (pMesh->GetElementVertexColorCount() < 1)
 			return;
 
 		FbxGeometryElementVertexColor* pVertexColor = pMesh->GetElementVertexColor(0);

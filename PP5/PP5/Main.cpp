@@ -21,6 +21,8 @@ using namespace DirectX;
 #include "Trivial_VS.csh"
 #include "Trivial_PS.csh"
 
+#include"FBXLoader.h"
+using namespace fbxloader;
 
 #define BACKBUFFER_WIDTH	1000
 #define BACKBUFFER_HEIGHT	1000
@@ -74,14 +76,24 @@ class DEMO_APP
 	SEND_TO_VRAM gridShader;
 public:
 	
+	//struct SIMPLE_VERTEX
+	//{
+	//	XMFLOAT4 point;
+	//};
 	struct SIMPLE_VERTEX
 	{
-		XMFLOAT4 point;
+		XMFLOAT3 vertex;
+		XMFLOAT4 color;
+		XMFLOAT3 normal;
+		XMFLOAT3 tangent;
+		XMFLOAT2 uv;
 	};
 	SIMPLE_VERTEX velocity;
 	DEMO_APP(HINSTANCE hinst, WNDPROC proc);
 	bool Run();
 	bool ShutDown();
+
+	FBXLoader load;
 };
 
 DEMO_APP::DEMO_APP(HINSTANCE hinst, WNDPROC proc)
@@ -151,27 +163,54 @@ DEMO_APP::DEMO_APP(HINSTANCE hinst, WNDPROC proc)
 	//D3DX11CompileFromFile(L"Trivial_PS.hlsl", NULL, NULL, "PS", "vs_4_0", D3DCOMPILE_ENABLE_STRICTNESS, NULL, NULL, &Ps, NULL, NULL);
 	D3D11_INPUT_ELEMENT_DESC elements[] =
 	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-		
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "UV", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	hr = theDevice->CreateInputLayout(elements, 1, Trivial_VS, sizeof(Trivial_VS), &layout);
 	theContext->IASetInputLayout(layout);
 	
 	float size = 1.0f;
-	
-	SIMPLE_VERTEX Plane[] =
+	load.LoadFBX("Box_Attack.fbx");
+	FBXLoader::FBXVertex Plane[84];
+
+	int count = 0;
+	for (size_t i = 0; i < load.pOutVertexVector.size(); i++)
 	{
-		XMFLOAT4(-size, 0.0f, size, 1), //top left
-		XMFLOAT4(size, 0.0f, size,  1), // top right
-		XMFLOAT4(-size, 0.0f, -size, 1), // bot left
-		XMFLOAT4(size, 0.0f, size, 1), //top right
-		XMFLOAT4(size, 0.0f, -size,  1), //bot right 
-		XMFLOAT4(-size, 0.0f, -size, 1), // bot left
-	};
+		Plane[count] = load.pOutVertexVector[i].v[0];
+		Plane[count + 1] = load.pOutVertexVector[i].v[1];
+		Plane[count + 2] = load.pOutVertexVector[i].v[2];
+
+		count += 3;
+	}
+	//SIMPLE_VERTEX Plane[] =
+	//{
+	//	XMFLOAT4(-size, 0.0f, size, 1), //top left
+	//	XMFLOAT4(size, 0.0f, size,  1), // top right
+	//	XMFLOAT4(-size, 0.0f, -size, 1), // bot left
+	//	XMFLOAT4(size, 0.0f, size, 1), //top right
+	//	XMFLOAT4(size, 0.0f, -size,  1), //bot right 
+	//	XMFLOAT4(-size, 0.0f, -size, 1), // bot left
+	//};
+
+	//D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
+	//vertexBufferData.pSysMem = Plane;
+	//vertexBufferData.SysMemPitch = 0;
+	//vertexBufferData.SysMemSlicePitch = 0;
+	//CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(Plane), D3D11_BIND_VERTEX_BUFFER);
+	//theDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &theVram);
+
+	//unsigned int cubeIndices[84];
+	//for (size_t i = 0; i < 84; i++)
+	//{
+	//	cubeIndices[i] = i;
+	//}
 
 	D3D11_BUFFER_DESC bufferDesc;
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bufferDesc.ByteWidth = sizeof(SIMPLE_VERTEX) * 6;
+	bufferDesc.ByteWidth = sizeof(SIMPLE_VERTEX) * 84;
 	bufferDesc.CPUAccessFlags = NULL;
 	bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 	bufferDesc.MiscFlags = 0;
