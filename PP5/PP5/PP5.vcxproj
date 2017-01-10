@@ -216,7 +216,11 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Headers.h" />
+    <ClInclude Include="Lights.h" />
+    <ClInclude Include="PrimitiveObjs.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Structs.h" />
     <ClInclude Include="XTime.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

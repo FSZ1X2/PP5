@@ -1,12 +1,18 @@
 struct INPUT_VERTEX
 {
-	float4 coordinate : POSITION;
+	float3 pos : POSITION;
+	float3 color : UV;
+	float3 normal : NORMAL;
+	
 };
 
 struct OUTPUT_VERTEX
 {
 	float4 colorOut : COLOR;
-	float4 projectedCoordinate : SV_POSITION;
+	float4 pos : SV_POSITION;
+	float3 normal : NORMAL;
+	float4 WorldPos : WORLDPOS;
+	float4 CamWorldPos : CAMWORLDPOS;
 };
 
 cbuffer THIS_IS_VRAM : register( b0 )
@@ -15,19 +21,23 @@ cbuffer THIS_IS_VRAM : register( b0 )
 	matrix World;
 	matrix View;
 	matrix Projection;
+	float4 Camera;
 };
 
 
 
 OUTPUT_VERTEX main(INPUT_VERTEX input)
 {
-	OUTPUT_VERTEX sendToRasterizer;
+	OUTPUT_VERTEX output;
 	
-	sendToRasterizer.colorOut = constantColor;
-
-	input.coordinate = mul(input.coordinate, World);
-	input.coordinate = mul(input.coordinate, View);
-	input.coordinate = mul(input.coordinate, Projection);
-	sendToRasterizer.projectedCoordinate = input.coordinate;
-	return sendToRasterizer;
+	output.colorOut = constantColor;
+	float4 pos = float4(input.pos, 1.0f);
+	pos = mul(pos, World);
+	output.WorldPos = pos;
+	pos = mul(pos, View);
+	pos = mul(pos, Projection);
+	output.pos = pos;
+	output.normal = input.normal;
+	output.CamWorldPos = Camera;
+	return output;
 }
