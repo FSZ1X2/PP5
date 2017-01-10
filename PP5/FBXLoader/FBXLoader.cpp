@@ -116,7 +116,17 @@ namespace fbxloader
 	void FBXLoader::ProcessSkeleton(FbxNode* pNode)
 	{
 		FBXJoint newJoint;
-		newJoint.bindposinverse = pNode->EvaluateGlobalTransform().Inverse();
+		FbxMatrix newbindpose;
+		newbindpose = pNode->EvaluateGlobalTransform().Inverse();
+
+		for (int row = 0; row < 4; row++)
+		{
+			for (int col = 0; col < 4; col++)
+			{
+				newJoint.bindposinverse.m[row][col] = newbindpose.Get(row, col);
+			}
+		}
+		//newJoint.bindposinverse = pNode->EvaluateGlobalTransform().Inverse();
 		pOutJoint.push_back(newJoint);
 	}
 

@@ -1,2 +1,4 @@
-﻿  FBXLoader.vcxproj -> C:\Users\Josue\Documents\GitHub\PP5\PP5\Debug\FBXLoader.dll
+﻿  FBXLoader.cpp
+c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxloader.cpp(126): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  FBXLoader.vcxproj -> C:\Users\Josue\Documents\GitHub\PP5\PP5\Debug\FBXLoader.dll
   FBXLoader.vcxproj -> C:\Users\Josue\Documents\GitHub\PP5\PP5\Debug\FBXLoader.pdb (Full PDB)

@@ -29,7 +29,7 @@ namespace fbxloader
 
 		struct FBXJoint
 		{
-			FbxMatrix bindposinverse;
+			XMFLOAT4X4 bindposinverse;
 		};	
 	private:
 		FbxManager* FbxSdkManager = nullptr;

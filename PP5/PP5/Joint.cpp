@@ -17,13 +17,14 @@ void Joint::initializeMesh(float size)
 
 	for (unsigned int i = 0; i < num; i++)
 	{
-		for (int row = 0; row < 4; row++)
-		{
-			for (int col = 0; col < 4; col++)
-			{
-				BindList.pos[i].m[row][col] = (float)fbxflie.GetJoint()[i].bindposinverse.Get(row, col);
-			}
-		}
+		BindList.pos[i] = fbxflie.GetJoint()[i].bindposinverse;
+		//for (int row = 0; row < 4; row++)
+		//{
+		//	for (int col = 0; col < 4; col++)
+		//	{
+		//		BindList.pos[i].m[row][col] = (float)fbxflie.GetJoint()[i].bindposinverse.Get(row, col);
+		//	}
+		//}
 	}
 
 	////vertexcount = TriangleVertexList.size();
