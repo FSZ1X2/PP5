@@ -41,41 +41,48 @@
 //	sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, Projection);
 //	return sendToRasterizer;
 //}
-
+#pragma pack_matrix(row_major)
 struct INPUT_VERTEX
 {
 	float3 vertex: POSITION;
-	float4 color: COLOR;
 	float3 normal: NORMAL;
-	float3 tangent: TANGENT;
-	float2 uv: UV;
+	float3 uv: TEXCOORD0;
+	float4 tangent: TANGENT;
 };
 
 struct OUTPUT_VERTEX
 {
-	float4 colorOut : COLOR;
-	float4 projectedCoordinate : SV_POSITION;
+	float4 projectedCoordinate	: SV_POSITION;
+	float3 normal				: NORMAL;
+	float3 uv					: TEXCOORD0;
 };
 
 // TODO: PART 3 STEP 2a
-cbuffer THIS_IS_VRAM : register(b0)
+cbuffer CC_VRAM : register(b0)
 {
-	float4 constantColor;
+	/*float4 constantColor;
 	matrix World;
 	matrix View;
-	matrix Projection;
+	matrix Projection;*/
+	float4x4 view;
+	float4x4 proj;
+	float4x4 viewproj;
 };
 
+cbuffer TRANS_VRAM : register(b1)
+{
+	float4x4 trans;
+};
 
 OUTPUT_VERTEX main(INPUT_VERTEX input)
 {
-	OUTPUT_VERTEX sendToRasterizer = (OUTPUT_VERTEX)0;
+	OUTPUT_VERTEX output = (OUTPUT_VERTEX)0;
 
-	sendToRasterizer.colorOut = constantColor;
-	float4 coordinate = float4(input.vertex, 1.0f);
+	float4 coordinate = mul(float4(input.vertex, 1.0f), trans);
 
-	sendToRasterizer.projectedCoordinate = mul(coordinate, World);
-	sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, View);
-	sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, Projection);
-	return sendToRasterizer;
+	output.projectedCoordinate = mul(coordinate, viewproj);
+	output.normal = mul(input.normal, (float3x3)trans);
+	//sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, View);
+	//sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, Projection);
+	return output;
 }

@@ -35,7 +35,7 @@ namespace fbxloader
 	public:
 		FbxManager* FbxSdkManager;
 		std::vector<FBXTriangle> pOutVertexVector;
-		void LoadFBX(char* path);
+		FBX_API void LoadFBX(char* path);
 		void ProcessNode(FbxNode* pNode);
 		void ProcessMesh(FbxNode* pNode);
 		void ReadVertex(FbxMesh* pMesh, int ctrlPointIndex, XMFLOAT3* pVertex);
