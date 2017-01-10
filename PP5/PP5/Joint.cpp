@@ -51,7 +51,7 @@ void Joint::draw()
 {
 	D3D11_MAPPED_SUBRESOURCE maps;
 	unsigned int stride = sizeof(VertexPositionUVNormal);
-	UINT offset = 0;;
+	UINT offset = 0;
 
 	con->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
 	con->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

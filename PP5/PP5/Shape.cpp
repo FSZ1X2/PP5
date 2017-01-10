@@ -142,10 +142,10 @@ void Shape::initializeShape(float size)
 	transform._44 = 1;
 	VertexPositionUVNormal Plane[] =
 	{
-		{XMFLOAT3(-1, 0.0f, 1),XMFLOAT3(0.0f, 1.0f, 0.0f),XMFLOAT3(-1.0f, 0.0f, 1),XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f) },
-		{XMFLOAT3(1, 0.0f, 1),XMFLOAT3(0.0f, 1.0f, 0.0f),XMFLOAT3(-1.0f, 0.0f, 1),XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f) },
-		{XMFLOAT3(-1, 0.0f, -1),XMFLOAT3(0.0f, 1.0f, 0.0f),XMFLOAT3(-1.0f, 1.0f, 1),XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f) },
-		{XMFLOAT3(1, 0.0f, -1),XMFLOAT3(0.0f, 1.0f, 0.0f),XMFLOAT3(-1.0f, 1.0f, 1),XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f) },
+		{XMFLOAT3(-1, 0.0f, 1),XMFLOAT3(0.0f, 1.0f, 0.0f),XMFLOAT3(-1.0f, 0.0f, 1),XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), {0.25f,0.25f ,0.25f ,0.25f },{0,0,0,0}  },
+		{XMFLOAT3(1, 0.0f, 1),XMFLOAT3(0.0f, 1.0f, 0.0f),XMFLOAT3(-1.0f, 0.0f, 1),XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f) ,{ 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 } },
+		{XMFLOAT3(-1, 0.0f, -1),XMFLOAT3(0.0f, 1.0f, 0.0f),XMFLOAT3(-1.0f, 1.0f, 1),XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f),{ 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 } },
+		{XMFLOAT3(1, 0.0f, -1),XMFLOAT3(0.0f, 1.0f, 0.0f),XMFLOAT3(-1.0f, 1.0f, 1),XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f) ,{ 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 } },
 	};
 
 	D3D11_BUFFER_DESC desc = {};

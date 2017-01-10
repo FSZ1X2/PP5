@@ -51,6 +51,8 @@ struct VertexPositionUVNormal
 	XMFLOAT3 normal;
 	XMFLOAT3 uv;
 	XMFLOAT4 tangent;
+	float blendWeight[4];
+	unsigned char blendIndices[4];
 };
 
 struct DirectionalLightConstantBuffer

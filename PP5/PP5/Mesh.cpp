@@ -33,6 +33,11 @@ void Mesh::initializeMesh(float size)
 		vertex1.tangent.z = fbxflie.GetVertex()[i].v[0].tangent.z;
 		vertex1.tangent.w = 0.0f;
 
+		vertex1.blendWeight[0] = 0.25f;
+		vertex1.blendWeight[1] = 0.25f;
+		vertex1.blendWeight[2] = 0.25f;
+		vertex1.blendWeight[3] = 0.25f;
+
 		VertexPositionUVNormal vertex2;
 		vertex2.pos.x = fbxflie.GetVertex()[i].v[1].vertex.x;
 		vertex2.pos.y = fbxflie.GetVertex()[i].v[1].vertex.y;
@@ -48,6 +53,11 @@ void Mesh::initializeMesh(float size)
 		vertex2.tangent.z = fbxflie.GetVertex()[i].v[1].tangent.z;
 		vertex2.tangent.w = 0.0f;
 
+		vertex2.blendWeight[0] = 0.25f;
+		vertex2.blendWeight[1] = 0.25f;
+		vertex2.blendWeight[2] = 0.25f;
+		vertex2.blendWeight[3] = 0.25f;
+
 		VertexPositionUVNormal vertex3;
 		vertex3.pos.x = fbxflie.GetVertex()[i].v[2].vertex.x;
 		vertex3.pos.y = fbxflie.GetVertex()[i].v[2].vertex.y;
@@ -62,6 +72,11 @@ void Mesh::initializeMesh(float size)
 		vertex3.tangent.y = fbxflie.GetVertex()[i].v[2].tangent.y;
 		vertex3.tangent.z = fbxflie.GetVertex()[i].v[2].tangent.z;
 		vertex3.tangent.w = 0.0f;
+
+		vertex3.blendWeight[0] = 0.25f;
+		vertex3.blendWeight[1] = 0.25f;
+		vertex3.blendWeight[2] = 0.25f;
+		vertex3.blendWeight[3] = 0.25f;
 
 		TriangleVertexList.push_back(vertex1);
 		TriangleVertexList.push_back(vertex2);
