@@ -1,4 +1,5 @@
 #include "My3DSence.h"
+#include "DDSTextureLoader.h"
 My3DSence::My3DSence()
 {
 }
@@ -68,13 +69,27 @@ bool My3DSence::Initialize(HWND wnd)
 	Shape::InitDevice(theDevice.Get(), theContext.Get());
 	Mesh::InitDevice(theDevice.Get(), theContext.Get());
 	Shader::InitDevice(theDevice.Get(), theContext.Get());
+	Joint::InitDevice(theDevice.Get(), theContext.Get());
 	Camera::InitDevice(theDevice.Get(), theContext.Get());
 
 	shader.Init();
-	shape.initializeShape(10);
+	shape.initializeShape(100);
 	mesh.initializeMesh();
+	joint.initializeMesh();
 	camera.InitCamera();
 	camera.SetProjection(camera.DegreeToRadian(75), BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 0.01f, 1000.0f);
+
+	CreateDDSTextureFromFile(theDevice.Get(),L"TestCube.dds" ,nullptr, textureV.GetAddressOf());
+
+	D3D11_SAMPLER_DESC sdesc = {};
+	sdesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sdesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sdesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sdesc.Filter = D3D11_FILTER_ANISOTROPIC;
+	sdesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	sdesc.MaxLOD = D3D11_FLOAT32_MAX;
+	sdesc.MaxAnisotropy = D3D11_REQ_MAXANISOTROPY;
+	theDevice->CreateSamplerState(&sdesc, binsample.GetAddressOf());
 	return true;
 }
 
@@ -86,8 +101,13 @@ bool My3DSence::run()
 	theContext->ClearDepthStencilView(theDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 	camera.Update((float)time.Delta());
 	shader.SetGroundShader();
+	ID3D11ShaderResourceView* srv = { nullptr };
+	theContext->PSSetShaderResources(0, 1, &srv);
 	shape.draw();
+	theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
+	theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
 	mesh.draw();
+	joint.draw();
 	//D3D11_MAPPED_SUBRESOURCE mappedResource;
 	//ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 	//hr = theContext->Map(shadercombuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);

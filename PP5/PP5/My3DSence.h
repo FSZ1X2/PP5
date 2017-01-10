@@ -4,6 +4,7 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Mesh.h"
+#include "Joint.h"
 class My3DSence
 {
 	ComPtr<ID3D11Device> theDevice;
@@ -14,6 +15,9 @@ class My3DSence
 	D3D11_VIEWPORT theViewPort;
 	ComPtr<ID3D11DepthStencilView> theDSV;
 	ComPtr<ID3D11Texture2D> depthBuff;
+	ComPtr<ID3D11ShaderResourceView> textureV;
+	//ComPtr<ID3D11Texture2D> texture;
+	ComPtr<ID3D11SamplerState> binsample;
 	
 	//ComPtr<ID3D11View> theview;
 	//ComPtr<ID3D11Debug> theDebug ;
@@ -31,6 +35,7 @@ class My3DSence
 	Shader shader;
 	Shape shape;
 	Mesh mesh;
+	Joint joint;
 	Camera camera;
 	XTime time;
 	//ID3D11Resource *resource = nullptr;

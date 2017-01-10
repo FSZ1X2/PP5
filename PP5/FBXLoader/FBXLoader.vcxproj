@@ -18,6 +18,12 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FBXLoader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FBXLoader.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{15AF4C0B-6390-4936-9B2C-A80DA3527A42}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -148,12 +154,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="FBXLoader.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="FBXLoader.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

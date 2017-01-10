@@ -82,6 +82,7 @@ OUTPUT_VERTEX main(INPUT_VERTEX input)
 
 	output.projectedCoordinate = mul(coordinate, viewproj);
 	output.normal = mul(input.normal, (float3x3)trans);
+	output.uv = input.uv;
 	//sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, View);
 	//sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, Projection);
 	return output;

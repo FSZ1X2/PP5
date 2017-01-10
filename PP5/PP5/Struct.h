@@ -23,7 +23,7 @@ using Microsoft::WRL::ComPtr;
 //#include "Trivial_VS.csh"
 //#include "Trivial_PS.csh"
 
-#include"FBXLoader.h"
+#include "../FBXLoader/FBXLoader.h"
 using namespace fbxloader;
 
 #define BACKBUFFER_WIDTH	1000
@@ -40,11 +40,9 @@ struct CameraConstantBuffer
 	//XMFLOAT4X4 lightProjectionMatrix;
 };
 
-// Used to send per-vertex data to the vertex shader.
-struct VertexPositionColor
+struct BindPosition
 {
-	XMFLOAT3 pos;
-	XMFLOAT3 color;
+	XMFLOAT4X4 pos[64];
 };
 
 struct VertexPositionUVNormal

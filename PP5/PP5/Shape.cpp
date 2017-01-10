@@ -13,6 +13,7 @@ void Shape::InitDevice(ID3D11Device * _dev, ID3D11DeviceContext * _con)
 void Shape::initializeShape(float size)
 {
 	XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
+	transform._44 = 1;
 	VertexPositionUVNormal Plane[] =
 	{
 		{XMFLOAT3(-1, 0.0f, 1),XMFLOAT3(0.0f, 1.0f, 0.0f),XMFLOAT3(0.0f, 0.0f, 1),XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f) },

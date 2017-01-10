@@ -161,7 +161,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="FBXLoader.cpp" />
+    <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="Joint.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="My3DSence.cpp" />
@@ -229,7 +230,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="FBXLoader.h" />
+    <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="Joint.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="My3DSence.h" />
     <ClInclude Include="Renderer.h" />
@@ -237,6 +239,11 @@
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="XTime.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FBXLoader\FBXLoader.vcxproj">
+      <Project>{15af4c0b-6390-4936-9b2c-a80da3527a42}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
