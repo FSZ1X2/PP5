@@ -123,7 +123,7 @@ namespace fbxloader
 		{
 			for (int col = 0; col < 4; col++)
 			{
-				newJoint.bindposinverse.m[row][col] = newbindpose.Get(row, col);
+				newJoint.bindposinverse.m[row][col] = (float)newbindpose.Get(row, col);
 			}
 		}
 		//newJoint.bindposinverse = pNode->EvaluateGlobalTransform().Inverse();
