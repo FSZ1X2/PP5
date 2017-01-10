@@ -40,51 +40,46 @@ class DEMO_APP
 	//ID3D11View *theview = 0;
 	//ID3D11Debug *theDebug = 0;
 	//ID3D11Texture2D *textBuff = 0;
-	//HRESULT hr;
-	
+	//HRESULT hr;	
 	//ID3D11Buffer* g_pConstantBuffer = NULL;
 	//XMMATRIX g_World;
 	//XMMATRIX g_View;
 	//XMMATRIX g_Projection;
-
 	//ID3D11Buffer *theVram = 0;
 	//unsigned int count = 365;
 	//ID3D11Buffer *theGridBuffer;
-
 	//ID3D11VertexShader *vertexShader = nullptr;
 	//ID3D11PixelShader *pixelShader = nullptr;
 	//ID3D11InputLayout *layout = nullptr;
 	//ID3D11InputLayout *gridLayout = nullptr;
-
 	//ID3D11Resource *resource = nullptr;
 	//ID3D11Buffer *shadercombuffer = nullptr;
 	//ID3D11Buffer *gridConstBuffer = nullptr;
-	
-	struct SEND_TO_VRAM
-	{
-		XMVECTORF32 constantColor;
-		XMMATRIX World; 
-		XMMATRIX View;
-		XMMATRIX Projection;
-	};
-	
-	SEND_TO_VRAM toShader;
-	SEND_TO_VRAM gridShader;
+	//struct SEND_TO_VRAM
+	//{
+	//	XMVECTORF32 constantColor;
+	//	XMMATRIX World; 
+	//	XMMATRIX View;
+	//	XMMATRIX Projection;
+	//};
+	//
+	//SEND_TO_VRAM toShader;
+	//SEND_TO_VRAM gridShader;
 public:
 	
 	//struct SIMPLE_VERTEX
 	//{
 	//	XMFLOAT4 point;
 	//};
-	struct SIMPLE_VERTEX
-	{
-		XMFLOAT3 vertex;
-		XMFLOAT4 color;
-		XMFLOAT3 normal;
-		XMFLOAT3 tangent;
-		XMFLOAT2 uv;
-	};
-	SIMPLE_VERTEX velocity;
+	//struct SIMPLE_VERTEX
+	//{
+	//	XMFLOAT3 vertex;
+	//	XMFLOAT4 color;
+	//	XMFLOAT3 normal;
+	//	XMFLOAT3 tangent;
+	//	XMFLOAT2 uv;
+	//};
+	//SIMPLE_VERTEX velocity;
 	DEMO_APP(HINSTANCE hinst, WNDPROC proc);
 	bool Run();
 	bool ShutDown();

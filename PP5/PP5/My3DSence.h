@@ -28,7 +28,6 @@ class My3DSence
 	//XMMATRIX g_World;
 	//XMMATRIX g_View;
 	//XMMATRIX g_Projection;
-
 	//ID3D11Buffer *theVram;
 	//ID3D11Buffer *theGridBuffer;
 

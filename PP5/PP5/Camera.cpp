@@ -13,7 +13,7 @@ void Camera::InitDevice(ID3D11Device * _dev, ID3D11DeviceContext * _con)
 Camera::Camera() : mouseX(0), mouseY(0)
 {
 	XMMATRIX view = XMMatrixIdentity();
-	view.r[3] = XMVectorSet(0, 2, 1, 1);
+	view.r[3] = XMVectorSet(0, 4, 4, 1);
 	view = XMMatrixRotationX(0.5f) * XMMatrixRotationY(XM_PI) * view;
 	XMStoreFloat4x4(&transform, view);
 }

@@ -47,24 +47,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PixelShader.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
     <FxCompile Include="Trivial_PS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="Trivial_VS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="VertexShader.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="XTime.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="My3DSence.h">
