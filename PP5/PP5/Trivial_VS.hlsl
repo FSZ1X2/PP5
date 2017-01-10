@@ -48,8 +48,8 @@ struct INPUT_VERTEX
 	float3 normal           : NORMAL;
 	float3 uv               : TEXCOORD0;
 	float4 tangent          : TANGENT;
-	float4 blendWeights 	: BLENDWEIGHT0;
-	uint4  boneIndices		: BLENDINDICES0;
+	/*float4 blendWeights 	: BLENDWEIGHT0;
+	uint4  boneIndices		: BLENDINDICES0;*/
 };
 
 struct OUTPUT_VERTEX

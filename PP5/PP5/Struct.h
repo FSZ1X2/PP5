@@ -57,6 +57,7 @@ struct DirectionalLightConstantBuffer
 {
 	XMFLOAT4 direction;
 	XMFLOAT4 Dcolor;
+	
 };
 
 struct PointLightConstantBuffer
@@ -72,4 +73,5 @@ struct SpotLightConstantBuffer
 	XMFLOAT4 Scolor;
 	XMFLOAT4 conedir;
 	XMFLOAT4 coneratio;
+	
 };

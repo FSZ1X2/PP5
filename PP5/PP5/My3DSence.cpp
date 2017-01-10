@@ -180,7 +180,7 @@ Camera * My3DSence::GetCamera()
 void My3DSence::CreateDirectionalLight()
 {
 	dcfd.direction = { -5.0f,2.0f,0.0f,0.0f };
-	dcfd.Dcolor = { 1.0f,1.0f,1.0f,1.0f };
+	dcfd.Dcolor = { 0.5f,0.5f,0.5f,0.5f };
 }
 void My3DSence::CreatePointLight()
 {

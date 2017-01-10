@@ -24,6 +24,7 @@ cbuffer DirectionalLightConstantBuffer : register(b0)
 {
 	float4 DirectionalLight;
 	float4 DLcolor;
+	
 };
 
 cbuffer PointLightConstantBuffer : register(b1)
@@ -39,6 +40,7 @@ cbuffer SpotLightConstantBuffer : register(b2)
 	float4 SLcolor;
 	float4 conedir;
 	float4 coneratio;
+	
 };
 
 texture2D Texture : register(t0);
@@ -88,9 +90,12 @@ float4 main( OUTPUT_VERTEX input ) : SV_TARGET
 
 	//float3 pcolor2 = pcolor * ATTENUATION;
 	//float3 combinecolor = clamp(dcolor/* + pcolor2 + scolor*/, 0, 1);
-
+	float4 surfaceColor = float4(0.15,0.15,0.15,0.15);
 	float4 color = Texture.Sample(tsampler, input.uv.xy) * float4(combinecolor,1);
+	if(input.uv.x != -1)
 	return color;
+
+	return surfaceColor *float4(combinecolor, 1);
 	/*if (any(color))
 	{
 		color.xyz *= I;
