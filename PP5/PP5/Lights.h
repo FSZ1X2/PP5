@@ -27,7 +27,6 @@ struct theLight
 		CreateDirectionalLight();
 		CreatePointLight();
 		CreateSpotLight();
-
 		
 	}
 
