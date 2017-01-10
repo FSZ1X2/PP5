@@ -31,6 +31,14 @@ class My3DSence
 	//ID3D11Buffer *theVram;
 	//ID3D11Buffer *theGridBuffer;
 
+	ComPtr<ID3D11Buffer> lightd;
+	ComPtr<ID3D11Buffer> lightp;
+	ComPtr<ID3D11Buffer> lights;
+
+	DirectionalLightConstantBuffer dcfd;
+	PointLightConstantBuffer pcfd;
+	SpotLightConstantBuffer scfd;
+
 	Shader shader;
 	Shape shape;
 	Mesh mesh;
@@ -40,6 +48,11 @@ class My3DSence
 	//ID3D11Resource *resource = nullptr;
 	//ID3D11Buffer *shadercombuffer = nullptr;
 	//ID3D11Buffer *gridConstBuffer = nullptr;
+
+	void CreateDirectionalLight();
+	void CreatePointLight();
+	void CreateSpotLight();
+	void UpdataLight(float const moveSpd);
 public:
 	My3DSence();
 	~My3DSence();

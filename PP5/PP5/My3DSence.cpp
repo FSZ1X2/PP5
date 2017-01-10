@@ -73,6 +73,27 @@ bool My3DSence::Initialize(HWND wnd)
 	Camera::InitDevice(theDevice.Get(), theContext.Get());
 
 	shader.Init();
+
+	//light
+	CreateDirectionalLight();
+	CreatePointLight();
+	CreateSpotLight();
+
+	D3D11_BUFFER_DESC lightdesc = {};
+	lightdesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	lightdesc.ByteWidth = sizeof(DirectionalLightConstantBuffer);
+	lightdesc.StructureByteStride = 0;
+	lightdesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	lightdesc.Usage = D3D11_USAGE_DYNAMIC;
+	theDevice->CreateBuffer(&lightdesc, 0, lightd.GetAddressOf());
+
+	lightdesc.ByteWidth = sizeof(PointLightConstantBuffer);
+	theDevice->CreateBuffer(&lightdesc, 0, lightp.GetAddressOf());
+
+	lightdesc.ByteWidth = sizeof(SpotLightConstantBuffer);
+	theDevice->CreateBuffer(&lightdesc, 0, lights.GetAddressOf());
+
+///////////////////////////////////////////////////////////////////////////////////////////
 	shape.initializeShape(100);
 	mesh.initializeMesh();
 	joint.initializeMesh();
@@ -103,12 +124,37 @@ bool My3DSence::run()
 	shader.SetGroundShader();
 	ID3D11ShaderResourceView* srv = { nullptr };
 	theContext->PSSetShaderResources(0, 1, &srv);
+
+	UpdataLight(0.005f);
+	//theContext->UpdateSubresource(lightd.Get(), 0, 0, &dcfd, 0, 0);
+	//theContext->UpdateSubresource(lightp.Get(), 0, 0, &pcfd, 0, 0);
+	//theContext->UpdateSubresource(lights.Get(), 0, 0, &scfd, 0, 0);
+	D3D11_MAPPED_SUBRESOURCE lightmapr = {};
+	HRESULT ahr = theContext->Map(lightd.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &lightmapr);
+	memcpy(lightmapr.pData, &dcfd, sizeof(dcfd));
+	//lightmapr.pData = &dcfd;
+	theContext->Unmap(lightd.Get(), 0);
+
+	ahr = theContext->Map(lightp.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &lightmapr);
+	memcpy(lightmapr.pData, &pcfd, sizeof(pcfd));
+	//lightmapr.pData = &pcfd;
+	theContext->Unmap(lightp.Get(), 0);
+
+	ahr = theContext->Map(lights.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &lightmapr);
+	memcpy(lightmapr.pData, &scfd, sizeof(scfd));
+	//lightmapr.pData = &scfd;
+	theContext->Unmap(lights.Get(), 0);
+
+	theContext->PSSetConstantBuffers(0, 1, lightd.GetAddressOf());
+	theContext->PSSetConstantBuffers(1, 1, lightp.GetAddressOf());
+	theContext->PSSetConstantBuffers(2, 1, lights.GetAddressOf());
+
 	shape.draw();
 	theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
 	theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
 	mesh.draw();
 	joint.draw();
-	//D3D11_MAPPED_SUBRESOURCE mappedResource;
+	/*D3D11_MAPPED_SUBRESOURCE mappedResource;
 	//ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 	//hr = theContext->Map(shadercombuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	////memcpy(mappedResource.pData, &toShader, sizeof(toShader));
@@ -119,8 +165,7 @@ bool My3DSence::run()
 	/*theContext->VSSetShader(vertexShader.Get(), NULL, 0);
 	theContext->PSSetShader(pixelShader.Get(), NULL, 0);
 
-	theContext->Draw(6, 0);
-*/
+	theContext->Draw(6, 0);*/
 	theSwapChain->Present(0, 0);
 	time.Signal();
 	return true;
@@ -129,5 +174,131 @@ bool My3DSence::run()
 Camera * My3DSence::GetCamera()
 {
 	return &camera;
+}
+
+//light stuff:
+void My3DSence::CreateDirectionalLight()
+{
+	dcfd.direction = { -5.0f,2.0f,0.0f,0.0f };
+	dcfd.Dcolor = { 1.0f,1.0f,1.0f,1.0f };
+}
+void My3DSence::CreatePointLight()
+{
+	pcfd.Pointpos = { 0.0f,0.0f,-1.0f,0.0f };
+	pcfd.Pcolor = { 0.0f,0.0f,1.0f,0.0f };
+	pcfd.lightradius = { 0.5f,0.0f,0.0f,0.0f };
+}
+void My3DSence::CreateSpotLight()
+{
+	scfd.Spotpos = { 0.0f,2.0f,0.0f,0.0f };
+	scfd.Scolor = { 1.0f,0.0f,0.0f,0.0f };
+	scfd.conedir = { 0.0f,-1.0f,0.0f,0.0f };
+	scfd.coneratio = { 0.8f,0.0f,0.0f,0.0f };
+}
+void My3DSence::UpdataLight(float const moveSpd)
+{
+	//directional:
+	if (GetAsyncKeyState('I') && GetAsyncKeyState('1'))
+	{
+		dcfd.direction.z += moveSpd;
+	}
+	if (GetAsyncKeyState('K') && GetAsyncKeyState('1'))
+	{
+		dcfd.direction.z += -moveSpd;
+	}
+	if (GetAsyncKeyState('J') && GetAsyncKeyState('1'))
+	{
+		dcfd.direction.x += -moveSpd;
+	}
+	if (GetAsyncKeyState('L') && GetAsyncKeyState('1'))
+	{
+		dcfd.direction.x += moveSpd;
+	}
+	if (GetAsyncKeyState('U') && GetAsyncKeyState('1'))
+	{
+		dcfd.direction.y += -moveSpd;
+	}
+	if (GetAsyncKeyState('O') && GetAsyncKeyState('1'))
+	{
+		dcfd.direction.y += moveSpd;
+	}
+
+	//pointlight
+	if (GetAsyncKeyState('I') && GetAsyncKeyState('2'))
+	{
+		pcfd.Pointpos.z += moveSpd;
+	}
+	if (GetAsyncKeyState('K') && GetAsyncKeyState('2'))
+	{
+		pcfd.Pointpos.z += -moveSpd;
+	}
+	if (GetAsyncKeyState('J') && GetAsyncKeyState('2'))
+	{
+		pcfd.Pointpos.x += -moveSpd;
+	}
+	if (GetAsyncKeyState('L') && GetAsyncKeyState('2'))
+	{
+		pcfd.Pointpos.x += moveSpd;
+	}
+	if (GetAsyncKeyState('U') && GetAsyncKeyState('2'))
+	{
+		pcfd.Pointpos.y += -moveSpd;
+	}
+	if (GetAsyncKeyState('O') && GetAsyncKeyState('2'))
+	{
+		pcfd.Pointpos.y += moveSpd;
+	}
+
+	//Spotlight pos
+	if (GetAsyncKeyState('I') && GetAsyncKeyState('3'))
+	{
+		scfd.Spotpos.z += moveSpd;
+	}
+	if (GetAsyncKeyState('K') && GetAsyncKeyState('3'))
+	{
+		scfd.Spotpos.z += -moveSpd;
+	}
+	if (GetAsyncKeyState('J') && GetAsyncKeyState('3'))
+	{
+		scfd.Spotpos.x += -moveSpd;
+	}
+	if (GetAsyncKeyState('L') && GetAsyncKeyState('3'))
+	{
+		scfd.Spotpos.x += moveSpd;
+	}
+	if (GetAsyncKeyState('U') && GetAsyncKeyState('3'))
+	{
+		scfd.Spotpos.y += -moveSpd;
+	}
+	if (GetAsyncKeyState('O') && GetAsyncKeyState('3'))
+	{
+		scfd.Spotpos.y += moveSpd;
+	}
+
+	//Spotlight dir
+	if (GetAsyncKeyState('I') && GetAsyncKeyState('4'))
+	{
+		scfd.conedir.z += moveSpd;
+	}
+	if (GetAsyncKeyState('K') && GetAsyncKeyState('4'))
+	{
+		scfd.conedir.z += -moveSpd;
+	}
+	if (GetAsyncKeyState('J') && GetAsyncKeyState('4'))
+	{
+		scfd.conedir.x += -moveSpd;
+	}
+	if (GetAsyncKeyState('L') && GetAsyncKeyState('4'))
+	{
+		scfd.conedir.x += moveSpd;
+	}
+	if (GetAsyncKeyState('U') && GetAsyncKeyState('4'))
+	{
+		scfd.conedir.y += -moveSpd;
+	}
+	if (GetAsyncKeyState('O') && GetAsyncKeyState('4'))
+	{
+		scfd.conedir.y += moveSpd;
+	}
 }
 

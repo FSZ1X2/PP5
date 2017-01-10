@@ -44,10 +44,12 @@
 #pragma pack_matrix(row_major)
 struct INPUT_VERTEX
 {
-	float3 vertex: POSITION;
-	float3 normal: NORMAL;
-	float3 uv: TEXCOORD0;
-	float4 tangent: TANGENT;
+	float3 vertex           : POSITION;
+	float3 normal           : NORMAL;
+	float3 uv               : TEXCOORD0;
+	float4 tangent          : TANGENT;
+	float4 blendWeights 	: BLENDWEIGHT0;
+	uint4  boneIndices		: BLENDINDICES0;
 };
 
 struct OUTPUT_VERTEX
@@ -55,6 +57,7 @@ struct OUTPUT_VERTEX
 	float4 projectedCoordinate	: SV_POSITION;
 	float3 normal				: NORMAL;
 	float3 uv					: TEXCOORD0;
+	float4 WorldPos             : WORLDPOSITION;
 };
 
 // TODO: PART 3 STEP 2a
@@ -79,6 +82,7 @@ OUTPUT_VERTEX main(INPUT_VERTEX input)
 	OUTPUT_VERTEX output = (OUTPUT_VERTEX)0;
 
 	float4 coordinate = mul(float4(input.vertex, 1.0f), trans);
+	output.WorldPos = coordinate;
 
 	output.projectedCoordinate = mul(coordinate, viewproj);
 	output.normal = mul(input.normal, (float3x3)trans);

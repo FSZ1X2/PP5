@@ -47,29 +47,29 @@ struct BindPosition
 
 struct VertexPositionUVNormal
 {
-	DirectX::XMFLOAT3 pos;
-	DirectX::XMFLOAT3 normal;
-	DirectX::XMFLOAT3 uv;
-	DirectX::XMFLOAT4 tangent;
+	XMFLOAT3 pos;
+	XMFLOAT3 normal;
+	XMFLOAT3 uv;
+	XMFLOAT4 tangent;
 };
 
 struct DirectionalLightConstantBuffer
 {
-	DirectX::XMFLOAT4 direction;
-	DirectX::XMFLOAT4 Dcolor;
+	XMFLOAT4 direction;
+	XMFLOAT4 Dcolor;
 };
 
 struct PointLightConstantBuffer
 {
-	DirectX::XMFLOAT4 Pointpos;
-	DirectX::XMFLOAT4 Pcolor;
-	DirectX::XMFLOAT4 lightradius;
+	XMFLOAT4 Pointpos;
+	XMFLOAT4 Pcolor;
+	XMFLOAT4 lightradius;
 };
 
 struct SpotLightConstantBuffer
 {
-	DirectX::XMFLOAT4 Spotpos;
-	DirectX::XMFLOAT4 Scolor;
-	DirectX::XMFLOAT4 conedir;
-	DirectX::XMFLOAT4 coneratio;
+	XMFLOAT4 Spotpos;
+	XMFLOAT4 Scolor;
+	XMFLOAT4 conedir;
+	XMFLOAT4 coneratio;
 };
