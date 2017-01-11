@@ -13,7 +13,7 @@ using namespace std;
 #include <DirectXColors.h>
 #include <DirectXCollision.h>
 #include <d3dcompiler.h>
-#pragma comment (lib, "d3dcompiler.lib")
+//#pragma comment (lib, "d3dcompiler.lib")
 
 using namespace DirectX;
 
@@ -23,8 +23,8 @@ using Microsoft::WRL::ComPtr;
 //#include "Trivial_VS.csh"
 //#include "Trivial_PS.csh"
 
-#include "../FBXLoader/FBXLoader.h"
-using namespace fbxloader;
+#include "../FBXLoader/FBXExportDATA.h"
+//FBX_API class FBXLoader;
 
 #define BACKBUFFER_WIDTH	1000
 #define BACKBUFFER_HEIGHT	1000

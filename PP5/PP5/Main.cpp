@@ -84,7 +84,6 @@ public:
 	bool Run();
 	bool ShutDown();
 
-	FBXLoader load;
 	My3DSence scene;
 	//POINT mousepos;
 };
@@ -261,7 +260,7 @@ DEMO_APP::DEMO_APP(HINSTANCE hinst, WNDPROC proc)
 	//shadersourceData.SysMemSlicePitch = 0;
 	//
 	//hr = theDevice->CreateBuffer(&shaderdesc, &shadersourceData, &shadercombuffer);*/
-	
+
 }
 
 bool DEMO_APP::Run()

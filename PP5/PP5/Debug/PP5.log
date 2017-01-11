@@ -1,3 +1,363 @@
-﻿  Mesh.cpp
+﻿  XTime.cpp
+  Shape.cpp
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): warning C4251: 'FBXExportDATA::Outvertex': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(19): warning C4251: 'FBXExportDATA::Outnormal': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(20): warning C4251: 'FBXExportDATA::Outuv': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): warning C4251: 'FBXExportDATA::Outtangent': class 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): note: see declaration of 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): warning C4251: 'FBXExportDATA::OutJoint': class 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): note: see declaration of 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  Shader.cpp
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): warning C4251: 'FBXExportDATA::Outvertex': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(19): warning C4251: 'FBXExportDATA::Outnormal': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(20): warning C4251: 'FBXExportDATA::Outuv': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): warning C4251: 'FBXExportDATA::Outtangent': class 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): note: see declaration of 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): warning C4251: 'FBXExportDATA::OutJoint': class 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): note: see declaration of 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  My3DSence.cpp
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): warning C4251: 'FBXExportDATA::Outvertex': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(19): warning C4251: 'FBXExportDATA::Outnormal': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(20): warning C4251: 'FBXExportDATA::Outuv': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): warning C4251: 'FBXExportDATA::Outtangent': class 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): note: see declaration of 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): warning C4251: 'FBXExportDATA::OutJoint': class 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): note: see declaration of 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  Mesh.cpp
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): warning C4251: 'FBXExportDATA::Outvertex': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(19): warning C4251: 'FBXExportDATA::Outnormal': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(20): warning C4251: 'FBXExportDATA::Outuv': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): warning C4251: 'FBXExportDATA::Outtangent': class 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): note: see declaration of 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): warning C4251: 'FBXExportDATA::OutJoint': class 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): note: see declaration of 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  main.cpp
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): warning C4251: 'FBXExportDATA::Outvertex': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(19): warning C4251: 'FBXExportDATA::Outnormal': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(20): warning C4251: 'FBXExportDATA::Outuv': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): warning C4251: 'FBXExportDATA::Outtangent': class 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): note: see declaration of 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): warning C4251: 'FBXExportDATA::OutJoint': class 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): note: see declaration of 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  Joint.cpp
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): warning C4251: 'FBXExportDATA::Outvertex': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(19): warning C4251: 'FBXExportDATA::Outnormal': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(20): warning C4251: 'FBXExportDATA::Outuv': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): warning C4251: 'FBXExportDATA::Outtangent': class 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): note: see declaration of 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): warning C4251: 'FBXExportDATA::OutJoint': class 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): note: see declaration of 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  DDSTextureLoader.cpp
+  Camera.cpp
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): warning C4251: 'FBXExportDATA::Outvertex': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(19): warning C4251: 'FBXExportDATA::Outnormal': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(20): warning C4251: 'FBXExportDATA::Outuv': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): warning C4251: 'FBXExportDATA::Outtangent': class 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(21): note: see declaration of 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): warning C4251: 'FBXExportDATA::OutJoint': class 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  c:\users\susud\desktop\pp5\pp5\pp5\fbxloader\fbxexportdata.h(22): note: see declaration of 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  Generating Code...
+     Creating library C:\Users\susud\Desktop\PP5\PP5\PP5\Debug\PP5.lib and object C:\Users\susud\Desktop\PP5\PP5\PP5\Debug\PP5.exp
   PP5.vcxproj -> C:\Users\susud\Desktop\PP5\PP5\PP5\Debug\PP5.exe
   PP5.vcxproj -> C:\Users\susud\Desktop\PP5\PP5\PP5\Debug\PP5.pdb (Full PDB)

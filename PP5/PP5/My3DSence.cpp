@@ -66,6 +66,8 @@ bool My3DSence::Initialize(HWND wnd)
 
 	theContext->RSSetViewports(1, &theViewPort);
 
+	fbxflie.LoadFBX("Box_Attack.fbx");
+
 	Shape::InitDevice(theDevice.Get(), theContext.Get());
 	Mesh::InitDevice(theDevice.Get(), theContext.Get());
 	Shader::InitDevice(theDevice.Get(), theContext.Get());
@@ -95,8 +97,8 @@ bool My3DSence::Initialize(HWND wnd)
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 	shape.initializeShape(100);
-	mesh.initializeMesh();
-	joint.initializeMesh();
+	mesh.initializeMesh(&fbxflie);
+	joint.initializeMesh(&fbxflie);
 	camera.InitCamera();
 	camera.SetProjection(camera.DegreeToRadian(75), BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 0.01f, 1000.0f);
 
@@ -143,10 +145,8 @@ bool My3DSence::run()
 	memcpy(lightmapr.pData, &scfd, sizeof(scfd));
 	//lightmapr.pData = &scfd;
 	theContext->Unmap(lights.Get(), 0);
-
-	theContext->PSSetConstantBuffers(0, 1, lightd.GetAddressOf());
-	theContext->PSSetConstantBuffers(1, 1, lightp.GetAddressOf());
-	theContext->PSSetConstantBuffers(2, 1, lights.GetAddressOf());
+	ID3D11Buffer* cbs[] = { lightd.Get() , lightp.Get() , lights.Get() };
+	theContext->PSSetConstantBuffers(0, 3, cbs);
 
 	shader.SetCommonShader();
 	joint.draw();
@@ -182,21 +182,21 @@ Camera * My3DSence::GetCamera()
 //light stuff:
 void My3DSence::CreateDirectionalLight()
 {
-	dcfd.direction = { -5.0f,2.0f,0.0f,0.0f };
+	dcfd.direction = { -5.0f,-2.0f,-3.0f,0.0f };
 	dcfd.Dcolor = { 0.5f,0.5f,0.5f,0.5f };
 }
 void My3DSence::CreatePointLight()
 {
-	pcfd.Pointpos = { 0.0f,0.0f,-1.0f,0.0f };
-	pcfd.Pcolor = { 0.0f,0.0f,1.0f,0.0f };
-	pcfd.lightradius = { 0.5f,0.0f,0.0f,0.0f };
+	pcfd.Pointpos = { 0.0f,0.0f,-1.0f,1.0f };
+	pcfd.Pcolor = { 0.0f,1.0f,1.0f,0.0f };
+	pcfd.lightradius = { 5.0f,0.0f,0.0f,0.0f };
 }
 void My3DSence::CreateSpotLight()
 {
-	scfd.Spotpos = { 0.0f,2.0f,0.0f,0.0f };
+	scfd.Spotpos = { 0.0f,2.0f,0.0f,1.0f };
 	scfd.Scolor = { 1.0f,0.0f,0.0f,0.0f };
 	scfd.conedir = { 0.0f,-1.0f,0.0f,0.0f };
-	scfd.coneratio = { 0.8f,0.0f,0.0f,0.0f };
+	scfd.coneratio = { 0.8f,0.9f,0.0f,0.0f };
 }
 void My3DSence::UpdataLight(float const moveSpd)
 {

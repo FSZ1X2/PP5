@@ -24,7 +24,6 @@ cbuffer DirectionalLightConstantBuffer : register(b0)
 {
 	float4 DirectionalLight;
 	float4 DLcolor;
-	
 };
 
 cbuffer PointLightConstantBuffer : register(b1)
@@ -48,24 +47,35 @@ SamplerState tsampler:register(s0);
 
 float4 main( OUTPUT_VERTEX input ) : SV_TARGET
 {
-	float3 lightDirP = normalize(PointLightPosition.xyz - input.WorldPos.xyz);
-	float3 LightDirS = normalize(SpotLightPosition.xyz - input.WorldPos.xyz);
+	float3 normal = normalize(input.normal);
 
-	float dotD = clamp(dot(input.normal, normalize(DirectionalLight.xyz)), 0, 1);
-	float dotP = clamp(dot(input.normal, lightDirP), 0, 1);
-	float dotS = clamp(dot(-LightDirS, normalize(conedir.xyz)), 0, 1);
+	float dotD = saturate(dot(normal, -normalize(DirectionalLight.xyz)));
 
-	float spotfactor = (dotS > coneratio.x) ? 1 : 0;
-	spotfactor *= clamp(dot(LightDirS, normalize(input.normal)), 0, 1);
-
-	float3 dcolor = DLcolor.xyz *clamp((dotD + 0.2f),0,1);
+	float3 lightDirP = (PointLightPosition.xyz - input.WorldPos.xyz);
+	float distanceP = length(lightDirP);
+	lightDirP /= distanceP;
+	float dotP = saturate(dot(normal, lightDirP));
 	float3 pcolor = PLcolor.xyz *dotP;
+	float ATTENUATION = 1.0 - saturate((distanceP / lightradius.x));
+	ATTENUATION *= ATTENUATION;
+	pcolor = pcolor * ATTENUATION;
+
+	float3 lightDirS = (SpotLightPosition.xyz - input.WorldPos.xyz);
+	float distanceS = length(lightDirS);
+	lightDirS /= distanceS;
+	float dotS = saturate(dot(lightDirS, -normalize(conedir.xyz)));
+
+	//float ATTENUATIONS = 1.0 - saturate((distanceS / lightradius.x));
+	//ATTENUATION *= ATTENUATION;
+	//pcolor = pcolor * ATTENUATION;
+
+	float spotfactor = dotS > coneratio.x;
+	spotfactor *= saturate(dot(lightDirS, normalize(input.normal)));
+
+	float3 dcolor = DLcolor.xyz *(dotD + 0.2f);
 	float3 scolor = spotfactor*SLcolor.xyz;
 
-	float ATTENUATION = 1.0 - clamp((lightDirP / lightradius.x), 0, 1);
-
-	float3 pcolor2 = pcolor * ATTENUATION;
-	float3 combinecolor = clamp(dcolor + pcolor2 + scolor, 0, 1);
+	float3 combinecolor = saturate(dcolor + pcolor + scolor);
 
 	//float3 dir = -normalize(tdirection);
 	//float3 normal = normalize(input.normal);
@@ -90,12 +100,13 @@ float4 main( OUTPUT_VERTEX input ) : SV_TARGET
 
 	//float3 pcolor2 = pcolor * ATTENUATION;
 	//float3 combinecolor = clamp(dcolor/* + pcolor2 + scolor*/, 0, 1);
-	float4 surfaceColor = float4(0.15,0.15,0.15,0.15);
+	//float4 surfaceColor = float4(0.15,0.15,0.15,0.15);
 	float4 color = Texture.Sample(tsampler, input.uv.xy) * float4(combinecolor,1);
-	if(input.uv.x != -1)
-	return color;
-
-	return surfaceColor *float4(combinecolor, 1);
+	//if(input.uv.x != -1)
+	if(any(color))
+		return color;
+	return float4(combinecolor, 1);
+	//return surfaceColor *float4(combinecolor, 1);
 	/*if (any(color))
 	{
 		color.xyz *= I;

@@ -1,4 +1,5 @@
 #include "Mesh.h"
+
 ID3D11Device* Mesh::dev = nullptr;
 ID3D11DeviceContext* Mesh::con = nullptr;
 
@@ -8,37 +9,38 @@ void Mesh::InitDevice(ID3D11Device * _dev, ID3D11DeviceContext * _con)
 	con = _con;
 }
 
-void Mesh::initializeMesh(float size)
+void Mesh::initializeMesh(FBXExportDATA * fbxflie, float size)
 {
 	XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
-	fbxflie.LoadFBX("Box_Attack.fbx");
+	//fbxflie.LoadFBX("Box_Attack.fbx");
+	//fbxloader::FBXLoader::LoadFBX("Box_Attack.fbx");
 	//transform = fbxflie.transL;
-	unsigned int num = fbxflie.GetVertexSize();
+	unsigned int num = fbxflie->GetVertexSize();
 	std::vector<VertexPositionUVNormal> TriangleVertexList;
 
 	for (unsigned int i = 0; i < num; i++)
 	{
 		VertexPositionUVNormal vertex1;
-		vertex1.pos.x = fbxflie.GetVertex()[i].v[0].vertex.x;
-		vertex1.pos.y = fbxflie.GetVertex()[i].v[0].vertex.y;
-		vertex1.pos.z = fbxflie.GetVertex()[i].v[0].vertex.z;
-		vertex1.normal.x = fbxflie.GetVertex()[i].v[0].normal.x;
-		vertex1.normal.y = fbxflie.GetVertex()[i].v[0].normal.y;
-		vertex1.normal.z = fbxflie.GetVertex()[i].v[0].normal.z;
-		vertex1.uv.x = fbxflie.GetVertex()[i].v[0].uv.x;
-		vertex1.uv.y = fbxflie.GetVertex()[i].v[0].uv.y;
-		vertex1.uv.z = 1.0f;
-		vertex1.tangent.x = fbxflie.GetVertex()[i].v[0].tangent.x;
-		vertex1.tangent.y = fbxflie.GetVertex()[i].v[0].tangent.y;
-		vertex1.tangent.z = fbxflie.GetVertex()[i].v[0].tangent.z;
-		vertex1.tangent.w = 0.0f;
+		vertex1.pos = fbxflie->GetVertex()[i];
+		//vertex1.pos.y = fbxflie->Outvertex[i].y;
+		//vertex1.pos.z = fbxflie->Outvertex[i].z;
+		vertex1.normal = fbxflie->GetNormal()[i];
+		//vertex1.normal.y = fbxflie->Outnormal[i].y;
+		//vertex1.normal.z = fbxflie->Outnormal[i].z;
+		vertex1.uv = fbxflie->GetUv()[i];
+		//vertex1.uv.y = fbxflie.GetVertex()[i].v[0].uv.y;
+		//vertex1.uv.z = 1.0f;
+		vertex1.tangent = fbxflie->GetTangent()[i];
+		//vertex1.tangent.y = fbxflie.GetVertex()[i].v[0].tangent.y;
+		//vertex1.tangent.z = fbxflie.GetVertex()[i].v[0].tangent.z;
+		//vertex1.tangent.w = 0.0f;
 
 		vertex1.blendWeight[0] = 0.25f;
 		vertex1.blendWeight[1] = 0.25f;
 		vertex1.blendWeight[2] = 0.25f;
 		vertex1.blendWeight[3] = 0.25f;
 
-		VertexPositionUVNormal vertex2;
+		/*VertexPositionUVNormal vertex2;
 		vertex2.pos.x = fbxflie.GetVertex()[i].v[1].vertex.x;
 		vertex2.pos.y = fbxflie.GetVertex()[i].v[1].vertex.y;
 		vertex2.pos.z = fbxflie.GetVertex()[i].v[1].vertex.z;
@@ -76,11 +78,11 @@ void Mesh::initializeMesh(float size)
 		vertex3.blendWeight[0] = 0.25f;
 		vertex3.blendWeight[1] = 0.25f;
 		vertex3.blendWeight[2] = 0.25f;
-		vertex3.blendWeight[3] = 0.25f;
+		vertex3.blendWeight[3] = 0.25f;*/
 
 		TriangleVertexList.push_back(vertex1);
-		TriangleVertexList.push_back(vertex2);
-		TriangleVertexList.push_back(vertex3);
+		/*TriangleVertexList.push_back(vertex2);
+		TriangleVertexList.push_back(vertex3)*/;
 	}
 
 	vertexcount = TriangleVertexList.size();

@@ -8,16 +8,15 @@ void Joint::InitDevice(ID3D11Device * _dev, ID3D11DeviceContext * _con)
 	con = _con;
 }
 
-void Joint::initializeMesh(float size)
+void Joint::initializeMesh(FBXExportDATA * fbxflie, float size)
 {
 	XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
-	fbxflie.LoadFBX("Box_Attack.fbx");
 	//transform = fbxflie.transL;
-	unsigned int num = fbxflie.GetJointSize();
+	unsigned int num = fbxflie->GetJointSize();
 
 	for (unsigned int i = 0; i < num; i++)
 	{
-		BindList.pos[i] = fbxflie.GetJoint()[i].bindposinverse;
+		BindList.pos[i] = fbxflie->GetJoint()[i];
 		//for (int row = 0; row < 4; row++)
 		//{
 		//	for (int col = 0; col < 4; col++)
