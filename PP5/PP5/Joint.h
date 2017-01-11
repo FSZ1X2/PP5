@@ -21,5 +21,6 @@ public:
 	void initializeMesh(float size = 1);
 	void draw();
 	void makesphere(float rad, int slice, int segment);
+	BindPosition * GetBindPose() { return &BindList; }
 };
 

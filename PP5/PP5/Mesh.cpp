@@ -103,6 +103,25 @@ void Mesh::initializeMesh(float size)
 	desc.Usage = D3D11_USAGE_DYNAMIC;
 
 	dev->CreateBuffer(&desc, 0, constantBuffer.GetAddressOf());
+
+	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	desc.ByteWidth = sizeof(PosList);
+	desc.StructureByteStride = 0;
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	desc.Usage = D3D11_USAGE_DYNAMIC;
+
+	dev->CreateBuffer(&desc, 0, poseBuffer.GetAddressOf());
+}
+
+void Mesh::setPos(BindPosition * Bindpose)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		//XMStoreFloat4x4(&poselist.pose[i], XMMatrixIdentity());
+		//poselist.pose[i] = Bindpose->pos[i];
+		XMStoreFloat4x4(&poselist.pose[i], XMMatrixInverse(nullptr, XMLoadFloat4x4(&Bindpose->pos[i])) * XMLoadFloat4x4(&Bindpose->pos[i]));
+		//XMMatrixInverse(nullptr, XMLoadFloat4x4(&Bindpose->pos[i]))
+	}
 }
 
 void Mesh::draw()
@@ -113,6 +132,12 @@ void Mesh::draw()
 	con->Unmap(constantBuffer.Get(), 0);
 
 	con->VSSetConstantBuffers(1, 1, constantBuffer.GetAddressOf());
+
+	con->Map(poseBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &maps);
+	memcpy(maps.pData, &poselist, sizeof(PosList));
+	con->Unmap(poseBuffer.Get(), 0);
+
+	con->VSSetConstantBuffers(2, 1, poseBuffer.GetAddressOf());
 
 	unsigned int stride = sizeof(VertexPositionUVNormal);
 	UINT offset = 0;

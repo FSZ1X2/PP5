@@ -55,6 +55,7 @@ void Joint::draw()
 
 	con->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
 	con->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 	for (int i = 0; i < 4; i++)
 	{
 		XMFLOAT4X4 mat;

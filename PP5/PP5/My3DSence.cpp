@@ -121,7 +121,6 @@ bool My3DSence::run()
 	theContext->ClearRenderTargetView(theRTV.Get(), Colors::CornflowerBlue);
 	theContext->ClearDepthStencilView(theDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 	camera.Update((float)time.Delta());
-	shader.SetGroundShader();
 	ID3D11ShaderResourceView* srv = { nullptr };
 	theContext->PSSetShaderResources(0, 1, &srv);
 
@@ -149,11 +148,15 @@ bool My3DSence::run()
 	theContext->PSSetConstantBuffers(1, 1, lightp.GetAddressOf());
 	theContext->PSSetConstantBuffers(2, 1, lights.GetAddressOf());
 
+	shader.SetCommonShader();
+	joint.draw();
 	shape.draw();
 	theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
 	theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
+	shader.SetGroundShader();
+	mesh.setPos(joint.GetBindPose());
 	mesh.draw();
-	joint.draw();
+
 	/*D3D11_MAPPED_SUBRESOURCE mappedResource;
 	//ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 	//hr = theContext->Map(shadercombuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);

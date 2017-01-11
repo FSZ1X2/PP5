@@ -42,7 +42,12 @@ struct CameraConstantBuffer
 
 struct BindPosition
 {
-	XMFLOAT4X4 pos[64];
+	XMFLOAT4X4 pos[4];
+};
+
+struct PosList
+{
+	XMFLOAT4X4 pose[4];
 };
 
 struct VertexPositionUVNormal

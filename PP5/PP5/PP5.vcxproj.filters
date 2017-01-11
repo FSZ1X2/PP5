@@ -53,6 +53,9 @@
     <FxCompile Include="Trivial_VS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="CommonVertexShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="XTime.h">

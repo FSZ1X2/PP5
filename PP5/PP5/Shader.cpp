@@ -16,6 +16,13 @@ void Shader::SetGroundShader()
 	con->IASetInputLayout(layout.Get());
 }
 
+void Shader::SetCommonShader()
+{
+	con->VSSetShader(commonshader.Get(), 0, 0);
+	con->PSSetShader(gpshader.Get(), 0, 0);
+	con->IASetInputLayout(layout.Get());
+}
+
 void Shader::Init()
 {
 	D3D_SHADER_MACRO macro[] = { nullptr, nullptr };
@@ -31,6 +38,9 @@ void Shader::Init()
 
 	hr = dev->CreateVertexShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, gvshader.GetAddressOf());
 	HR(hr);
+
+
+
 
 	D3D11_INPUT_ELEMENT_DESC elements[] =
 	{
@@ -52,6 +62,16 @@ void Shader::Init()
 	HR(hr);
 
 	hr = dev->CreatePixelShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, gpshader.GetAddressOf());
+	HR(hr);
+
+	blobshader->Release();
+	if (error)
+		error->Release();
+	
+	hr = D3DCompileFromFile(L"CommonVertexShader.hlsl", macro, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "vs_4_0", flag, 0, &blobshader, &error);
+	HR(hr);
+
+	hr = dev->CreateVertexShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, commonshader.GetAddressOf());
 	HR(hr);
 
 	blobshader->Release();

@@ -48,8 +48,8 @@ struct INPUT_VERTEX
 	float3 normal           : NORMAL;
 	float3 uv               : TEXCOORD0;
 	float4 tangent          : TANGENT;
-	float4 weight           :	    WEIGHT;
-	uint4 indices	        :		INDEX;
+	float4 weight           : WEIGHT;
+	uint4 indices	        : INDEX;
 	/*float4 blendWeights 	: BLENDWEIGHT0;
 	uint4  boneIndices		: BLENDINDICES0;*/
 };
@@ -88,13 +88,13 @@ OUTPUT_VERTEX main(INPUT_VERTEX input)
 {
 	OUTPUT_VERTEX output = (OUTPUT_VERTEX)0;
 
-	//float4 finalPos = float4(0, 0, 0, 0);
-	//finalPos  = weight[0] * mul(float4(input.vertex, 1.0f), BoneOffset[0]);
-	//finalPos += weight[1] * mul(float4(input.vertex, 1.0f), BoneOffset[1]);
-	//finalPos += weight[2] * mul(float4(input.vertex, 1.0f), BoneOffset[2]);
-	//finalPos += weight[3] * mul(float4(input.vertex, 1.0f), BoneOffset[3]);
+	float4 finalPos = float4(0, 0, 0, 0);
+	finalPos  = input.weight[0] * mul(float4(input.vertex, 1.0f), BoneOffset[0]);
+	finalPos += input.weight[1] * mul(float4(input.vertex, 1.0f), BoneOffset[1]);
+	finalPos += input.weight[2] * mul(float4(input.vertex, 1.0f), BoneOffset[2]);
+	finalPos += input.weight[3] * mul(float4(input.vertex, 1.0f), BoneOffset[3]);
 
-	float4 coordinate = mul(float4(input.vertex, 1.0f), trans);
+	float4 coordinate = mul(finalPos, trans);
 	output.WorldPos = coordinate;
 
 	output.projectedCoordinate = mul(coordinate, viewproj);
