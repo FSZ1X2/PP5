@@ -1,9 +1,0 @@
-﻿  compilation object save succeeded; see E:\STUDY\PP5\PP5\PP5\Release\PixelShader.cso
-  compilation header save succeeded; see E:\STUDY\PP5\PP5\PP5\PP5\Trivial_PS.csh
-  compilation object save succeeded; see E:\STUDY\PP5\PP5\PP5\Release\Trivial_PS.cso
-  compilation header save succeeded; see E:\STUDY\PP5\PP5\PP5\PP5\Trivial_VS.csh
-  compilation object save succeeded; see E:\STUDY\PP5\PP5\PP5\Release\Trivial_VS.cso
-  compilation object save succeeded; see E:\STUDY\PP5\PP5\PP5\Release\VertexShader.cso
-  main.cpp
-main.cpp(24): fatal error C1083: Cannot open include file: 'FBXLoader.h': No such file or directory
-  XTime.cpp
