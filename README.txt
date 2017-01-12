@@ -1,3 +1,6 @@
+
+FBX SDK: 2016.1.1 vs2015
+
 CAMERA:
 
 (W,S) for Z axis
