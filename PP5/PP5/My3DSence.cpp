@@ -73,6 +73,7 @@ bool My3DSence::Initialize(HWND wnd)
 	Shader::InitDevice(theDevice.Get(), theContext.Get());
 	Joint::InitDevice(theDevice.Get(), theContext.Get());
 	Camera::InitDevice(theDevice.Get(), theContext.Get());
+	DrawLight::InitDevice(theDevice.Get(), theContext.Get());
 
 	shader.Init();
 
@@ -96,6 +97,7 @@ bool My3DSence::Initialize(HWND wnd)
 	theDevice->CreateBuffer(&lightdesc, 0, lights.GetAddressOf());
 
 ///////////////////////////////////////////////////////////////////////////////////////////
+	Plight.initializeLigtht(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f));
 	shape.initializeShape(100);
 	mesh.initializeMesh(&fbxflie);
 	joint.initializeMesh(&fbxflie);
@@ -149,13 +151,15 @@ bool My3DSence::run()
 	theContext->PSSetConstantBuffers(0, 3, cbs);
 
 	shader.SetCommonShader();
+	Plight.TransModel(pcfd.Pointpos.x, pcfd.Pointpos.y, pcfd.Pointpos.z);
+	Plight.draw();
 	joint.draw();
 	shape.draw();
 	theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
 	theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
 	shader.SetGroundShader();
 	mesh.setPos(joint.GetBindPose());
-	mesh.draw();
+	//mesh.draw();
 
 	/*D3D11_MAPPED_SUBRESOURCE mappedResource;
 	//ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
