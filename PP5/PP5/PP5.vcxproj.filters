@@ -16,6 +16,9 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{98b7395e-b0a0-4139-8ba2-e51848bd16ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{5a4c0f48-14bc-49b8-b795-5b9c661def6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XTime.cpp">
@@ -45,6 +48,9 @@
     <ClCompile Include="Joint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SkyBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Trivial_PS.hlsl">
@@ -54,6 +60,12 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="CommonVertexShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="SkyBoxPixelShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="SkyBoxVertexShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
@@ -85,5 +97,20 @@
     <ClInclude Include="Joint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SkyBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="SkyboxOcean.dds" />
+    <Image Include="SunsetSkybox.dds" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PP5.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

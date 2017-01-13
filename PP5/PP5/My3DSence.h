@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Joint.h"
+#include "SkyBox.h"
 class My3DSence
 {
 	ComPtr<ID3D11Device> theDevice;
@@ -45,6 +46,7 @@ class My3DSence
 	Joint joint;
 	Camera camera;
 	XTime time;
+	SkyBox skybox;
 	//ID3D11Resource *resource = nullptr;
 	//ID3D11Buffer *shadercombuffer = nullptr;
 	//ID3D11Buffer *gridConstBuffer = nullptr;

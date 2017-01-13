@@ -73,7 +73,7 @@ bool My3DSence::Initialize(HWND wnd)
 	Shader::InitDevice(theDevice.Get(), theContext.Get());
 	Joint::InitDevice(theDevice.Get(), theContext.Get());
 	Camera::InitDevice(theDevice.Get(), theContext.Get());
-
+	SkyBox::InitDevice(theDevice.Get(), theContext.Get());
 	shader.Init();
 
 	//light
@@ -96,6 +96,7 @@ bool My3DSence::Initialize(HWND wnd)
 	theDevice->CreateBuffer(&lightdesc, 0, lights.GetAddressOf());
 
 ///////////////////////////////////////////////////////////////////////////////////////////
+	skybox.initializeShape(1);
 	shape.initializeShape(100);
 	mesh.initializeMesh(&fbxflie);
 	joint.initializeMesh(&fbxflie);
@@ -148,6 +149,8 @@ bool My3DSence::run()
 	ID3D11Buffer* cbs[] = { lightd.Get() , lightp.Get() , lights.Get() };
 	theContext->PSSetConstantBuffers(0, 3, cbs);
 
+	
+	//theContext->ClearDepthStencilView(theDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 	shader.SetCommonShader();
 	joint.draw();
 	shape.draw();
@@ -156,7 +159,11 @@ bool My3DSence::run()
 	shader.SetGroundShader();
 	mesh.setPos(joint.GetBindPose());
 	mesh.draw();
-
+	shader.SetSkyBoxShader();
+	XMFLOAT4X4 camPos;
+	XMStoreFloat4x4(&camPos, camera.GetPos());
+	skybox.draw(camPos._41, camPos._42, camPos._43);
+	
 	/*D3D11_MAPPED_SUBRESOURCE mappedResource;
 	//ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 	//hr = theContext->Map(shadercombuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);

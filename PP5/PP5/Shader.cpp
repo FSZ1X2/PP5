@@ -23,6 +23,13 @@ void Shader::SetCommonShader()
 	con->IASetInputLayout(layout.Get());
 }
 
+void Shader::SetSkyBoxShader()
+{
+	con->VSSetShader(skyVShader.Get(), 0, 0);
+	con->PSSetShader(skyPShader.Get(), 0, 0);
+	con->IASetInputLayout(layout.Get());
+}
+
 void Shader::Init()
 {
 	D3D_SHADER_MACRO macro[] = { nullptr, nullptr };
@@ -72,6 +79,25 @@ void Shader::Init()
 	HR(hr);
 
 	hr = dev->CreateVertexShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, commonshader.GetAddressOf());
+	HR(hr);
+
+	blobshader->Release();
+	if (error)
+		error->Release();
+
+	hr = D3DCompileFromFile(L"SkyBoxVertexShader.hlsl", macro, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "vs_4_0", flag, 0, &blobshader, &error);
+	HR(hr);
+
+	hr = dev->CreateVertexShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, skyVShader.GetAddressOf());
+	HR(hr);
+
+	blobshader->Release();
+	if (error)
+		error->Release();
+	hr = D3DCompileFromFile(L"SkyBoxPixelShader.hlsl", macro, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ps_4_0", flag, 0, &blobshader, &error);
+	HR(hr);
+
+	hr = dev->CreatePixelShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, skyPShader.GetAddressOf());
 	HR(hr);
 
 	blobshader->Release();
