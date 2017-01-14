@@ -8,34 +8,77 @@ void Joint::InitDevice(ID3D11Device * _dev, ID3D11DeviceContext * _con)
 	con = _con;
 }
 
-void Joint::initializeMesh(FBXExportDATA * fbxflie, float size)
+//void Joint::initializeMesh(FBXExportDATA * fbxflie, float size)
+//{
+//	XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
+//	//transform = fbxflie.transL;
+//	unsigned int num = fbxflie->GetJointSize();
+//
+//	for (unsigned int i = 0; i < num; i++)
+//	{
+//		BindList.pos[i] = fbxflie->GetJoint()[i];
+//		//for (int row = 0; row < 4; row++)
+//		//{
+//		//	for (int col = 0; col < 4; col++)
+//		//	{
+//		//		BindList.pos[i].m[row][col] = (float)fbxflie.GetJoint()[i].bindposinverse.Get(row, col);
+//		//	}
+//		//}
+//	}
+//
+//	////vertexcount = TriangleVertexList.size();
+//	D3D11_BUFFER_DESC desc = {};
+//	//desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+//	//desc.ByteWidth = pointsforshere.size() * sizeof(VertexPositionUVNormal);
+//	//desc.StructureByteStride = sizeof(VertexPositionUVNormal);
+//	//desc.Usage = D3D11_USAGE_DEFAULT;
+//
+//	//D3D11_SUBRESOURCE_DATA source = {};
+//	//source.pSysMem = &pointsforshere[0];
+//	//dev->CreateBuffer(&desc, &source, vertexBuffer.GetAddressOf());
+//
+//	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+//	desc.ByteWidth = sizeof(XMFLOAT4X4);
+//	desc.StructureByteStride = 0;
+//	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+//	desc.Usage = D3D11_USAGE_DYNAMIC;
+//	dev->CreateBuffer(&desc, 0, constantBuffer.GetAddressOf());
+//	makesphere(0.3f, 6, 6);
+//}
+
+void Joint::initBinaryMesh(const char * path, float size)
 {
+	
+	
 	XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
-	//transform = fbxflie.transL;
-	unsigned int num = fbxflie->GetJointSize();
+	ifstream file(path, ios::in | ios::binary | ios::ate);
+	file.seekg(0, ios::beg);
+	UINT num;
+	file.read((char*)&num, sizeof(UINT));
+	std::vector<VertexPositionUVNormal> TriangleVertexList;
 
 	for (unsigned int i = 0; i < num; i++)
 	{
-		BindList.pos[i] = fbxflie->GetJoint()[i];
-		//for (int row = 0; row < 4; row++)
-		//{
-		//	for (int col = 0; col < 4; col++)
-		//	{
-		//		BindList.pos[i].m[row][col] = (float)fbxflie.GetJoint()[i].bindposinverse.Get(row, col);
-		//	}
-		//}
+		VertexPositionUVNormal vertex1;
+		file.read((char*)&vertex1.pos, sizeof(XMFLOAT3));
+
+		file.read((char*)&vertex1.normal, sizeof(XMFLOAT3));
+
+		file.read((char*)&vertex1.uv, sizeof(XMFLOAT3));
+
+		file.read((char*)&vertex1.tangent, sizeof(XMFLOAT4));
+	}
+	
+	file.read((char*)&num, sizeof(UINT));
+
+	//file.read((char*)&BindList.pos, sizeof(XMFLOAT4));
+	for (unsigned int i = 0; i < num; i++)
+	{
+		file.read((char*)&BindList.pos[i], sizeof(XMFLOAT4X4));
 	}
 
-	////vertexcount = TriangleVertexList.size();
+	file.close();
 	D3D11_BUFFER_DESC desc = {};
-	//desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	//desc.ByteWidth = pointsforshere.size() * sizeof(VertexPositionUVNormal);
-	//desc.StructureByteStride = sizeof(VertexPositionUVNormal);
-	//desc.Usage = D3D11_USAGE_DEFAULT;
-
-	//D3D11_SUBRESOURCE_DATA source = {};
-	//source.pSysMem = &pointsforshere[0];
-	//dev->CreateBuffer(&desc, &source, vertexBuffer.GetAddressOf());
 
 	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	desc.ByteWidth = sizeof(XMFLOAT4X4);

@@ -23,6 +23,7 @@ void FBXLoader::LoadFBX(char* path, FBXExportDATA* sdata)
 	{
 		ProcessNode(pFbxRootNode, sdata);
 	}
+	WriteBinary(sdata, path);
 	FbxSdkManager->Destroy();
 }
 
@@ -393,5 +394,41 @@ void FBXLoader::ReadTangent(FbxMesh* pMesh, int ctrlPointIndex, int vertecCounte
 	}
 	break;
 	}
+}
+
+void FBXLoader::WriteBinary(FBXExportDATA * sdata, char * path)
+{
+	std::string name = path;
+	name.replace(name.end() - 3, name.end(), "bin");
+	std::ofstream file(name, std::ios::binary);
+	UINT vsize = sdata->GetVertexSize();
+	file.write((char*)&vsize, sizeof(UINT));
+	const XMFLOAT3* Positions = sdata->GetVertex();
+	const XMFLOAT3* Normals = sdata->GetNormal();
+	const XMFLOAT3* UVs = sdata->GetUv();
+	const XMFLOAT4* Tangents = sdata->GetTangent();
+	for (int i = 0; i < vsize; i++)
+	{
+		XMFLOAT3 tmp = Positions[i];
+		file.write((char*)&tmp, sizeof(XMFLOAT3));
+
+		tmp = Normals[i];
+		file.write((char*)&tmp, sizeof(XMFLOAT3));
+
+		tmp = UVs[i];
+		file.write((char*)&tmp, sizeof(XMFLOAT3));
+
+		XMFLOAT4 tmp2 = Tangents[i];
+		file.write((char*)&tmp2, sizeof(XMFLOAT4));
+	}
+	vsize = sdata->GetJointSize();
+	file.write((char*)&vsize, sizeof(UINT));
+	const XMFLOAT4X4* Joints = sdata->GetJoint();
+	for (int i = 0; i < vsize; i++)
+	{
+		XMFLOAT4X4 tmp = Joints[i];
+		file.write((char*)&tmp, sizeof(XMFLOAT4X4));
+	}
+	file.close();
 }
 

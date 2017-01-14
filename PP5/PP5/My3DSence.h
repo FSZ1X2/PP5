@@ -51,7 +51,7 @@ class My3DSence
 	//ID3D11Buffer *shadercombuffer = nullptr;
 	//ID3D11Buffer *gridConstBuffer = nullptr;
 
-	FBXExportDATA fbxflie;
+	//FBXExportDATA fbxflie;
 
 	void CreateDirectionalLight();
 	void CreatePointLight();

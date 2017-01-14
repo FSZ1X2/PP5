@@ -66,7 +66,7 @@ bool My3DSence::Initialize(HWND wnd)
 
 	theContext->RSSetViewports(1, &theViewPort);
 
-	fbxflie.LoadFBX("Box_Attack.fbx");
+	//fbxflie.LoadFBX("Box_Attack.fbx");
 
 	Shape::InitDevice(theDevice.Get(), theContext.Get());
 	Mesh::InitDevice(theDevice.Get(), theContext.Get());
@@ -98,8 +98,10 @@ bool My3DSence::Initialize(HWND wnd)
 ///////////////////////////////////////////////////////////////////////////////////////////
 	skybox.initializeShape(1);
 	shape.initializeShape(100);
-	mesh.initializeMesh(&fbxflie);
-	joint.initializeMesh(&fbxflie);
+	//mesh.initializeMesh(&fbxflie);
+	mesh.initBinaryMesh("Box_Attack.bin");
+//	joint.initializeMesh(&fbxflie);
+	joint.initBinaryMesh("Box_Attack.bin");
 	camera.InitCamera();
 	camera.SetProjection(camera.DegreeToRadian(75), BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 0.01f, 1000.0f);
 

@@ -19,7 +19,8 @@ class Mesh
 	int vertexcount;
 public:
 	static void InitDevice(ID3D11Device* _dev, ID3D11DeviceContext* _con);
-	void initializeMesh(FBXExportDATA * fbxflie,float size = 1);
+	//void initializeMesh(FBXExportDATA * fbxflie,float size = 1);
+	void initBinaryMesh(const char* path, float size = 1);
 	void setPos(BindPosition *Bindpose);
 	void draw();
 };
