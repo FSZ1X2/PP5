@@ -59,7 +59,7 @@
     <FxCompile Include="CommonVertexShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="LightPixelShader.hlsl">
+    <FxCompile Include="LightShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

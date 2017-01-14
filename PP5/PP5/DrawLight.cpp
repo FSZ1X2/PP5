@@ -8,7 +8,7 @@ void DrawLight::InitDevice(ID3D11Device * _dev, ID3D11DeviceContext * _con)
 	con = _con;
 }
 
-void DrawLight::initializeLigtht(XMFLOAT4 pos, float size)
+void DrawLight::initializeLigtht(float size)
 {
 	XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
 	transform._44 = 1;

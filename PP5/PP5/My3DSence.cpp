@@ -97,7 +97,8 @@ bool My3DSence::Initialize(HWND wnd)
 	theDevice->CreateBuffer(&lightdesc, 0, lights.GetAddressOf());
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-	Plight.initializeLigtht(XMFLOAT4(0.0f, 0.0f, -1.0f, 1.0f));
+	Plight.initializeLigtht();
+	Slight.initializeLigtht();
 	shape.initializeShape(100);
 	mesh.initializeMesh(&fbxflie);
 	joint.initializeMesh(&fbxflie);
@@ -150,16 +151,30 @@ bool My3DSence::run()
 	ID3D11Buffer* cbs[] = { lightd.Get() , lightp.Get() , lights.Get() };
 	theContext->PSSetConstantBuffers(0, 3, cbs);
 
-	shader.SetCommonShader();
+	//ahr = theContext->Map(lightpcolor.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &lightmapr);
+	//memcpy(lightmapr.pData, &pcfd.Pcolor, sizeof(pcfd.Pcolor));
+	//theContext->Unmap(lightpcolor.Get(), 0);
+	//theContext->PSSetConstantBuffers(0, 1, &lightpcolor);
+
+	//ahr = theContext->Map(lightscolor.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &lightmapr);
+	//memcpy(lightmapr.pData, &scfd.Scolor, sizeof(scfd.Scolor));
+	//theContext->Unmap(lightscolor.Get(), 0);
+	//theContext->PSSetConstantBuffers(0, 1, &lightscolor);
+
+	shader.SetLightShader();
 	Plight.TransModel(pcfd.Pointpos.x, pcfd.Pointpos.y, pcfd.Pointpos.z);
 	Plight.draw();
+	Slight.TransModel(scfd.Spotpos.x, scfd.Spotpos.y, scfd.Spotpos.z);
+	Slight.draw();
+
+	shader.SetCommonShader();	
 	joint.draw();
 	shape.draw();
 	theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
 	theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
 	shader.SetGroundShader();
 	mesh.setPos(joint.GetBindPose());
-	//mesh.draw();
+	mesh.draw();
 
 	/*D3D11_MAPPED_SUBRESOURCE mappedResource;
 	//ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
@@ -191,13 +206,13 @@ void My3DSence::CreateDirectionalLight()
 }
 void My3DSence::CreatePointLight()
 {
-	pcfd.Pointpos = { 0.0f,0.0f,-1.0f,1.0f };
+	pcfd.Pointpos = { -3.3f,0.8f,-1.0f,1.0f };
 	pcfd.Pcolor = { 0.0f,1.0f,1.0f,0.0f };
 	pcfd.lightradius = { 5.0f,0.0f,0.0f,0.0f };
 }
 void My3DSence::CreateSpotLight()
 {
-	scfd.Spotpos = { 0.0f,2.0f,0.0f,1.0f };
+	scfd.Spotpos = { 2.6f,0.9f,0.0f,1.0f };
 	scfd.Scolor = { 1.0f,0.0f,0.0f,0.0f };
 	scfd.conedir = { 0.0f,-1.0f,0.0f,0.0f };
 	scfd.coneratio = { 0.8f,0.9f,0.0f,0.0f };

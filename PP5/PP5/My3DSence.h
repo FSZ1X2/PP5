@@ -34,7 +34,9 @@ class My3DSence
 
 	ComPtr<ID3D11Buffer> lightd;
 	ComPtr<ID3D11Buffer> lightp;
+	ComPtr<ID3D11Buffer> lightpcolor;
 	ComPtr<ID3D11Buffer> lights;
+	ComPtr<ID3D11Buffer> lightscolor;
 
 	DirectionalLightConstantBuffer dcfd;
 	PointLightConstantBuffer pcfd;
@@ -47,6 +49,7 @@ class My3DSence
 	Camera camera;
 	XTime time;
 	DrawLight Plight;
+	DrawLight Slight;
 	//ID3D11Resource *resource = nullptr;
 	//ID3D11Buffer *shadercombuffer = nullptr;
 	//ID3D11Buffer *gridConstBuffer = nullptr;

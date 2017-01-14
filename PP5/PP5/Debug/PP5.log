@@ -1,4 +1,4 @@
-﻿  DrawLight.cpp
+﻿  My3DSence.cpp
 c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxexportdata.h(18): warning C4251: 'FBXExportDATA::Outvertex': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
           with
           [

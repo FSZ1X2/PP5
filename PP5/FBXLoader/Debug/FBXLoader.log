@@ -51,7 +51,6 @@ c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxexportdata.h(22): war
               _Ty=DirectX::XMFLOAT4X4
           ]
   Generating Code...
-  LINK : C:\Users\susud\Desktop\PP5\Milestone2\PP5\PP5\Debug\FBXLoader.dll not found or not built by the last incremental link; performing full link
      Creating library C:\Users\susud\Desktop\PP5\Milestone2\PP5\PP5\Debug\FBXLoader.lib and object C:\Users\susud\Desktop\PP5\Milestone2\PP5\PP5\Debug\FBXLoader.exp
   FBXLoader.vcxproj -> C:\Users\susud\Desktop\PP5\Milestone2\PP5\PP5\Debug\FBXLoader.dll
   FBXLoader.vcxproj -> C:\Users\susud\Desktop\PP5\Milestone2\PP5\PP5\Debug\FBXLoader.pdb (Full PDB)
