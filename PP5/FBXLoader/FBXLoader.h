@@ -36,7 +36,7 @@ public:
 	{
 		XMFLOAT4X4 bindposinverse;
 	};	
-private:	
+private:
 	//std::vector<FBXTriangle> pOutVertexVector;
 	//std::vector<FBXJoint> pOutJoint;
 	//XMFLOAT4X4 transL;
@@ -47,9 +47,10 @@ public:
 	//FBXJoint* GetJoint() { return pOutJoint.data(); }
 	//UINT GetJointSize() { return pOutJoint.size(); }
 private:
-	static void ProcessNode(FbxNode* pNode, FBXExportDATA* sdata);
+	static void ProcessNode(FbxNode* pNode, FBXExportDATA* sdata, FbxScene* pScene);
 	static void ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata);
 	static void ProcessSkeleton(FbxNode* pNode, FBXExportDATA* sdata);
+	static void ProcessKeyframes(FbxNode* pNode, FBXExportDATA* sdata, FbxScene* pScene);
 	static void ReadVertex(FbxMesh* pMesh, int ctrlPointIndex, XMFLOAT3* pVertex);
 	//void ReadColor(FbxMesh* pMesh, int ctrlPointIndex, int vertexCounter, XMFLOAT4* pColor);
 	static void ReadUV(FbxMesh* pMesh, int ctrlPointIndex, int textureUVIndex, int uvLayer, XMFLOAT3* pUV);

@@ -21,12 +21,12 @@ void FBXLoader::LoadFBX(char* path, FBXExportDATA* sdata)
 
 	if (pFbxRootNode)
 	{
-		ProcessNode(pFbxRootNode, sdata);
+		ProcessNode(pFbxRootNode, sdata, pFbxScene);
 	}
 	FbxSdkManager->Destroy();
 }
 
-void FBXLoader::ProcessNode(FbxNode* pNode, FBXExportDATA* sdata)
+void FBXLoader::ProcessNode(FbxNode* pNode, FBXExportDATA* sdata, FbxScene* pScene)
 {
 	//FbxNodeAttribute::EType attributeType;
 	if (pNode->GetNodeAttribute())
@@ -50,7 +50,7 @@ void FBXLoader::ProcessNode(FbxNode* pNode, FBXExportDATA* sdata)
 
 	for (int i = 0; i < pNode->GetChildCount(); ++i)
 	{
-		ProcessNode(pNode->GetChild(i), sdata);
+		ProcessNode(pNode->GetChild(i), sdata, pScene);
 	}
 }
 
@@ -124,8 +124,31 @@ void FBXLoader::ProcessSkeleton(FbxNode* pNode, FBXExportDATA* sdata)
 {
 	XMFLOAT4X4 newJoint;
 	FbxMatrix newbindpose;
-	newbindpose = pNode->EvaluateGlobalTransform().Inverse();
+	
+	FbxSkin* skin = FbxCast<FbxSkin>(pNode->GetMesh()->GetDeformer(0, FbxDeformer::eSkin));
+	int boneCount = skin->GetClusterCount();
+	for (int boneIndex = 0; boneIndex < boneCount; boneIndex++)
+	{
+		FbxCluster* cluster = skin->GetCluster(boneIndex);
+		FbxNode* bone = cluster->GetLink();
 
+		FbxAMatrix bindPoseMatrix;
+		cluster->GetTransformLinkMatrix(bindPoseMatrix);
+
+		int *boneVertexIndices = cluster->GetControlPointIndices();
+		double *boneVertexWeights = cluster->GetControlPointWeights();
+
+		int numBoneVertexIndices = cluster->GetControlPointIndicesCount();
+		for (int boneVertexIndex = 0; boneVertexIndex < numBoneVertexIndices; boneVertexIndex++)
+		{
+			int BoneIndex = boneVertexIndices[boneVertexIndex];
+			float boneWeight = (float)boneVertexWeights[boneVertexIndex];
+			sdata->AddBoneIndex(BoneIndex);
+			sdata->AddWeight(boneWeight);
+		}
+	}
+
+	newbindpose = pNode->EvaluateGlobalTransform().Inverse();
 	for (int row = 0; row < 4; row++)
 	{
 		for (int col = 0; col < 4; col++)
@@ -135,6 +158,97 @@ void FBXLoader::ProcessSkeleton(FbxNode* pNode, FBXExportDATA* sdata)
 	}
 	//newJoint.bindposinverse = pNode->EvaluateGlobalTransform().Inverse();
 	sdata->AddJoint(newJoint);
+}
+
+void FBXLoader::ProcessKeyframes(FbxNode * pNode, FBXExportDATA * sdata, FbxScene* pScene)
+{
+	int numAnimations = pScene->GetSrcObjectCount();
+	for (int animationIndex = 0; animationIndex < numAnimations; animationIndex++)
+	{
+		FbxAnimStack *animStack = (FbxAnimStack*)pScene->GetSrcObject(FbxAnimStack::ClassId, animationIndex);
+		FbxAnimEvaluator *animEvaluator = pScene->GetAnimationEvaluator();
+		animStack->GetName();
+		XMFLOAT3 scaling;
+		XMFLOAT3 rotation;
+		XMFLOAT3 translation;
+
+		int numLayers = animStack->GetMemberCount();
+		for (int layerIndex = 0; layerIndex < numLayers; layerIndex++)
+		{
+			FbxAnimLayer *animLayer = (FbxAnimLayer*)animStack->GetMember(layerIndex);
+			animLayer->GetName();
+
+			FbxAnimCurve *translationCurve = pNode->LclTranslation.GetCurve(animLayer);
+			FbxAnimCurve *rotationCurve = pNode->LclRotation.GetCurve(animLayer);
+			FbxAnimCurve *scalingCurve = pNode->LclScaling.GetCurve(animLayer);
+
+			if (scalingCurve != 0)
+			{
+				int numKeys = scalingCurve->KeyGetCount();
+				for (int keyIndex = 0; keyIndex < numKeys; keyIndex++)
+				{
+					FbxTime frameTimeS = scalingCurve->KeyGetTime(keyIndex);
+					FbxDouble3 scalingVector = pNode->EvaluateLocalScaling(frameTimeS);
+					scaling.x = (float)scalingVector[0];
+					scaling.y = (float)scalingVector[1];
+					scaling.z = (float)scalingVector[2];
+
+					float frameSecondsS = (float)frameTimeS.GetSecondDouble();
+				}
+			}
+			else
+			{
+				FbxDouble3 scalingVector = pNode->LclScaling.Get();
+				scaling.x = (float)scalingVector[0];
+				scaling.y = (float)scalingVector[1];
+				scaling.z = (float)scalingVector[2];
+			}
+
+			if (rotationCurve != 0)
+			{
+				int numKeyr = rotationCurve->KeyGetCount();
+				for (int keyIndex = 0; keyIndex < numKeyr; keyIndex++)
+				{
+					FbxTime frameTimeR = rotationCurve->KeyGetTime(keyIndex);
+					FbxDouble3 rotationVector = pNode->EvaluateLocalRotation(frameTimeR);
+					rotation.x = (float)rotationVector[0];
+					rotation.y = (float)rotationVector[1];
+					rotation.z = (float)rotationVector[2];
+
+					float frameSecondsR = (float)frameTimeR.GetSecondDouble();
+				}
+			}
+			else
+			{
+				FbxDouble3 rotationVector = pNode->LclRotation.Get();
+				rotation.x = (float)rotationVector[0];
+				rotation.y = (float)rotationVector[1];
+				rotation.z = (float)rotationVector[2];
+			}
+
+			if (translationCurve != 0)
+			{
+				int numKeyt = translationCurve->KeyGetCount();
+				for (int keyIndex = 0; keyIndex < numKeyt; keyIndex++)
+				{
+					FbxTime frameTimeT = translationCurve->KeyGetTime(keyIndex);
+					FbxDouble3 translationVector = pNode->EvaluateLocalScaling(frameTimeT);
+					translation.x = (float)translationVector[0];
+					translation.y = (float)translationVector[1];
+					translation.z = (float)translationVector[2];
+
+					float frameSecondsT = (float)frameTimeT.GetSecondDouble();
+				}
+			}
+			else
+			{
+				FbxDouble3 translationVector = pNode->LclTranslation.Get();
+				translation.x = (float)translationVector[0];
+				translation.y = (float)translationVector[1];
+				translation.z = (float)translationVector[2];
+			}
+		}
+	}
 }
 
 void FBXLoader::ReadVertex(FbxMesh* pMesh, int ctrlPointIndex, XMFLOAT3* pVertex)

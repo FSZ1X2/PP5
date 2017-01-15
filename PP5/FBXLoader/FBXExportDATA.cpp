@@ -30,6 +30,16 @@ void FBXExportDATA::AddJoint(const XMFLOAT4X4 & v)
 	OutJoint.push_back(v);
 }
 
+void FBXExportDATA::AddWeight(const float & v)
+{
+	OutWeight.push_back(v);
+}
+
+void FBXExportDATA::AddBoneIndex(const int & v)
+{
+	OutBoneIndex.push_back(v);
+}
+
 const XMFLOAT3 * FBXExportDATA::GetVertex() const
 {
 	return Outvertex.data();
@@ -55,6 +65,16 @@ const XMFLOAT4X4 * FBXExportDATA::GetJoint() const
 	return OutJoint.data();
 }
 
+const float * FBXExportDATA::GetWeight() const
+{
+	return OutWeight.data();
+}
+
+const int * FBXExportDATA::GetIndex() const
+{
+	return OutBoneIndex.data();
+}
+
 UINT FBXExportDATA::GetVertexSize() const
 {
 	return Outvertex.size();
@@ -78,4 +98,14 @@ UINT FBXExportDATA::GetTangentSize() const
 UINT FBXExportDATA::GetJointSize() const
 {
 	return OutJoint.size();
+}
+
+UINT FBXExportDATA::GetWeightSize() const
+{
+	return OutWeight.size();
+}
+
+UINT FBXExportDATA::GetIndexSize() const
+{
+	return OutBoneIndex.size();
 }

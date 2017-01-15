@@ -20,6 +20,8 @@ private:
 	std::vector<XMFLOAT3> Outuv;
 	std::vector<XMFLOAT4> Outtangent;
 	std::vector<XMFLOAT4X4> OutJoint;
+	std::vector<float> OutWeight;
+	std::vector<int> OutBoneIndex;
 	//XMFLOAT4X4 transL;
 
 public:
@@ -30,16 +32,22 @@ public:
 	void AddUv(const XMFLOAT3& uv);
 	void AddTangent(const XMFLOAT4& t);
 	void AddJoint(const XMFLOAT4X4& v);
+	void AddWeight(const float& v);
+	void AddBoneIndex(const int& v);
 
 	const XMFLOAT3* GetVertex()const;
 	const XMFLOAT3* GetNormal()const;
 	const XMFLOAT3* GetUv()const;
 	const XMFLOAT4* GetTangent()const;
 	const XMFLOAT4X4* GetJoint()const;
+	const float* GetWeight()const;
+	const int* GetIndex()const;
 
 	UINT GetVertexSize()const;
 	UINT GetNormalSize()const;
 	UINT GetUvSize()const;
 	UINT GetTangentSize()const;
 	UINT GetJointSize()const;
+	UINT GetWeightSize()const;
+	UINT GetIndexSize()const;
 };
