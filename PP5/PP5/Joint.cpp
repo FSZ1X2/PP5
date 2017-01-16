@@ -8,49 +8,54 @@ void Joint::InitDevice(ID3D11Device * _dev, ID3D11DeviceContext * _con)
 	con = _con;
 }
 
-//void Joint::initializeMesh(FBXExportDATA * fbxflie, float size)
-//{
-//	XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
-//	//transform = fbxflie.transL;
-//	unsigned int num = fbxflie->GetJointSize();
-//
-//	for (unsigned int i = 0; i < num; i++)
-//	{
-//		BindList.pos[i] = fbxflie->GetJoint()[i];
-//		//for (int row = 0; row < 4; row++)
-//		//{
-//		//	for (int col = 0; col < 4; col++)
-//		//	{
-//		//		BindList.pos[i].m[row][col] = (float)fbxflie.GetJoint()[i].bindposinverse.Get(row, col);
-//		//	}
-//		//}
-//	}
-//
-//	////vertexcount = TriangleVertexList.size();
-//	D3D11_BUFFER_DESC desc = {};
-//	//desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-//	//desc.ByteWidth = pointsforshere.size() * sizeof(VertexPositionUVNormal);
-//	//desc.StructureByteStride = sizeof(VertexPositionUVNormal);
-//	//desc.Usage = D3D11_USAGE_DEFAULT;
-//
-//	//D3D11_SUBRESOURCE_DATA source = {};
-//	//source.pSysMem = &pointsforshere[0];
-//	//dev->CreateBuffer(&desc, &source, vertexBuffer.GetAddressOf());
-//
-//	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-//	desc.ByteWidth = sizeof(XMFLOAT4X4);
-//	desc.StructureByteStride = 0;
-//	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-//	desc.Usage = D3D11_USAGE_DYNAMIC;
-//	dev->CreateBuffer(&desc, 0, constantBuffer.GetAddressOf());
-//	makesphere(0.3f, 6, 6);
-//}
+void Joint::initializeMesh(FBXExportDATA * fbxflie, float size, float x, float y, float z)
+{
+	
+	XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
+	
+	//transform = fbxflie.transL;
+	unsigned int num = fbxflie->GetJointSize();
 
-void Joint::initBinaryMesh(const char * path, float size)
+	for (unsigned int i = 0; i < num; i++)
+	{
+		BindList.pos[i] = fbxflie->GetJoint()[i];
+		//for (int row = 0; row < 4; row++)
+		//{
+		//	for (int col = 0; col < 4; col++)
+		//	{
+		//		BindList.pos[i].m[row][col] = (float)fbxflie.GetJoint()[i].bindposinverse.Get(row, col);
+		//	}
+		//}
+	}
+
+	////vertexcount = TriangleVertexList.size();
+	D3D11_BUFFER_DESC desc = {};
+	//desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	//desc.ByteWidth = pointsforshere.size() * sizeof(VertexPositionUVNormal);
+	//desc.StructureByteStride = sizeof(VertexPositionUVNormal);
+	//desc.Usage = D3D11_USAGE_DEFAULT;
+
+	//D3D11_SUBRESOURCE_DATA source = {};
+	//source.pSysMem = &pointsforshere[0];
+	//dev->CreateBuffer(&desc, &source, vertexBuffer.GetAddressOf());
+
+	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	desc.ByteWidth = sizeof(XMFLOAT4X4);
+	desc.StructureByteStride = 0;
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	desc.Usage = D3D11_USAGE_DYNAMIC;
+	dev->CreateBuffer(&desc, 0, constantBuffer.GetAddressOf());
+	makesphere(0.3f, 6, 6);
+}
+
+void Joint::initBinaryMesh(const char * path, float size, float x, float y, float z)
 {
 	
 	
-	XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
+	XMMATRIX tmp = XMMatrixIdentity()*size;
+	tmp = XMMatrixScaling(size, size, size);
+	tmp = XMMatrixMultiply(tmp, XMMatrixTranslation(x, y, z));
+	XMStoreFloat4x4(&transform, tmp);
 	ifstream file(path, ios::in | ios::binary | ios::ate);
 	file.seekg(0, ios::beg);
 	UINT num;
@@ -70,6 +75,7 @@ void Joint::initBinaryMesh(const char * path, float size)
 	}
 	
 	file.read((char*)&num, sizeof(UINT));
+	jointSize = num;
 
 	//file.read((char*)&BindList.pos, sizeof(XMFLOAT4));
 	for (unsigned int i = 0; i < num; i++)
@@ -89,7 +95,7 @@ void Joint::initBinaryMesh(const char * path, float size)
 	makesphere(0.3f, 6, 6);
 }
 
-void Joint::draw()
+void Joint::draw(float size, float x, float y, float z)
 {
 	D3D11_MAPPED_SUBRESOURCE maps;
 	unsigned int stride = sizeof(VertexPositionUVNormal);
@@ -98,10 +104,13 @@ void Joint::draw()
 	con->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
 	con->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < jointSize; i++)
 	{
 		XMFLOAT4X4 mat;
-		XMStoreFloat4x4(&mat, XMMatrixInverse(nullptr, XMLoadFloat4x4(&BindList.pos[i])));
+		XMMATRIX tmp = XMMatrixInverse(nullptr, XMLoadFloat4x4(&BindList.pos[i]));
+		tmp = XMMatrixMultiply(tmp, XMMatrixScaling(size, size, size));
+		tmp = XMMatrixMultiply(tmp, XMMatrixTranslation(x, y, z));
+		XMStoreFloat4x4(&mat, tmp);
 		con->Map(constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &maps);
 		memcpy(maps.pData, &mat, sizeof(XMFLOAT4X4));
 		con->Unmap(constantBuffer.Get(), 0);

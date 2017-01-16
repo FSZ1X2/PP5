@@ -1,5 +1,5 @@
 #include "SkyBox.h"
-#include "DDSTextureLoader.h"
+
 
 ID3D11Device* SkyBox::dev = nullptr;
 ID3D11DeviceContext* SkyBox::con = nullptr;
@@ -22,7 +22,7 @@ void SkyBox::initializeShape(float size)
 	XMStoreFloat4x4(&transform, DirectX::XMMatrixIdentity()*size);
 	transform._44 = 1;
 	LoadSkyBoxTexture("SunsetSkybox.dds");
-	float s = 50.0f;
+	float s = 200.0f;
 	static const VertexPositionUVNormal cubeVertices[] =
 			{
 		/*0*/   { XMFLOAT3(-s, -s, -s), XMFLOAT3(0.0f, 1.0f, 1.0f), XMFLOAT3(-0.377964497f, -0.377964497f, -0.377964497f) },

@@ -66,7 +66,7 @@ bool My3DSence::Initialize(HWND wnd)
 
 	theContext->RSSetViewports(1, &theViewPort);
 
-	//fbxflie.LoadFBX("Box_Attack.fbx");
+	fbxflie.LoadFBX("Teddy_Attack1.fbx");
 
 	Shape::InitDevice(theDevice.Get(), theContext.Get());
 	Mesh::InitDevice(theDevice.Get(), theContext.Get());
@@ -96,26 +96,19 @@ bool My3DSence::Initialize(HWND wnd)
 	theDevice->CreateBuffer(&lightdesc, 0, lights.GetAddressOf());
 
 ///////////////////////////////////////////////////////////////////////////////////////////
+	//"Box_Attack.bin"
 	skybox.initializeShape(1);
 	shape.initializeShape(100);
-	//mesh.initializeMesh(&fbxflie);
+	//mesh.initializeMesh(&fbxflie, 0.025);
 	mesh.initBinaryMesh("Box_Attack.bin");
-//	joint.initializeMesh(&fbxflie);
+	bearMesh.initBinaryMesh("Teddy_Attack1.bin", 0.025, -4);
+	//joint.initializeMesh(&fbxflie);
 	joint.initBinaryMesh("Box_Attack.bin");
+	bearJoint.initBinaryMesh("Teddy_Attack1.bin");
 	camera.InitCamera();
 	camera.SetProjection(camera.DegreeToRadian(75), BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 0.01f, 1000.0f);
-
-	CreateDDSTextureFromFile(theDevice.Get(),L"TestCube.dds" ,nullptr, textureV.GetAddressOf());
-
-	D3D11_SAMPLER_DESC sdesc = {};
-	sdesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	sdesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	sdesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-	sdesc.Filter = D3D11_FILTER_ANISOTROPIC;
-	sdesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	sdesc.MaxLOD = D3D11_FLOAT32_MAX;
-	sdesc.MaxAnisotropy = D3D11_REQ_MAXANISOTROPY;
-	theDevice->CreateSamplerState(&sdesc, binsample.GetAddressOf());
+	mesh.LoadTexture("TestCube.dds");
+	bearMesh.LoadTexture("Teddy_D.dds");
 	return true;
 }
 
@@ -155,12 +148,14 @@ bool My3DSence::run()
 	//theContext->ClearDepthStencilView(theDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 	shader.SetCommonShader();
 	joint.draw();
+	bearJoint.draw(0.025, -4);
 	shape.draw();
-	theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
-	theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
+	
 	shader.SetGroundShader();
 	mesh.setPos(joint.GetBindPose());
+	bearMesh.setPos(bearJoint.GetBindPose());
 	mesh.draw();
+	bearMesh.draw();
 	shader.SetSkyBoxShader();
 	XMFLOAT4X4 camPos;
 	XMStoreFloat4x4(&camPos, camera.GetPos());

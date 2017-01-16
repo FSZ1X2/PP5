@@ -16,9 +16,10 @@ class My3DSence
 	D3D11_VIEWPORT theViewPort;
 	ComPtr<ID3D11DepthStencilView> theDSV;
 	ComPtr<ID3D11Texture2D> depthBuff;
-	ComPtr<ID3D11ShaderResourceView> textureV;
+	
 	//ComPtr<ID3D11Texture2D> texture;
-	ComPtr<ID3D11SamplerState> binsample;
+	
+
 	
 	//ComPtr<ID3D11View> theview;
 	//ComPtr<ID3D11Debug> theDebug ;
@@ -43,7 +44,9 @@ class My3DSence
 	Shader shader;
 	Shape shape;
 	Mesh mesh;
+	Mesh bearMesh;
 	Joint joint;
+	Joint bearJoint;
 	Camera camera;
 	XTime time;
 	SkyBox skybox;
@@ -51,7 +54,7 @@ class My3DSence
 	//ID3D11Buffer *shadercombuffer = nullptr;
 	//ID3D11Buffer *gridConstBuffer = nullptr;
 
-	//FBXExportDATA fbxflie;
+	FBXExportDATA fbxflie;
 
 	void CreateDirectionalLight();
 	void CreatePointLight();
