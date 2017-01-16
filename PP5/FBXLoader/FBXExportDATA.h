@@ -22,10 +22,16 @@ private:
 	std::vector<XMFLOAT4X4> OutJoint;
 	std::vector<float> OutWeight;
 	std::vector<int> OutBoneIndex;
+	float framerate;
+	float framerate_inv;
+	float animationTime;
 	//XMFLOAT4X4 transL;
 
 public:
 	void LoadFBX(char* path);
+
+	std::vector<std::vector<XMFLOAT4X4>> keys;
+	std::vector<std::vector<float>> keytime;
 
 	void AddVertex(const XMFLOAT3& v);
 	void AddNormal(const XMFLOAT3& n);
@@ -34,6 +40,8 @@ public:
 	void AddJoint(const XMFLOAT4X4& v);
 	void AddWeight(const float& v);
 	void AddBoneIndex(const int& v);
+	void SetFrameRate(const float& v);
+	void SetTotalTime(const float& v);
 
 	const XMFLOAT3* GetVertex()const;
 	const XMFLOAT3* GetNormal()const;
@@ -42,6 +50,9 @@ public:
 	const XMFLOAT4X4* GetJoint()const;
 	const float* GetWeight()const;
 	const int* GetIndex()const;
+	const float GetAnimationTime()const;
+	const float GetFrameRate()const;
+	const float GetFrameRate_Inv()const;
 
 	UINT GetVertexSize()const;
 	UINT GetNormalSize()const;

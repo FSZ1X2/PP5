@@ -1,3 +1,4 @@
 ﻿  FBXLoader.cpp
-e:\study\pp5\pp5\pp5\fbxloader\fbxloader.cpp(168): error C4996: 'fbxsdk::FbxObject::GetSrcObject': was declared deprecated
-  c:\program files\autodesk\fbx\fbx sdk\2016.1.1\include\fbxsdk\core\fbxobject.h(494): note: see declaration of 'fbxsdk::FbxObject::GetSrcObject'
+c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxloader.cpp(302): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  FBXLoader.vcxproj -> C:\Users\susud\Desktop\PP5\Milestone2\PP5\PP5\Debug\FBXLoader.dll
+  FBXLoader.vcxproj -> C:\Users\susud\Desktop\PP5\Milestone2\PP5\PP5\Debug\FBXLoader.pdb (Full PDB)

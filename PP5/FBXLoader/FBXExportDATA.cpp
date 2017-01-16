@@ -40,6 +40,17 @@ void FBXExportDATA::AddBoneIndex(const int & v)
 	OutBoneIndex.push_back(v);
 }
 
+void FBXExportDATA::SetFrameRate(const float & v)
+{
+	framerate = v;
+	framerate_inv = 1.0f / v;
+}
+
+void FBXExportDATA::SetTotalTime(const float & v)
+{
+	animationTime = v;
+}
+
 const XMFLOAT3 * FBXExportDATA::GetVertex() const
 {
 	return Outvertex.data();
@@ -73,6 +84,21 @@ const float * FBXExportDATA::GetWeight() const
 const int * FBXExportDATA::GetIndex() const
 {
 	return OutBoneIndex.data();
+}
+
+const float FBXExportDATA::GetAnimationTime() const
+{
+	return animationTime;
+}
+
+const float FBXExportDATA::GetFrameRate() const
+{
+	return framerate;
+}
+
+const float FBXExportDATA::GetFrameRate_Inv() const
+{
+	return framerate_inv;
 }
 
 UINT FBXExportDATA::GetVertexSize() const

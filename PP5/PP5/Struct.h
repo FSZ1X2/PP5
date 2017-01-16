@@ -60,6 +60,12 @@ struct VertexPositionUVNormal
 	unsigned char blendIndices[4];
 };
 
+struct KeyFrame
+{
+	float time;
+	XMFLOAT4X4 pose;
+};
+
 struct DirectionalLightConstantBuffer
 {
 	XMFLOAT4 direction;

@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Joint.h"
+#include "Animation.h"
 #include "DrawLight.h"
 class My3DSence
 {
@@ -46,6 +47,7 @@ class My3DSence
 	Shape shape;
 	Mesh mesh;
 	Joint joint;
+	Animation animate;
 	Camera camera;
 	XTime time;
 	DrawLight Plight;

@@ -14,8 +14,10 @@ class Joint
 	int vertexcount;
 	std::vector<VertexPositionUVNormal> pointsforshere;
 	std::vector<unsigned int> index;
-	BindPosition BindList;
+
 public:
+	PosList poselist;
+	BindPosition BindList;
 	static void InitDevice(ID3D11Device* _dev, ID3D11DeviceContext* _con);
 	void initializeMesh(FBXExportDATA * _fbxflie, float size = 1);
 	void draw();

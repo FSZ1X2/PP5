@@ -54,15 +54,13 @@ void Joint::draw()
 
 	con->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
 	con->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
+	
 	for (int i = 0; i < 4; i++)
 	{
-		XMFLOAT4X4 mat;
-		XMStoreFloat4x4(&mat, XMMatrixInverse(nullptr, XMLoadFloat4x4(&BindList.pos[i])));
 		con->Map(constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &maps);
-		memcpy(maps.pData, &mat, sizeof(XMFLOAT4X4));
+		memcpy(maps.pData, &poselist.pose[i], sizeof(XMFLOAT4X4));
 		con->Unmap(constantBuffer.Get(), 0);
-
+		
 		con->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 		con->VSSetConstantBuffers(1, 1, constantBuffer.GetAddressOf());
 		con->DrawIndexed((UINT)index.size(), 0, 0);

@@ -102,6 +102,7 @@ bool My3DSence::Initialize(HWND wnd)
 	shape.initializeShape(100);
 	mesh.initializeMesh(&fbxflie);
 	joint.initializeMesh(&fbxflie);
+	animate.initializeAnimation(&fbxflie,&joint);
 	camera.InitCamera();
 	camera.SetProjection(camera.DegreeToRadian(75), BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 0.01f, 1000.0f);
 
@@ -121,11 +122,12 @@ bool My3DSence::Initialize(HWND wnd)
 
 bool My3DSence::run()
 {
+	float dt = (float)time.Delta();
 	theContext->OMSetRenderTargets(1, theRTV.GetAddressOf(), theDSV.Get());
 	theContext->RSSetViewports(1, &theViewPort);
 	theContext->ClearRenderTargetView(theRTV.Get(), Colors::CornflowerBlue);
 	theContext->ClearDepthStencilView(theDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-	camera.Update((float)time.Delta());
+	camera.Update(dt);
 	ID3D11ShaderResourceView* srv = { nullptr };
 	theContext->PSSetShaderResources(0, 1, &srv);
 
@@ -168,6 +170,7 @@ bool My3DSence::run()
 	Slight.draw();
 
 	shader.SetCommonShader();	
+	animate.Interpolate(dt);
 	joint.draw();
 	shape.draw();
 	theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
