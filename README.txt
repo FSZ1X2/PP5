@@ -30,3 +30,8 @@ LIGHTS:
 	(I,K) for Z axis
 	(J,L) for X axis
 	(U, O) for Y axis
+
+MODEL SWITCH:
+
+Press 0 to switch to Bear
+Press 9 to switch to Box

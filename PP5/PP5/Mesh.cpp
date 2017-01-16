@@ -145,7 +145,6 @@ void Mesh::initBinaryMesh(const char * path, float size, float x, float y, float
 	XMStoreFloat4x4(&transform, tmp);
 	ifstream file(path, ios::in | ios::binary | ios::ate);
 	
-	
 	file.seekg(0, ios::beg);
 	UINT num;
 	file.read((char*)&num, sizeof(UINT));
@@ -167,7 +166,6 @@ void Mesh::initBinaryMesh(const char * path, float size, float x, float y, float
 			vertex1.blendWeight[i]= 0.25f;
 		}
 		
-
 		TriangleVertexList.push_back(vertex1);
 	}
 	file.read((char*)&jointSize, sizeof(UINT));
@@ -177,11 +175,11 @@ void Mesh::initBinaryMesh(const char * path, float size, float x, float y, float
 	D3D11_BUFFER_DESC desc = {};
 	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	desc.ByteWidth = TriangleVertexList.size() * sizeof(VertexPositionUVNormal);
-	desc.StructureByteStride = sizeof(VertexPositionUVNormal);
-	desc.Usage = D3D11_USAGE_DEFAULT;
+	desc.StructureByteStride = 0;
+	desc.Usage = D3D11_USAGE_IMMUTABLE;
 
 	D3D11_SUBRESOURCE_DATA source = {};
-	source.pSysMem = &TriangleVertexList[0];
+	source.pSysMem = TriangleVertexList.data();
 
 	dev->CreateBuffer(&desc, &source, vertexBuffer.GetAddressOf());
 
@@ -232,7 +230,7 @@ void Mesh::draw()
 	UINT offset = 0;
 	con->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
 
-	con->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	con->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	con->PSSetShaderResources(0, 1, textureV.GetAddressOf());
 	con->PSSetSamplers(0, 1, binsample.GetAddressOf());

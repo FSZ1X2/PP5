@@ -1,2 +1,56 @@
-﻿  PP5.vcxproj -> C:\Users\Josue\Documents\GitHub\PP5\PP5\Debug\PP5.exe
+﻿  My3DSence.cpp
+c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxexportdata.h(18): warning C4251: 'FBXExportDATA::Outvertex': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxexportdata.h(19): warning C4251: 'FBXExportDATA::Outnormal': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxexportdata.h(20): warning C4251: 'FBXExportDATA::Outuv': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxexportdata.h(21): warning C4251: 'FBXExportDATA::Outtangent': class 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+  c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxexportdata.h(21): note: see declaration of 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxexportdata.h(22): warning C4251: 'FBXExportDATA::OutJoint': class 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxexportdata.h(22): note: see declaration of 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+c:\users\josue\documents\github\pp5\pp5\pp5\struct.h(28): warning C4091: '__declspec(dllexport)': ignored on left of 'FBXLoader' when no variable is declared
+c:\users\josue\documents\github\pp5\pp5\pp5\my3dsence.cpp(104): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\josue\documents\github\pp5\pp5\pp5\my3dsence.cpp(166): warning C4305: 'argument': truncation from 'double' to 'float'
+  PP5.vcxproj -> C:\Users\Josue\Documents\GitHub\PP5\PP5\Debug\PP5.exe
   PP5.vcxproj -> C:\Users\Josue\Documents\GitHub\PP5\PP5\Debug\PP5.pdb (Full PDB)

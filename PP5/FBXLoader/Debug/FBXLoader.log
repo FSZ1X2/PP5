@@ -1,2 +1,5 @@
-﻿  FBXLoader.vcxproj -> C:\Users\Josue\Documents\GitHub\PP5\PP5\Debug\FBXLoader.dll
+﻿  FBXLoader.cpp
+c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxloader.cpp(409): warning C4018: '<': signed/unsigned mismatch
+c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxloader.cpp(426): warning C4018: '<': signed/unsigned mismatch
+  FBXLoader.vcxproj -> C:\Users\Josue\Documents\GitHub\PP5\PP5\Debug\FBXLoader.dll
   FBXLoader.vcxproj -> C:\Users\Josue\Documents\GitHub\PP5\PP5\Debug\FBXLoader.pdb (Full PDB)

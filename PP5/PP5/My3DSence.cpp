@@ -66,7 +66,7 @@ bool My3DSence::Initialize(HWND wnd)
 
 	theContext->RSSetViewports(1, &theViewPort);
 
-	fbxflie.LoadFBX("Teddy_Attack1.fbx");
+	//fbxflie.LoadFBX("Teddy_Attack1.fbx");
 
 	Shape::InitDevice(theDevice.Get(), theContext.Get());
 	Mesh::InitDevice(theDevice.Get(), theContext.Get());
@@ -101,10 +101,10 @@ bool My3DSence::Initialize(HWND wnd)
 	shape.initializeShape(100);
 	//mesh.initializeMesh(&fbxflie, 0.025);
 	mesh.initBinaryMesh("Box_Attack.bin");
-	bearMesh.initBinaryMesh("Teddy_Attack1.bin", 0.025, -4);
+	bearMesh.initBinaryMesh("Teddy_Attack1.bin", 0.025);
 	//joint.initializeMesh(&fbxflie);
 	joint.initBinaryMesh("Box_Attack.bin");
-	bearJoint.initBinaryMesh("Teddy_Attack1.bin");
+	bearJoint.initBinaryMesh("Teddy_Attack1.bin",10);
 	camera.InitCamera();
 	camera.SetProjection(camera.DegreeToRadian(75), BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 0.01f, 1000.0f);
 	mesh.LoadTexture("TestCube.dds");
@@ -144,18 +144,42 @@ bool My3DSence::run()
 	ID3D11Buffer* cbs[] = { lightd.Get() , lightp.Get() , lights.Get() };
 	theContext->PSSetConstantBuffers(0, 3, cbs);
 
+	if (GetAsyncKeyState('9'))
+	{
+		renderBear = false;
+		renderBlock = true;
+	}
+	if (GetAsyncKeyState('0'))
+	{
+		renderBear = true;
+		renderBlock = false;
+	}
 	
 	//theContext->ClearDepthStencilView(theDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 	shader.SetCommonShader();
-	joint.draw();
-	bearJoint.draw(0.025, -4);
+	if (renderBlock)
+	{
+		joint.draw();
+	}
+	else if(renderBear)
+	{
+	bearJoint.draw(0.025);
+	}
 	shape.draw();
 	
 	shader.SetGroundShader();
 	mesh.setPos(joint.GetBindPose());
 	bearMesh.setPos(bearJoint.GetBindPose());
+	if (renderBlock)
+	{
 	mesh.draw();
+
+	}
+	else if(renderBear)
+	{
+
 	bearMesh.draw();
+	}
 	shader.SetSkyBoxShader();
 	XMFLOAT4X4 camPos;
 	XMStoreFloat4x4(&camPos, camera.GetPos());

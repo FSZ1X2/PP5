@@ -92,7 +92,7 @@ void Joint::initBinaryMesh(const char * path, float size, float x, float y, floa
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	desc.Usage = D3D11_USAGE_DYNAMIC;
 	dev->CreateBuffer(&desc, 0, constantBuffer.GetAddressOf());
-	makesphere(0.3f, 6, 6);
+	makesphere(0.3f*size, 6, 6);
 }
 
 void Joint::draw(float size, float x, float y, float z)

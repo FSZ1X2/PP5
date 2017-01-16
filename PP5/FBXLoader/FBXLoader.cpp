@@ -99,8 +99,7 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 		XMVECTOR v2 = XMLoadFloat3(&newTriangle.v[2].vertex);
 		XMVECTOR v01 = v1 - v0;
 		XMVECTOR v02 = v2 - v0;
-		if (XMVectorGetX(XMVector3Dot(v01, v02)) > 0)
-			std::swap(newTriangle.v[0], newTriangle.v[1]);
+		
 		//auto& Outvertex = *sdata->GetVertex();
 		sdata->AddVertex(newTriangle.v[0].vertex);
 		sdata->AddVertex(newTriangle.v[1].vertex);
@@ -263,7 +262,7 @@ void FBXLoader::ReadUV(FbxMesh* pMesh, int ctrlPointIndex, int textureUVIndex, i
 	}
 	break;
 	}
-	pUV->x = 1 - pUV->x;
+	//pUV->x = 1 - pUV->x;
 	pUV->y = 1 - pUV->y;
 }
 

@@ -53,7 +53,8 @@ class My3DSence
 	//ID3D11Resource *resource = nullptr;
 	//ID3D11Buffer *shadercombuffer = nullptr;
 	//ID3D11Buffer *gridConstBuffer = nullptr;
-
+	bool renderBear = false;
+	bool renderBlock = true;
 	FBXExportDATA fbxflie;
 
 	void CreateDirectionalLight();
