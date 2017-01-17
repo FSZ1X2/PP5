@@ -53,11 +53,32 @@ void FBXExportDATA::SetTotalTime(const float & v)
 
 const XMFLOAT3 * FBXExportDATA::GetVertex() const
 {
+	//std::vector<XMFLOAT3> vertex;
+	//for (int i = 0; i < Outvertex.size(); i++)
+	//{
+	//	XMFLOAT3 newv;
+	//	newv.x = Outvertex[i].x;
+	//	newv.y = Outvertex[i].y;
+	//	newv.z = Outvertex[i].z * -1;
+	//	vertex.push_back(newv);
+	//}
+	//return vertex.data();
 	return Outvertex.data();
 }
 
 const XMFLOAT3 * FBXExportDATA::GetNormal() const
 {
+	//std::vector<XMFLOAT3> normal;
+	//for (int i = 0; i < Outnormal.size(); i++)
+	//{
+	//	XMFLOAT3 newv;
+	//	newv.x = Outnormal[i].x;
+	//	newv.y = Outnormal[i].y;
+	//	newv.z = Outnormal[i].z * -1;
+	//	normal.push_back(newv);
+	//}
+	////return Outvertex.data();
+	//return normal.data();
 	return Outnormal.data();
 }
 
@@ -68,11 +89,36 @@ const XMFLOAT3 * FBXExportDATA::GetUv() const
 
 const XMFLOAT4 * FBXExportDATA::GetTangent() const
 {
+	//std::vector<XMFLOAT4> tangent;
+	//for (int i = 0; i < Outtangent.size(); i++)
+	//{
+	//	XMFLOAT4 newv;
+	//	newv.x = Outtangent[i].x;
+	//	newv.y = Outtangent[i].y;
+	//	newv.z = Outtangent[i].z * -1;
+	//	newv.w = Outtangent[i].w;
+	//	tangent.push_back(newv);
+	//}
+	////return Outvertex.data();
+	//return tangent.data();
 	return Outtangent.data();
 }
 
 const XMFLOAT4X4 * FBXExportDATA::GetJoint() const
 {
+	//std::vector<XMFLOAT4X4> joint;
+	//joint = OutJoint;
+	//for (int i = 0; i < joint.size(); i++)
+	//{
+	//	joint[i].m[0][2] = joint[i].m[0][2] * -1;
+	//	joint[i].m[1][2] = joint[i].m[1][2] * -1;
+	//	joint[i].m[2][0] = joint[i].m[2][0] * -1;
+	//	joint[i].m[2][1] = joint[i].m[2][1] * -1;
+	//	joint[i].m[2][3] = joint[i].m[2][3] * -1;
+	//	joint[i].m[3][2] = joint[i].m[3][2] * -1;
+	//}
+	////return Outvertex.data();
+	//return joint.data();
 	return OutJoint.data();
 }
 

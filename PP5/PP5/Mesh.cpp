@@ -63,6 +63,21 @@ void Mesh::initializeMesh(FBXExportDATA * fbxflie, float size)
 
 	dev->CreateBuffer(&desc, 0, constantBuffer.GetAddressOf());
 
+	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	desc.ByteWidth = sizeof(XMFLOAT4);
+	desc.StructureByteStride = 0;
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	desc.Usage = D3D11_USAGE_DYNAMIC;
+
+	dev->CreateBuffer(&desc, 0, scaleBuffer.GetAddressOf());
+
+	modelsize.x = size;
+	//D3D11_MAPPED_SUBRESOURCE s;
+	//con->Map(scaleBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &s);
+	//memcpy(s.pData, &size, sizeof(float));
+	//con->Unmap(scaleBuffer.Get(), 0);
+	//con->VSSetConstantBuffers(4, 1, scaleBuffer.GetAddressOf());
+
 	//desc.ByteWidth = sizeof(PosList);
 
 	//dev->CreateBuffer(&desc, 0, poseBuffer.GetAddressOf());
@@ -87,6 +102,12 @@ void Mesh::draw()
 	con->Unmap(constantBuffer.Get(), 0);
 
 	con->VSSetConstantBuffers(1, 1, constantBuffer.GetAddressOf());
+
+	con->Map(scaleBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &maps);
+	memcpy(maps.pData, &modelsize, sizeof(float));
+	con->Unmap(scaleBuffer.Get(), 0);
+
+	con->VSSetConstantBuffers(4, 1, scaleBuffer.GetAddressOf());
 
 	//con->Map(poseBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &maps);
 	//memcpy(maps.pData, &poselist, sizeof(PosList));

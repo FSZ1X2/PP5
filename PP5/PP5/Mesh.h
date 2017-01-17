@@ -5,6 +5,7 @@ class Mesh
 {
 	ComPtr<ID3D11Buffer> vertexBuffer;
 	ComPtr<ID3D11Buffer> constantBuffer;
+	ComPtr<ID3D11Buffer> scaleBuffer;
 	//ComPtr<ID3D11Buffer> poseBuffer;
 
 	XMFLOAT4X4 transform;
@@ -17,6 +18,7 @@ class Mesh
 	
 	//PosList poselist;
 	int vertexcount;
+	XMFLOAT4 modelsize;
 public:
 	static void InitDevice(ID3D11Device* _dev, ID3D11DeviceContext* _con);
 	void initializeMesh(FBXExportDATA * fbxflie,float size = 1);

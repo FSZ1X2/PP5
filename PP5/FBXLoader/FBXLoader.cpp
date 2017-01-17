@@ -102,8 +102,6 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 				newJoint.m[row][col] = (float)newbindpose.Get(row, col);
 			}
 		}
-		//newJoint.bindposinverse = pNode->EvaluateGlobalTransform().Inverse();
-
 
 		int *boneVertexIndices = cluster->GetControlPointIndices();
 		double *boneVertexWeights = cluster->GetControlPointWeights();
@@ -115,10 +113,15 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 			int cpIndex = boneVertexIndices[boneVertexIndex];
 			float boneWeight = (float)boneVertexWeights[boneVertexIndex];
 			inf[cpIndex].influences.push_back(JointInfluence(cluster, boneIndex, boneWeight));
-			//sdata->AddBoneIndex(bIndex);
-			//sdata->AddWeight(bWeight);
 		}
 
+		//change:
+		newJoint.m[0][2] = newJoint.m[0][2] * -1;
+		newJoint.m[1][2] = newJoint.m[1][2] * -1;
+		newJoint.m[2][0] = newJoint.m[2][0] * -1;
+		newJoint.m[2][1] = newJoint.m[2][1] * -1;
+		newJoint.m[2][3] = newJoint.m[2][3] * -1;
+		newJoint.m[3][2] = newJoint.m[3][2] * -1;
 		sdata->AddJoint(newJoint);
 	}
 	
@@ -134,6 +137,9 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 			newTriangle.v[j].vertex.x = (float)ctrlPoints[ctrlPointIndex][0];
 			newTriangle.v[j].vertex.y = (float)ctrlPoints[ctrlPointIndex][1];
 			newTriangle.v[j].vertex.z = (float)ctrlPoints[ctrlPointIndex][2];
+
+			newTriangle.v[j].vertex.z *= -1;//change
+
 			// Read the vertex  
 			//ReadVertex(pMesh, ctrlPointIndex, &newTriangle.v[j].vertex);
 			for (int iff = 0; iff < inf[ctrlPointIndex].influences.size(); iff++)
@@ -155,7 +161,7 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 
 			vertexCounter++;
 		}
-		//std::swap(newTriangle.v[1], newTriangle.v[2]);
+		std::swap(newTriangle.v[1], newTriangle.v[2]);
 		/*XMVECTOR v0 = XMLoadFloat3(&newTriangle.v[0].vertex);
 		XMVECTOR v1 = XMLoadFloat3(&newTriangle.v[1].vertex);
 		XMVECTOR v2 = XMLoadFloat3(&newTriangle.v[2].vertex);
@@ -345,7 +351,6 @@ void FBXLoader::ProcessAnimation(FbxNode * pNode, FbxNode* parent, FbxAnimLayer 
 					framestime.push_back(keytime);
 					//EvaluateGlobalTransform
 					//EvaluateLocalTransform
-					//FbxAMatrix p = parent ? parent->EvaluateGlobalTransform(keytime) : FbxAMatrix();
 					FbxTime time;
 					time.SetSecondDouble(keytime);
 					FbxAMatrix m = pNode->EvaluateGlobalTransform(time);
@@ -358,6 +363,14 @@ void FBXLoader::ProcessAnimation(FbxNode * pNode, FbxNode* parent, FbxAnimLayer 
 							outm.m[row][col] = (float)m.Get(row, col);
 						}
 					}
+					//change:
+					outm.m[0][2] = outm.m[0][2] * -1;
+					outm.m[1][2] = outm.m[1][2] * -1;
+					outm.m[2][0] = outm.m[2][0] * -1;
+					outm.m[2][1] = outm.m[2][1] * -1;
+					outm.m[2][3] = outm.m[2][3] * -1;
+					outm.m[3][2] = outm.m[3][2] * -1;
+
 					keys.push_back(outm);
 				}
 				if (vaildbone.find(pNode) != vaildbone.end())
@@ -566,6 +579,8 @@ void FBXLoader::ReadNormal(FbxMesh* pMesh, int ctrlPointIndex, int vertexCounter
 	}
 	break;
 	}
+
+	pNormal->z *= -1;//change
 }
 
 void FBXLoader::ReadTangent(FbxMesh* pMesh, int ctrlPointIndex, int vertecCounter, XMFLOAT4* pTangent)
@@ -631,5 +646,7 @@ void FBXLoader::ReadTangent(FbxMesh* pMesh, int ctrlPointIndex, int vertecCounte
 	}
 	break;
 	}
+
+	pTangent->z *= -1;//change
 }
 

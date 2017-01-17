@@ -43,17 +43,17 @@ void Joint::initializeMesh(FBXExportDATA * fbxflie, float size)
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	desc.Usage = D3D11_USAGE_DYNAMIC;
 	dev->CreateBuffer(&desc, 0, constantBuffer.GetAddressOf());
-//	makesphere(0.3f, 6, 6);
+	makesphere(0.3f, 6, 6);
 }
 
 void Joint::draw()
 {
 	D3D11_MAPPED_SUBRESOURCE maps;
-	//unsigned int stride = sizeof(VertexPositionUVNormal);
-	//UINT offset = 0;
+	unsigned int stride = sizeof(VertexPositionUVNormal);
+	UINT offset = 0;
 
-	//con->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
-	//con->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	con->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
+	con->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//
 	/*for (int i = 0; i < 4; i++)
 	{*/
@@ -61,9 +61,9 @@ void Joint::draw()
 		memcpy(maps.pData, &poselist, sizeof(XMFLOAT4X4) * numOfJoint);
 		con->Unmap(constantBuffer.Get(), 0);
 		
-		//con->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+		con->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 		con->VSSetConstantBuffers(2, 1, constantBuffer.GetAddressOf());
-		//con->DrawIndexed((UINT)index.size(), 0, 0);
+		con->DrawIndexed((UINT)index.size(), 0, 0);
 	//}
 	
 	////D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP
@@ -71,102 +71,102 @@ void Joint::draw()
 	
 }
 //
-//void Joint::makesphere(float rad, int slice, int segment)
-//{
-//	float stepY = XM_PI / segment;
-//	float stepX = XM_2PI / slice;
-//
-//	VertexPositionUVNormal startpoint;
-//	startpoint.pos = XMFLOAT3(0.0f, rad, 0.0f);
-//	pointsforshere.push_back(startpoint);
-//	VertexPositionUVNormal endpoint;
-//	endpoint.pos = XMFLOAT3(0.0f, -rad, 0.0f);
-//	float Xstart = 0;
-//	float Ystart = 0 + stepY;
-//	for (int j = 0; j < segment; j++)
-//	{
-//		for (int i = 0; i < slice; i++)
-//		{
-//			VertexPositionUVNormal newpoint;
-//			newpoint.pos.x = rad*std::sin(Xstart)*std::sin(Ystart);
-//			newpoint.pos.y = rad*std::cos(Ystart);
-//			newpoint.pos.z = rad*std::cos(Xstart)*std::sin(Ystart);
-//
-//			Xstart += stepX;
-//			pointsforshere.push_back(newpoint);
-//		}
-//
-//		Xstart = 0;
-//		Ystart += stepY;	
-//	}
-//	pointsforshere.push_back(endpoint);
-//
-//	unsigned int rowA = 0;
-//	unsigned int rowB = 1;
-//	unsigned int i,j;
-//	for (i = 0; i < (UINT)slice - 1; i++)
-//	{
-//		index.push_back(rowA);
-//		index.push_back(rowB + i);
-//		index.push_back(rowB + i + 1);
-//	}
-//
-//	index.push_back(rowA);
-//	index.push_back(rowB + i);
-//	index.push_back(rowB);
-//
-//	for (j = 1; j < (UINT)segment - 1; j++)
-//	{
-//		rowA = 1 + (j - 1)*segment;
-//		rowB = rowA + slice;
-//
-//		for (i = 0; i < (UINT)slice - 1; i++)
-//		{
-//			index.push_back(rowA + i);
-//			index.push_back(rowB + i);
-//			index.push_back(rowA + i + 1);
-//
-//			index.push_back(rowA + i + 1);
-//			index.push_back(rowB + i);
-//			index.push_back(rowB + i + 1);
-//		}
-//
-//		index.push_back(rowA + i);
-//		index.push_back(rowB + i);
-//		index.push_back(rowA);
-//
-//		index.push_back(rowA);
-//		index.push_back(rowB + i);
-//		index.push_back(rowB);
-//	}
-//
-//	rowA = 1 + (segment - 2)*slice;
-//	rowB = rowA + slice;
-//
-//	for (i = 0; i < (UINT)slice - 1; i++)
-//	{
-//		index.push_back(rowA+i);
-//		index.push_back(rowB);
-//		index.push_back(rowA + i + 1);
-//	}
-//
-//	index.push_back(rowA+i);
-//	index.push_back(rowB);
-//	index.push_back(rowA);
-//
-//	D3D11_BUFFER_DESC desc = {};
-//	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-//	desc.ByteWidth = pointsforshere.size() * sizeof(VertexPositionUVNormal);
-//	desc.StructureByteStride = sizeof(VertexPositionUVNormal);
-//	desc.Usage = D3D11_USAGE_DEFAULT;
-//
-//	D3D11_SUBRESOURCE_DATA source = {};
-//	source.pSysMem = &pointsforshere[0];
-//	dev->CreateBuffer(&desc, &source, vertexBuffer.GetAddressOf());
-//
-//	desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-//	desc.ByteWidth = index.size() * sizeof(unsigned int);
-//	desc.StructureByteStride = sizeof(unsigned int);
-//	source.pSysMem = &index[0];
-//	dev->CreateBuffer(&desc, &source, indexBuffer.GetAddressOf());
-//}
+void Joint::makesphere(float rad, int slice, int segment)
+{
+	float stepY = XM_PI / segment;
+	float stepX = XM_2PI / slice;
+
+	VertexPositionUVNormal startpoint;
+	startpoint.pos = XMFLOAT3(0.0f, rad, 0.0f);
+	pointsforshere.push_back(startpoint);
+	VertexPositionUVNormal endpoint;
+	endpoint.pos = XMFLOAT3(0.0f, -rad, 0.0f);
+	float Xstart = 0;
+	float Ystart = 0 + stepY;
+	for (int j = 0; j < segment; j++)
+	{
+		for (int i = 0; i < slice; i++)
+		{
+			VertexPositionUVNormal newpoint;
+			newpoint.pos.x = rad*std::sin(Xstart)*std::sin(Ystart);
+			newpoint.pos.y = rad*std::cos(Ystart);
+			newpoint.pos.z = rad*std::cos(Xstart)*std::sin(Ystart);
+
+			Xstart += stepX;
+			pointsforshere.push_back(newpoint);
+		}
+
+		Xstart = 0;
+		Ystart += stepY;	
+	}
+	pointsforshere.push_back(endpoint);
+
+	unsigned int rowA = 0;
+	unsigned int rowB = 1;
+	unsigned int i,j;
+	for (i = 0; i < (UINT)slice - 1; i++)
+	{
+		index.push_back(rowA);
+		index.push_back(rowB + i);
+		index.push_back(rowB + i + 1);
+	}
+
+	index.push_back(rowA);
+	index.push_back(rowB + i);
+	index.push_back(rowB);
+
+	for (j = 1; j < (UINT)segment - 1; j++)
+	{
+		rowA = 1 + (j - 1)*segment;
+		rowB = rowA + slice;
+
+		for (i = 0; i < (UINT)slice - 1; i++)
+		{
+			index.push_back(rowA + i);
+			index.push_back(rowB + i);
+			index.push_back(rowA + i + 1);
+
+			index.push_back(rowA + i + 1);
+			index.push_back(rowB + i);
+			index.push_back(rowB + i + 1);
+		}
+
+		index.push_back(rowA + i);
+		index.push_back(rowB + i);
+		index.push_back(rowA);
+
+		index.push_back(rowA);
+		index.push_back(rowB + i);
+		index.push_back(rowB);
+	}
+
+	rowA = 1 + (segment - 2)*slice;
+	rowB = rowA + slice;
+
+	for (i = 0; i < (UINT)slice - 1; i++)
+	{
+		index.push_back(rowA+i);
+		index.push_back(rowB);
+		index.push_back(rowA + i + 1);
+	}
+
+	index.push_back(rowA+i);
+	index.push_back(rowB);
+	index.push_back(rowA);
+
+	D3D11_BUFFER_DESC desc = {};
+	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	desc.ByteWidth = pointsforshere.size() * sizeof(VertexPositionUVNormal);
+	desc.StructureByteStride = sizeof(VertexPositionUVNormal);
+	desc.Usage = D3D11_USAGE_DEFAULT;
+
+	D3D11_SUBRESOURCE_DATA source = {};
+	source.pSysMem = &pointsforshere[0];
+	dev->CreateBuffer(&desc, &source, vertexBuffer.GetAddressOf());
+
+	desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	desc.ByteWidth = index.size() * sizeof(unsigned int);
+	desc.StructureByteStride = sizeof(unsigned int);
+	source.pSysMem = &index[0];
+	dev->CreateBuffer(&desc, &source, indexBuffer.GetAddressOf());
+}

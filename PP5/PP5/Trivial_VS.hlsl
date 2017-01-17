@@ -84,6 +84,11 @@ cbuffer cbChangesEveryFrame : register(b2)
 	float4x4 BoneOffset[64];
 };
 
+cbuffer scaling: register(b4)
+{
+	float4 scaln;
+}
+
 OUTPUT_VERTEX main(INPUT_VERTEX input)
 {
 	OUTPUT_VERTEX output = (OUTPUT_VERTEX)0;
@@ -95,6 +100,12 @@ OUTPUT_VERTEX main(INPUT_VERTEX input)
 
 	float4 coordinate = mul(float4(input.vertex,1), finalPos);
 
+	float4x4 scale = float4x4 (scaln.x, 0.0f, 0.0f, 0.0f,
+							   0.0f, scaln.x,0.0f, 0.0f,
+							   0.0f,  0.0f, scaln.x, 0.0f,
+							   0.0f,  0.0f, 0.0f, 1.0f);
+
+	coordinate = mul(coordinate, scale);
 	//float4 coordinate = float4(input.vertex,1);
 	coordinate = mul(coordinate, trans);
 	output.WorldPos = coordinate;

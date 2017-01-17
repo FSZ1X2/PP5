@@ -109,7 +109,7 @@ bool My3DSence::Initialize(HWND wnd)
 	Slight.initializeLigtht();
 	shape.initializeShape(10);
 
-	bear.initializeMesh(&fbxflie);
+	bear.initializeMesh(&fbxflie, 0.15f);
 	box.initializeMesh(&boxfile);
 
 	joint.initializeMesh(&boxfile);
@@ -195,7 +195,7 @@ bool My3DSence::run()
 	if (renderBear)
 	{
 		theContext->PSSetShaderResources(0, 1, textureB.GetAddressOf());
-		bearAni.Interpolate(dt);
+		bearAni.Interpolate(dt*0.5f);
 		bearJoint.draw();
 		bear.draw();
 	}
@@ -240,8 +240,8 @@ Camera * My3DSence::GetCamera()
 //light stuff:
 void My3DSence::CreateDirectionalLight()
 {
-	dcfd.direction = { -1.0f,-0.0f,0.0f,0.0f };
-	dcfd.Dcolor = { 0.5f,0.5f,0.5f,0.5f };
+	dcfd.direction = { -5.0f,-0.0f,1.0f,0.0f };
+	dcfd.Dcolor = { 1.0f,1.0f,1.0f,1.0f };
 }
 void My3DSence::CreatePointLight()
 {
