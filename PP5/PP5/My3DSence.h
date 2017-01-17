@@ -5,6 +5,8 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Joint.h"
+#include "Animation.h"
+#include "DrawLight.h"
 #include "SkyBox.h"
 class My3DSence
 {
@@ -16,10 +18,10 @@ class My3DSence
 	D3D11_VIEWPORT theViewPort;
 	ComPtr<ID3D11DepthStencilView> theDSV;
 	ComPtr<ID3D11Texture2D> depthBuff;
-	
+	ComPtr<ID3D11ShaderResourceView> textureV;
+	ComPtr<ID3D11ShaderResourceView> textureB;
 	//ComPtr<ID3D11Texture2D> texture;
-	
-
+	ComPtr<ID3D11SamplerState> binsample;
 	
 	//ComPtr<ID3D11View> theview;
 	//ComPtr<ID3D11Debug> theDebug ;
@@ -35,7 +37,9 @@ class My3DSence
 
 	ComPtr<ID3D11Buffer> lightd;
 	ComPtr<ID3D11Buffer> lightp;
+	ComPtr<ID3D11Buffer> lightpcolor;
 	ComPtr<ID3D11Buffer> lights;
+	ComPtr<ID3D11Buffer> lightscolor;
 
 	DirectionalLightConstantBuffer dcfd;
 	PointLightConstantBuffer pcfd;
@@ -43,19 +47,20 @@ class My3DSence
 
 	Shader shader;
 	Shape shape;
-	Mesh mesh;
-	Mesh bearMesh;
+	Mesh bear;
+	Mesh box;
 	Joint joint;
-	Joint bearJoint;
+	Animation animate;
 	Camera camera;
 	XTime time;
+	DrawLight Plight;
+	DrawLight Slight;
 	SkyBox skybox;
 	//ID3D11Resource *resource = nullptr;
 	//ID3D11Buffer *shadercombuffer = nullptr;
 	//ID3D11Buffer *gridConstBuffer = nullptr;
 	bool renderBear = false;
-	bool renderBlock = true;
-	FBXExportDATA fbxflie;
+	
 
 	void CreateDirectionalLight();
 	void CreatePointLight();

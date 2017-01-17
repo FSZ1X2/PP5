@@ -81,20 +81,21 @@ cbuffer TRANS_VRAM : register(b1)
 
 cbuffer cbChangesEveryFrame : register(b2) 
 {
-	float4x4 BoneOffset[4];
+	float4x4 BoneOffset[64];
 };
 
 OUTPUT_VERTEX main(INPUT_VERTEX input)
 {
 	OUTPUT_VERTEX output = (OUTPUT_VERTEX)0;
 
-	float4 finalPos = float4(0, 0, 0, 0);
-	finalPos  = input.weight[0] * mul(float4(input.vertex, 1.0f), BoneOffset[0]);
-	finalPos += input.weight[1] * mul(float4(input.vertex, 1.0f), BoneOffset[1]);
-	finalPos += input.weight[2] * mul(float4(input.vertex, 1.0f), BoneOffset[2]);
-	finalPos += input.weight[3] * mul(float4(input.vertex, 1.0f), BoneOffset[3]);
+	float4x4 finalPos   = BoneOffset[0] * input.weight[0]
+						+ BoneOffset[1] * input.weight[1]
+						+ BoneOffset[2] * input.weight[2]
+						+ BoneOffset[3] * input.weight[3];
 
-	float4 coordinate = mul(finalPos, trans);
+	//float4 coordinate = mul(float4(input.vertex,1), finalPos);
+	float4 coordinate = float4(input.vertex,1);
+	coordinate = mul(coordinate, trans);
 	output.WorldPos = coordinate;
 
 	output.projectedCoordinate = mul(coordinate, viewproj);

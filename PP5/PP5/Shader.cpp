@@ -23,6 +23,13 @@ void Shader::SetCommonShader()
 	con->IASetInputLayout(layout.Get());
 }
 
+void Shader::SetLightShader()
+{
+	con->VSSetShader(commonshader.Get(), 0, 0);
+	con->PSSetShader(lightshader.Get(), 0, 0);
+	con->IASetInputLayout(layout.Get());
+}
+
 void Shader::SetSkyBoxShader()
 {
 	con->VSSetShader(skyVShader.Get(), 0, 0);
@@ -45,9 +52,6 @@ void Shader::Init()
 
 	hr = dev->CreateVertexShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, gvshader.GetAddressOf());
 	HR(hr);
-
-
-
 
 	D3D11_INPUT_ELEMENT_DESC elements[] =
 	{
@@ -79,6 +83,16 @@ void Shader::Init()
 	HR(hr);
 
 	hr = dev->CreateVertexShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, commonshader.GetAddressOf());
+	HR(hr);
+
+	blobshader->Release();
+	if (error)
+		error->Release();
+
+	hr = D3DCompileFromFile(L"LightShader.hlsl", macro, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ps_4_0", flag, 0, &blobshader, &error);
+	HR(hr);
+
+	hr = dev->CreatePixelShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, lightshader.GetAddressOf());
 	HR(hr);
 
 	blobshader->Release();

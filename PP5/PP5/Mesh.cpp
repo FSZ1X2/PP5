@@ -9,26 +9,35 @@ void Mesh::InitDevice(ID3D11Device * _dev, ID3D11DeviceContext * _con)
 	con = _con;
 }
 
-void Mesh::initializeMesh(FBXExportDATA * fbxflie, float size, float x, float y, float z)
+void Mesh::initializeMesh(FBXExportDATA * fbxflie, float size)
 {
-	XMMATRIX tmp = XMMatrixIdentity()*size;
-	tmp = XMMatrixScaling(size, size, size);
-	tmp = XMMatrixMultiply(tmp, XMMatrixTranslation(x, y, z));
-	//XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
-	XMStoreFloat4x4(&transform, tmp);
+	XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
+	transform._44 = 1;
 	//fbxflie.LoadFBX("Box_Attack.fbx");
 	//fbxloader::FBXLoader::LoadFBX("Box_Attack.fbx");
 	//transform = fbxflie.transL;
 	unsigned int num = fbxflie->GetVertexSize();
+	XMMATRIX mFix = XMMatrixSet(-1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, -1, 0,
+		0, 0, 0, 1);
 	std::vector<VertexPositionUVNormal> TriangleVertexList;
 
 	for (unsigned int i = 0; i < num; i++)
 	{
 		VertexPositionUVNormal vertex1;
 		vertex1.pos = fbxflie->GetVertex()[i];
+		vertex1.pos.x *= -1;
+		//XMVECTOR v = XMLoadFloat3(&vertex1.pos);
+		//v = XMVector3TransformCoord(v, mFix);
+		//XMStoreFloat3(&vertex1.pos, v);
 		//vertex1.pos.y = fbxflie->Outvertex[i].y;
 		//vertex1.pos.z = fbxflie->Outvertex[i].z;
 		vertex1.normal = fbxflie->GetNormal()[i];
+		vertex1.normal.x *= -1;
+		//v = XMLoadFloat3(&vertex1.normal);
+		//v = XMVector3TransformCoord(v, mFix);
+		//XMStoreFloat3(&vertex1.normal, v);
 		//vertex1.normal.y = fbxflie->Outnormal[i].y;
 		//vertex1.normal.z = fbxflie->Outnormal[i].z;
 		vertex1.uv = fbxflie->GetUv()[i];
@@ -93,8 +102,8 @@ void Mesh::initializeMesh(FBXExportDATA * fbxflie, float size, float x, float y,
 
 	D3D11_BUFFER_DESC desc = {};
 	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	desc.ByteWidth = TriangleVertexList.size() * sizeof(VertexPositionUVNormal);
-	desc.StructureByteStride = sizeof(VertexPositionUVNormal);
+	desc.ByteWidth = vertexcount * sizeof(VertexPositionUVNormal);
+	desc.StructureByteStride = 0;
 	desc.Usage = D3D11_USAGE_DEFAULT;
 
 	D3D11_SUBRESOURCE_DATA source = {};
@@ -110,99 +119,14 @@ void Mesh::initializeMesh(FBXExportDATA * fbxflie, float size, float x, float y,
 
 	dev->CreateBuffer(&desc, 0, constantBuffer.GetAddressOf());
 
-	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	desc.ByteWidth = sizeof(PosList);
-	desc.StructureByteStride = 0;
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	desc.Usage = D3D11_USAGE_DYNAMIC;
-
-	dev->CreateBuffer(&desc, 0, poseBuffer.GetAddressOf());
-}
-
-void Mesh::LoadTexture(std::string name)
-{
-	std::wstring temp = std::wstring(name.begin(), name.end());
-	const wchar_t* path = temp.c_str();
-	CreateDDSTextureFromFile(dev, path, nullptr, textureV.GetAddressOf());
-
-	D3D11_SAMPLER_DESC sdesc = {};
-	sdesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	sdesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	sdesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-	sdesc.Filter = D3D11_FILTER_ANISOTROPIC;
-	sdesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	sdesc.MaxLOD = D3D11_FLOAT32_MAX;
-	sdesc.MaxAnisotropy = D3D11_REQ_MAXANISOTROPY;
-	dev->CreateSamplerState(&sdesc, binsample.GetAddressOf());
-}
-
-void Mesh::initBinaryMesh(const char * path, float size, float x, float y, float z)
-{
-	XMMATRIX tmp = XMMatrixIdentity()*size;
-	tmp = XMMatrixScaling(size, size, size);
-	tmp = XMMatrixMultiply(tmp, XMMatrixTranslation(x, y, z));
-	//XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
-	XMStoreFloat4x4(&transform, tmp);
-	ifstream file(path, ios::in | ios::binary | ios::ate);
-	
-	file.seekg(0, ios::beg);
-	UINT num;
-	file.read((char*)&num, sizeof(UINT));
-	std::vector<VertexPositionUVNormal> TriangleVertexList;
-
-	for (unsigned int i = 0; i < num; i++)
-	{
-		VertexPositionUVNormal vertex1;
-		file.read((char*)&vertex1.pos, sizeof(XMFLOAT3));
-		
-		file.read((char*)&vertex1.normal, sizeof(XMFLOAT3));
-
-		file.read((char*)&vertex1.uv, sizeof(XMFLOAT3));
-		
-		file.read((char*)&vertex1.tangent, sizeof(XMFLOAT4));
-
-		for (int i = 0; i < 37; i++)
-		{
-			vertex1.blendWeight[i]= 0.25f;
-		}
-		
-		TriangleVertexList.push_back(vertex1);
-	}
-	file.read((char*)&jointSize, sizeof(UINT));
-	file.close();
-	vertexcount = TriangleVertexList.size();
-
-	D3D11_BUFFER_DESC desc = {};
-	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	desc.ByteWidth = TriangleVertexList.size() * sizeof(VertexPositionUVNormal);
-	desc.StructureByteStride = 0;
-	desc.Usage = D3D11_USAGE_IMMUTABLE;
-
-	D3D11_SUBRESOURCE_DATA source = {};
-	source.pSysMem = TriangleVertexList.data();
-
-	dev->CreateBuffer(&desc, &source, vertexBuffer.GetAddressOf());
-
-	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	desc.ByteWidth = sizeof(XMFLOAT4X4);
-	desc.StructureByteStride = 0;
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	desc.Usage = D3D11_USAGE_DYNAMIC;
-
-	dev->CreateBuffer(&desc, 0, constantBuffer.GetAddressOf());
-
-	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	desc.ByteWidth = sizeof(PosList);
-	desc.StructureByteStride = 0;
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	desc.Usage = D3D11_USAGE_DYNAMIC;
 
 	dev->CreateBuffer(&desc, 0, poseBuffer.GetAddressOf());
 }
 
 void Mesh::setPos(BindPosition * Bindpose)
 {
-	for (int i = 0; i < jointSize; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		//XMStoreFloat4x4(&poselist.pose[i], XMMatrixIdentity());
 		//poselist.pose[i] = Bindpose->pos[i];
@@ -231,9 +155,6 @@ void Mesh::draw()
 	con->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
 
 	con->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	con->PSSetShaderResources(0, 1, textureV.GetAddressOf());
-	con->PSSetSamplers(0, 1, binsample.GetAddressOf());
 	//D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP
 	//D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 	con->Draw(vertexcount, 0);

@@ -8,11 +8,9 @@ void Joint::InitDevice(ID3D11Device * _dev, ID3D11DeviceContext * _con)
 	con = _con;
 }
 
-void Joint::initializeMesh(FBXExportDATA * fbxflie, float size, float x, float y, float z)
+void Joint::initializeMesh(FBXExportDATA * fbxflie, float size)
 {
-	
 	XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
-	
 	//transform = fbxflie.transL;
 	unsigned int num = fbxflie->GetJointSize();
 
@@ -48,54 +46,7 @@ void Joint::initializeMesh(FBXExportDATA * fbxflie, float size, float x, float y
 	makesphere(0.3f, 6, 6);
 }
 
-void Joint::initBinaryMesh(const char * path, float size, float x, float y, float z)
-{
-	
-	
-	XMMATRIX tmp = XMMatrixIdentity()*size;
-	tmp = XMMatrixScaling(size, size, size);
-	tmp = XMMatrixMultiply(tmp, XMMatrixTranslation(x, y, z));
-	XMStoreFloat4x4(&transform, tmp);
-	ifstream file(path, ios::in | ios::binary | ios::ate);
-	file.seekg(0, ios::beg);
-	UINT num;
-	file.read((char*)&num, sizeof(UINT));
-	std::vector<VertexPositionUVNormal> TriangleVertexList;
-
-	for (unsigned int i = 0; i < num; i++)
-	{
-		VertexPositionUVNormal vertex1;
-		file.read((char*)&vertex1.pos, sizeof(XMFLOAT3));
-
-		file.read((char*)&vertex1.normal, sizeof(XMFLOAT3));
-
-		file.read((char*)&vertex1.uv, sizeof(XMFLOAT3));
-
-		file.read((char*)&vertex1.tangent, sizeof(XMFLOAT4));
-	}
-	
-	file.read((char*)&num, sizeof(UINT));
-	jointSize = num;
-
-	//file.read((char*)&BindList.pos, sizeof(XMFLOAT4));
-	for (unsigned int i = 0; i < num; i++)
-	{
-		file.read((char*)&BindList.pos[i], sizeof(XMFLOAT4X4));
-	}
-
-	file.close();
-	D3D11_BUFFER_DESC desc = {};
-
-	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	desc.ByteWidth = sizeof(XMFLOAT4X4);
-	desc.StructureByteStride = 0;
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	desc.Usage = D3D11_USAGE_DYNAMIC;
-	dev->CreateBuffer(&desc, 0, constantBuffer.GetAddressOf());
-	makesphere(0.3f*size, 6, 6);
-}
-
-void Joint::draw(float size, float x, float y, float z)
+void Joint::draw()
 {
 	D3D11_MAPPED_SUBRESOURCE maps;
 	unsigned int stride = sizeof(VertexPositionUVNormal);
@@ -103,18 +54,13 @@ void Joint::draw(float size, float x, float y, float z)
 
 	con->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
 	con->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	for (int i = 0; i < jointSize; i++)
+	
+	for (int i = 0; i < 4; i++)
 	{
-		XMFLOAT4X4 mat;
-		XMMATRIX tmp = XMMatrixInverse(nullptr, XMLoadFloat4x4(&BindList.pos[i]));
-		tmp = XMMatrixMultiply(tmp, XMMatrixScaling(size, size, size));
-		tmp = XMMatrixMultiply(tmp, XMMatrixTranslation(x, y, z));
-		XMStoreFloat4x4(&mat, tmp);
 		con->Map(constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &maps);
-		memcpy(maps.pData, &mat, sizeof(XMFLOAT4X4));
+		memcpy(maps.pData, &poselist.pose[i], sizeof(XMFLOAT4X4));
 		con->Unmap(constantBuffer.Get(), 0);
-
+		
 		con->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 		con->VSSetConstantBuffers(1, 1, constantBuffer.GetAddressOf());
 		con->DrawIndexed((UINT)index.size(), 0, 0);

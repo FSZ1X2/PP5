@@ -65,14 +65,16 @@ bool My3DSence::Initialize(HWND wnd)
 	theViewPort.Width = BACKBUFFER_WIDTH;
 
 	theContext->RSSetViewports(1, &theViewPort);
-
-	//fbxflie.LoadFBX("Teddy_Attack1.fbx");
-
+	FBXExportDATA fbxflie;
+	fbxflie.LoadFBX("Teddy_Attack1.fbx");
+	FBXExportDATA boxfile;
+	boxfile.LoadFBX("Box_Attack.fbx");
 	Shape::InitDevice(theDevice.Get(), theContext.Get());
 	Mesh::InitDevice(theDevice.Get(), theContext.Get());
 	Shader::InitDevice(theDevice.Get(), theContext.Get());
 	Joint::InitDevice(theDevice.Get(), theContext.Get());
 	Camera::InitDevice(theDevice.Get(), theContext.Get());
+	DrawLight::InitDevice(theDevice.Get(), theContext.Get());
 	SkyBox::InitDevice(theDevice.Get(), theContext.Get());
 	shader.Init();
 
@@ -95,30 +97,47 @@ bool My3DSence::Initialize(HWND wnd)
 	lightdesc.ByteWidth = sizeof(SpotLightConstantBuffer);
 	theDevice->CreateBuffer(&lightdesc, 0, lights.GetAddressOf());
 
+	lightdesc.ByteWidth = sizeof(XMFLOAT4);
+	theDevice->CreateBuffer(&lightdesc, 0, lightpcolor.GetAddressOf());
+
+	lightdesc.ByteWidth = sizeof(XMFLOAT4);
+	theDevice->CreateBuffer(&lightdesc, 0, lightscolor.GetAddressOf());
+
 ///////////////////////////////////////////////////////////////////////////////////////////
-	//"Box_Attack.bin"
 	skybox.initializeShape(1);
-	shape.initializeShape(100);
-	//mesh.initializeMesh(&fbxflie, 0.025);
-	mesh.initBinaryMesh("Box_Attack.bin");
-	bearMesh.initBinaryMesh("Teddy_Attack1.bin", 0.025);
-	//joint.initializeMesh(&fbxflie);
-	joint.initBinaryMesh("Box_Attack.bin");
-	bearJoint.initBinaryMesh("Teddy_Attack1.bin",10);
+	Plight.initializeLigtht();
+	Slight.initializeLigtht();
+	shape.initializeShape(10);
+	bear.initializeMesh(&fbxflie, 0.03f);
+	box.initializeMesh(&boxfile);
+	joint.initializeMesh(&fbxflie);
+	animate.initializeAnimation(&fbxflie,&joint);
 	camera.InitCamera();
 	camera.SetProjection(camera.DegreeToRadian(75), BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 0.01f, 1000.0f);
-	mesh.LoadTexture("TestCube.dds");
-	bearMesh.LoadTexture("Teddy_D.dds");
+
+	CreateDDSTextureFromFile(theDevice.Get(),L"TestCube.dds" ,nullptr, textureV.GetAddressOf());
+	CreateDDSTextureFromFile(theDevice.Get(), L"Teddy_D.dds", nullptr, textureB.GetAddressOf());
+
+	D3D11_SAMPLER_DESC sdesc = {};
+	sdesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sdesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sdesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	sdesc.Filter = D3D11_FILTER_ANISOTROPIC;
+	sdesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	sdesc.MaxLOD = D3D11_FLOAT32_MAX;
+	sdesc.MaxAnisotropy = D3D11_REQ_MAXANISOTROPY;
+	theDevice->CreateSamplerState(&sdesc, binsample.GetAddressOf());
 	return true;
 }
 
 bool My3DSence::run()
 {
+	float dt = (float)time.Delta();
 	theContext->OMSetRenderTargets(1, theRTV.GetAddressOf(), theDSV.Get());
 	theContext->RSSetViewports(1, &theViewPort);
 	theContext->ClearRenderTargetView(theRTV.Get(), Colors::CornflowerBlue);
 	theContext->ClearDepthStencilView(theDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-	camera.Update((float)time.Delta());
+	camera.Update(dt);
 	ID3D11ShaderResourceView* srv = { nullptr };
 	theContext->PSSetShaderResources(0, 1, &srv);
 
@@ -144,47 +163,51 @@ bool My3DSence::run()
 	ID3D11Buffer* cbs[] = { lightd.Get() , lightp.Get() , lights.Get() };
 	theContext->PSSetConstantBuffers(0, 3, cbs);
 
-	if (GetAsyncKeyState('9'))
-	{
-		renderBear = false;
-		renderBlock = true;
-	}
-	if (GetAsyncKeyState('0'))
-	{
-		renderBear = true;
-		renderBlock = false;
-	}
-	
-	//theContext->ClearDepthStencilView(theDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-	shader.SetCommonShader();
-	if (renderBlock)
-	{
-		joint.draw();
-	}
-	else if(renderBear)
-	{
-	bearJoint.draw(0.025);
-	}
+	shader.SetLightShader();
+
+	ahr = theContext->Map(lightpcolor.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &lightmapr);
+	memcpy(lightmapr.pData, &pcfd.Pcolor, sizeof(pcfd.Pcolor));
+	theContext->Unmap(lightpcolor.Get(), 0);
+	theContext->PSSetConstantBuffers(3, 1, lightpcolor.GetAddressOf());
+	Plight.TransModel(pcfd.Pointpos.x, pcfd.Pointpos.y, pcfd.Pointpos.z);
+	Plight.draw(); 
+
+	ahr = theContext->Map(lightscolor.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &lightmapr);
+	memcpy(lightmapr.pData, &scfd.Scolor, sizeof(scfd.Scolor));
+	theContext->Unmap(lightscolor.Get(), 0);
+	theContext->PSSetConstantBuffers(3, 1, lightscolor.GetAddressOf());
+	Slight.TransModel(scfd.Spotpos.x, scfd.Spotpos.y, scfd.Spotpos.z);
+	Slight.draw();
+
+	shader.SetCommonShader();	
+	animate.Interpolate(dt);
+	joint.draw();
 	shape.draw();
-	
+	//theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
+	//theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
 	shader.SetGroundShader();
-	mesh.setPos(joint.GetBindPose());
-	bearMesh.setPos(bearJoint.GetBindPose());
-	if (renderBlock)
+	//mesh.setPos(joint.GetBindPose());
+	if (renderBear)
 	{
-	mesh.draw();
-
+		theContext->PSSetShaderResources(0, 1, textureB.GetAddressOf());
+		theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
+		bear.draw();
 	}
-	else if(renderBear)
+	else
 	{
-
-	bearMesh.draw();
+		theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
+		theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
+		box.draw();
+	}
+	if (GetAsyncKeyState('9')&0x1)
+	{
+		renderBear = !renderBear;
 	}
 	shader.SetSkyBoxShader();
 	XMFLOAT4X4 camPos;
 	XMStoreFloat4x4(&camPos, camera.GetPos());
 	skybox.draw(camPos._41, camPos._42, camPos._43);
-	
+
 	/*D3D11_MAPPED_SUBRESOURCE mappedResource;
 	//ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 	//hr = theContext->Map(shadercombuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -210,18 +233,18 @@ Camera * My3DSence::GetCamera()
 //light stuff:
 void My3DSence::CreateDirectionalLight()
 {
-	dcfd.direction = { -5.0f,-2.0f,-3.0f,0.0f };
+	dcfd.direction = { -1.0f,-0.0f,0.0f,0.0f };
 	dcfd.Dcolor = { 0.5f,0.5f,0.5f,0.5f };
 }
 void My3DSence::CreatePointLight()
 {
-	pcfd.Pointpos = { 0.0f,0.0f,-1.0f,1.0f };
+	pcfd.Pointpos = { -3.3f,0.8f,-1.0f,1.0f };
 	pcfd.Pcolor = { 0.0f,1.0f,1.0f,0.0f };
 	pcfd.lightradius = { 5.0f,0.0f,0.0f,0.0f };
 }
 void My3DSence::CreateSpotLight()
 {
-	scfd.Spotpos = { 0.0f,2.0f,0.0f,1.0f };
+	scfd.Spotpos = { 2.6f,0.9f,0.0f,1.0f };
 	scfd.Scolor = { 1.0f,0.0f,0.0f,0.0f };
 	scfd.conedir = { 0.0f,-1.0f,0.0f,0.0f };
 	scfd.coneratio = { 0.8f,0.9f,0.0f,0.0f };

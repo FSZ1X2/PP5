@@ -7,7 +7,6 @@ private:
 	XMFLOAT4X4 proj;
 	WORD mouseX;
 	WORD mouseY;
-	BoundingFrustum frustum;
 	ComPtr<ID3D11Buffer> constantBuffer;
 	static ID3D11Device* dev;
 	static ID3D11DeviceContext* con;

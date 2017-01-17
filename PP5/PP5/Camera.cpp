@@ -13,8 +13,8 @@ void Camera::InitDevice(ID3D11Device * _dev, ID3D11DeviceContext * _con)
 Camera::Camera() : mouseX(0), mouseY(0)
 {
 	XMMATRIX view = XMMatrixIdentity();
-	view.r[3] = XMVectorSet(0, 4, 4, 1);
-	view = XMMatrixRotationX(0.5f) * XMMatrixRotationY(XM_PI) * view;
+	view.r[3] = XMVectorSet(0, 4, -4, 1);
+	//view = XMMatrixRotationX(0.5f) * XMMatrixRotationY(XM_PI) * view;
 	XMStoreFloat4x4(&transform, view);
 }
 
@@ -39,9 +39,6 @@ void Camera::SetProjection(float FOV, float width, float height, float nearZ, fl
 {
 	float aspectRatio = width / height;
 	XMStoreFloat4x4(&proj, XMMatrixPerspectiveFovLH(FOV, aspectRatio, nearZ, farZ));
-	BoundingFrustum::CreateFromMatrix(frustum, XMLoadFloat4x4(&proj));
-	
-	frustum.Transform(frustum, GetViewMatrixInverse());
 }
 
 void Camera::Update(float dt)

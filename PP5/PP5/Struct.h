@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include <ctime>
-#include <fstream>
 #include "XTime.h"
 using namespace std;
 #include <vector>
@@ -15,7 +14,7 @@ using namespace std;
 #include <DirectXCollision.h>
 #include <d3dcompiler.h>
 //#pragma comment (lib, "d3dcompiler.lib")
-#include "DDSTextureLoader.h"
+
 using namespace DirectX;
 
 #include<wrl.h>
@@ -25,7 +24,7 @@ using Microsoft::WRL::ComPtr;
 //#include "Trivial_PS.csh"
 
 #include "../FBXLoader/FBXExportDATA.h"
-FBX_API class FBXLoader;
+//FBX_API class FBXLoader;
 
 #define BACKBUFFER_WIDTH	1000
 #define BACKBUFFER_HEIGHT	1000
@@ -43,12 +42,12 @@ struct CameraConstantBuffer
 
 struct BindPosition
 {
-	XMFLOAT4X4 pos[37];
+	XMFLOAT4X4 pos[64];
 };
 
 struct PosList
 {
-	XMFLOAT4X4 pose[37];
+	XMFLOAT4X4 pose[64];
 };
 
 struct VertexPositionUVNormal
@@ -57,8 +56,14 @@ struct VertexPositionUVNormal
 	XMFLOAT3 normal;
 	XMFLOAT3 uv;
 	XMFLOAT4 tangent;
-	float blendWeight[37];
-	unsigned char blendIndices[37];
+	float blendWeight[4];
+	unsigned char blendIndices[4];
+};
+
+struct KeyFrame
+{
+	float time;
+	XMFLOAT4X4 pose;
 };
 
 struct DirectionalLightConstantBuffer

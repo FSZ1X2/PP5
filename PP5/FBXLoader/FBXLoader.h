@@ -1,7 +1,5 @@
 #pragma once
 #include <fbxsdk.h>
-#include <fstream>
-#include <string>
 #include "FBXExportDATA.h"
 //#include <d3d11.h>
 //#include <DirectXMath.h>
@@ -38,7 +36,7 @@ public:
 	{
 		XMFLOAT4X4 bindposinverse;
 	};	
-private:	
+private:
 	//std::vector<FBXTriangle> pOutVertexVector;
 	//std::vector<FBXJoint> pOutJoint;
 	//XMFLOAT4X4 transL;
@@ -49,15 +47,17 @@ public:
 	//FBXJoint* GetJoint() { return pOutJoint.data(); }
 	//UINT GetJointSize() { return pOutJoint.size(); }
 private:
-	static void ProcessNode(FbxNode* pNode, FBXExportDATA* sdata);
+	static void ProcessNode(FbxNode* pNode, FBXExportDATA* sdata, FbxScene* pScene);
 	static void ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata);
 	static void ProcessSkeleton(FbxNode* pNode, FBXExportDATA* sdata);
+	static void ProcessKeyframes(FBXExportDATA* sdata, FbxScene* pScene);
+	static void ProcessAnimation(FbxNode* pNode, FbxNode* parent,FbxAnimLayer* layer, FBXExportDATA* sdata);
 	static void ReadVertex(FbxMesh* pMesh, int ctrlPointIndex, XMFLOAT3* pVertex);
 	//void ReadColor(FbxMesh* pMesh, int ctrlPointIndex, int vertexCounter, XMFLOAT4* pColor);
 	static void ReadUV(FbxMesh* pMesh, int ctrlPointIndex, int textureUVIndex, int uvLayer, XMFLOAT3* pUV);
 	static void ReadNormal(FbxMesh* pMesh, int ctrlPointIndex, int vertexCounter, XMFLOAT3* pNormal);
 	static void ReadTangent(FbxMesh* pMesh, int ctrlPointIndex, int vertecCounter, XMFLOAT4* pTangent);
-	static void WriteBinary(FBXExportDATA* sdata, char* path);
+
 };
 	//extern FBX_API FBXLoader fbxflie;
 

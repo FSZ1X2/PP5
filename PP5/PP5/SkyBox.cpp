@@ -1,5 +1,5 @@
 #include "SkyBox.h"
-
+#include "DDSTextureLoader.h"
 
 ID3D11Device* SkyBox::dev = nullptr;
 ID3D11DeviceContext* SkyBox::con = nullptr;
