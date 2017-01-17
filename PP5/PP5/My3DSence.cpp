@@ -65,10 +65,10 @@ bool My3DSence::Initialize(HWND wnd)
 	theViewPort.Width = BACKBUFFER_WIDTH;
 
 	theContext->RSSetViewports(1, &theViewPort);
-	FBXExportDATA boxfile;
-	boxfile.LoadFBX("Box_Attack.fbx");
-	FBXExportDATA fbxflie;
-	fbxflie.LoadFBX("Teddy_Attack1.fbx");
+	//FBXExportDATA boxfile;
+	//boxfile.LoadFBX("Box_Attack.fbx");
+	//FBXExportDATA fbxflie;
+	//fbxflie.LoadFBX("Teddy_Attack1.fbx");
 	Shape::InitDevice(theDevice.Get(), theContext.Get());
 	Mesh::InitDevice(theDevice.Get(), theContext.Get());
 	Shader::InitDevice(theDevice.Get(), theContext.Get());
@@ -108,15 +108,19 @@ bool My3DSence::Initialize(HWND wnd)
 	Plight.initializeLigtht();
 	Slight.initializeLigtht();
 	shape.initializeShape(10);
+	bear.initBinaryMesh("Teddy_Attack1.bin", 0.15f);
+	//bear.initializeMesh(&fbxflie, 0.15f);
+	//box.initializeMesh(&boxfile);
+	box.initBinaryMesh("Box_Attack.bin");
+	//joint.initializeMesh(&boxfile);
+	//bearJoint.initializeMesh(&fbxflie);
+	joint.initBinaryMesh("Box_Attack.bin");
+	bearJoint.initBinaryMesh("Teddy_Attack1.bin");
 
-	bear.initializeMesh(&fbxflie, 0.15f);
-	box.initializeMesh(&boxfile);
-
-	joint.initializeMesh(&boxfile);
-	bearJoint.initializeMesh(&fbxflie);
-
-	animate.initializeAnimation(&boxfile, &joint);
-	bearAni.initializeAnimation(&fbxflie, &bearJoint);
+	//animate.initializeAnimation(&boxfile, &joint);
+	//bearAni.initializeAnimation(&fbxflie, &bearJoint);
+	animate.initializeBinaryAnimation("Box_Attack.bin", &joint);
+	bearAni.initializeBinaryAnimation("Teddy_Attack1.bin", &bearJoint);
 
 	camera.InitCamera();
 	camera.SetProjection(camera.DegreeToRadian(75), BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 0.01f, 1000.0f);

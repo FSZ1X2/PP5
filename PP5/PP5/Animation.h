@@ -10,7 +10,8 @@ class Animation
 	float framerate_inv;
 	float currtime = 0.0f;
 public:
-	void initializeAnimation(FBXExportDATA * _fbxflie, Joint* _joint);
+	//void initializeAnimation(FBXExportDATA * _fbxflie, Joint* _joint);
+	void initializeBinaryAnimation(const char * path, Joint* _joint);
 	void sentToJoint();
 	void Interpolate(float delta);
 };

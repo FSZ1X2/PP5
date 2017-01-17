@@ -27,6 +27,7 @@ void FBXLoader::LoadFBX(char* path, FBXExportDATA* sdata)
 	}
 
 	ProcessKeyframes(sdata, pFbxScene);
+	WriteBinary(sdata, path);
 	vaildbone.clear();
 	FbxSdkManager->Destroy();
 }
@@ -650,3 +651,49 @@ void FBXLoader::ReadTangent(FbxMesh* pMesh, int ctrlPointIndex, int vertecCounte
 	pTangent->z *= -1;//change
 }
 
+void FBXLoader::WriteBinary(FBXExportDATA * sdata, char * path)
+{
+	std::string name = path;
+	name.replace(name.end() - 3, name.end(), "bin");
+	std::ofstream file(name, std::ios::binary);
+	UINT vsize = sdata->GetVertexSize();
+	file.write((char*)&vsize, sizeof(UINT));
+	
+	for (int i = 0; i < vsize; i++)
+	{
+		file.write((char*)&sdata->GetVertex()[i], sizeof(XMFLOAT3));
+		file.write((char*)&sdata->GetNormal()[i], sizeof(XMFLOAT3));
+		file.write((char*)&sdata->GetUv()[i], sizeof(XMFLOAT3));
+		file.write((char*)&sdata->GetTangent()[i], sizeof(XMFLOAT4));
+		file.write((char*)&sdata->GetIndex()[i], sizeof(XMINT4));
+		file.write((char*)&sdata->GetWeight()[i], sizeof(XMFLOAT4));
+
+	}
+	vsize = sdata->GetJointSize();
+	file.write((char*)&vsize, sizeof(UINT));
+	const XMFLOAT4X4* Joints = sdata->GetJoint();
+	for (int i = 0; i < vsize; i++)
+	{
+		XMFLOAT4X4 tmp = Joints[i];
+		file.write((char*)&tmp, sizeof(XMFLOAT4X4));
+	}
+	float tmp = sdata->GetAnimationTime();
+	file.write((char*)&tmp, sizeof(float));
+	tmp = sdata->GetFrameRate();
+	file.write((char*)&tmp, sizeof(float));
+	tmp = sdata->GetFrameRate_Inv();
+	file.write((char*)&tmp, sizeof(float));
+	vsize = sdata->keys.size();
+	file.write((char*)&vsize, sizeof(UINT));
+	for (int i = 0; i < vsize; i++)
+	{
+		UINT keynum = sdata->keys[i].size();
+		file.write((char*)&keynum, sizeof(UINT));
+		for (int j = 0; j < keynum; j++)
+		{
+			file.write((char*)&sdata->keys[i][j], sizeof(XMFLOAT4X4));
+			file.write((char*)&sdata->keytime[i][j], sizeof(float));
+		}
+	}
+	file.close();
+}
