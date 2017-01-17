@@ -94,10 +94,6 @@ void SkyBox::initializeShape(float size)
 			sdesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 			sdesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 			sdesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-			//sdesc.Filter = D3D11_FILTER_ANISOTROPIC;
-			//sdesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-			//sdesc.MaxLOD = D3D11_FLOAT32_MAX;
-			//sdesc.MaxAnisotropy = D3D11_REQ_MAXANISOTROPY;
 			dev->CreateSamplerState(&sdesc, samp.GetAddressOf());
 }
 

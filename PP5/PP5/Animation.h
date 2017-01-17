@@ -11,7 +11,6 @@ class Animation
 	float currtime = 0.0f;
 	int totalKeyframes;
 public:
-	//void initializeAnimation(FBXExportDATA * _fbxflie, Joint* _joint);
 	void initializeBinaryAnimation(const char * path, Joint* _joint);
 	void sentToJoint(int _key);
 	void Interpolate(float delta);

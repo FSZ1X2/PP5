@@ -8,44 +8,6 @@ void Joint::InitDevice(ID3D11Device * _dev, ID3D11DeviceContext * _con)
 	con = _con;
 }
 
-//void Joint::initializeMesh(FBXExportDATA * fbxflie, float size)
-//{
-//	//XMStoreFloat4x4(&transform, XMMatrixIdentity()*size);
-//	//transform = fbxflie.transL;
-//	numOfJoint = fbxflie->GetJointSize();
-//
-//	for (unsigned int i = 0; i < numOfJoint; i++)
-//	{
-//		BindList.pos[i] = fbxflie->GetJoint()[i];
-//		//for (int row = 0; row < 4; row++)
-//		//{
-//		//	for (int col = 0; col < 4; col++)
-//		//	{
-//		//		BindList.pos[i].m[row][col] = (float)fbxflie.GetJoint()[i].bindposinverse.Get(row, col);
-//		//	}
-//		//}
-//	}
-//
-//	////vertexcount = TriangleVertexList.size();
-//	D3D11_BUFFER_DESC desc = {};
-//	//desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-//	//desc.ByteWidth = pointsforshere.size() * sizeof(VertexPositionUVNormal);
-//	//desc.StructureByteStride = sizeof(VertexPositionUVNormal);
-//	//desc.Usage = D3D11_USAGE_DEFAULT;
-//
-//	//D3D11_SUBRESOURCE_DATA source = {};
-//	//source.pSysMem = &pointsforshere[0];
-//	//dev->CreateBuffer(&desc, &source, vertexBuffer.GetAddressOf());
-//
-//	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-//	desc.ByteWidth = sizeof(XMFLOAT4X4) * 64;
-//	desc.StructureByteStride = 0;
-//	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-//	desc.Usage = D3D11_USAGE_DYNAMIC;
-//	dev->CreateBuffer(&desc, 0, constantBuffer.GetAddressOf());
-//	makesphere(0.3f, 6, 6);
-//}
-
 void Joint::initBinaryMesh(const char * path, float size, float x, float y, float z)
 {
 	ifstream file(path, ios::in | ios::binary | ios::ate);
@@ -105,23 +67,21 @@ void Joint::draw()
 
 	con->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
 	con->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//
-	/*for (int i = 0; i < 4; i++)
-	{*/
-		con->Map(constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &maps);
-		memcpy(maps.pData, &poselist, sizeof(XMFLOAT4X4) * numOfJoint);
-		con->Unmap(constantBuffer.Get(), 0);
-		
-		con->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-		con->VSSetConstantBuffers(2, 1, constantBuffer.GetAddressOf());
-		con->DrawIndexed((UINT)index.size(), 0, 0);
-	//}
+
+	con->Map(constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &maps);
+	memcpy(maps.pData, &poselist, sizeof(XMFLOAT4X4) * numOfJoint);
+	con->Unmap(constantBuffer.Get(), 0);
+	
+	con->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	con->VSSetConstantBuffers(2, 1, constantBuffer.GetAddressOf());
+	con->DrawIndexed((UINT)index.size(), 0, 0);
+
 	
 	////D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP
 	////D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 	
 }
-//
+
 void Joint::makesphere(float rad, int slice, int segment)
 {
 	float stepY = XM_PI / segment;

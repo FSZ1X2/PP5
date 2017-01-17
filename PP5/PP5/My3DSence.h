@@ -20,20 +20,11 @@ class My3DSence
 	ComPtr<ID3D11Texture2D> depthBuff;
 	ComPtr<ID3D11ShaderResourceView> textureV;
 	ComPtr<ID3D11ShaderResourceView> textureB;
-	//ComPtr<ID3D11Texture2D> texture;
+
 	ComPtr<ID3D11SamplerState> binsample;
 	
-	//ComPtr<ID3D11View> theview;
-	//ComPtr<ID3D11Debug> theDebug ;
 	ComPtr<ID3D11Texture2D> textBuff;
 	HRESULT hr;
-
-	//ID3D11Buffer* g_pConstantBuffer;
-	//XMMATRIX g_World;
-	//XMMATRIX g_View;
-	//XMMATRIX g_Projection;
-	//ID3D11Buffer *theVram;
-	//ID3D11Buffer *theGridBuffer;
 
 	ComPtr<ID3D11Buffer> lightd;
 	ComPtr<ID3D11Buffer> lightp;

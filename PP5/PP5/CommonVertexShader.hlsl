@@ -7,8 +7,6 @@ struct INPUT_VERTEX
 	float4 tangent          : TANGENT;
 	float4 weight           : WEIGHT;
 	uint4 indices	        : INDEX;
-	/*float4 blendWeights 	: BLENDWEIGHT0;
-	uint4  boneIndices		: BLENDINDICES0;*/
 };
 
 struct OUTPUT_VERTEX
@@ -22,10 +20,6 @@ struct OUTPUT_VERTEX
 // TODO: PART 3 STEP 2a
 cbuffer CC_VRAM : register(b0)
 {
-	/*float4 constantColor;
-	matrix World;
-	matrix View;
-	matrix Projection;*/
 	float4x4 view;
 	float4x4 proj;
 	float4x4 viewproj;

@@ -65,10 +65,6 @@ bool My3DSence::Initialize(HWND wnd)
 	theViewPort.Width = BACKBUFFER_WIDTH;
 
 	theContext->RSSetViewports(1, &theViewPort);
-	//FBXExportDATA boxfile;
-	//boxfile.LoadFBX("Box_Attack.fbx");
-	//FBXExportDATA fbxflie;
-	//fbxflie.LoadFBX("Teddy_Attack1.fbx");
 	Shape::InitDevice(theDevice.Get(), theContext.Get());
 	Mesh::InitDevice(theDevice.Get(), theContext.Get());
 	Shader::InitDevice(theDevice.Get(), theContext.Get());
@@ -108,17 +104,13 @@ bool My3DSence::Initialize(HWND wnd)
 	Plight.initializeLigtht();
 	Slight.initializeLigtht();
 	shape.initializeShape(10);
+
 	bear.initBinaryMesh("Teddy_Attack1.bin", 0.15f);
-	//bear.initializeMesh(&fbxflie, 0.15f);
-	//box.initializeMesh(&boxfile);
 	box.initBinaryMesh("Box_Attack.bin");
-	//joint.initializeMesh(&boxfile);
-	//bearJoint.initializeMesh(&fbxflie);
+
 	joint.initBinaryMesh("Box_Attack.bin");
 	bearJoint.initBinaryMesh("Teddy_Attack1.bin");
 
-	//animate.initializeAnimation(&boxfile, &joint);
-	//bearAni.initializeAnimation(&fbxflie, &bearJoint);
 	animate.initializeBinaryAnimation("Box_Attack.bin", &joint);
 	bearAni.initializeBinaryAnimation("Teddy_Attack1.bin", &bearJoint);
 
@@ -152,23 +144,17 @@ bool My3DSence::run()
 	theContext->PSSetShaderResources(0, 1, &srv);
 
 	UpdataLight(0.005f);
-	//theContext->UpdateSubresource(lightd.Get(), 0, 0, &dcfd, 0, 0);
-	//theContext->UpdateSubresource(lightp.Get(), 0, 0, &pcfd, 0, 0);
-	//theContext->UpdateSubresource(lights.Get(), 0, 0, &scfd, 0, 0);
 	D3D11_MAPPED_SUBRESOURCE lightmapr = {};
 	HRESULT ahr = theContext->Map(lightd.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &lightmapr);
 	memcpy(lightmapr.pData, &dcfd, sizeof(dcfd));
-	//lightmapr.pData = &dcfd;
 	theContext->Unmap(lightd.Get(), 0);
 
 	ahr = theContext->Map(lightp.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &lightmapr);
 	memcpy(lightmapr.pData, &pcfd, sizeof(pcfd));
-	//lightmapr.pData = &pcfd;
 	theContext->Unmap(lightp.Get(), 0);
 
 	ahr = theContext->Map(lights.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &lightmapr);
 	memcpy(lightmapr.pData, &scfd, sizeof(scfd));
-	//lightmapr.pData = &scfd;
 	theContext->Unmap(lights.Get(), 0);
 	ID3D11Buffer* cbs[] = { lightd.Get() , lightp.Get() , lights.Get() };
 	theContext->PSSetConstantBuffers(0, 3, cbs);
@@ -191,10 +177,8 @@ bool My3DSence::run()
 
 	shader.SetCommonShader();	
 	shape.draw();
-	//theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
-	//theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
+
 	shader.SetGroundShader();
-	//mesh.setPos(joint.GetBindPose());
 	theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
 	if (renderBear)
 	{
@@ -248,18 +232,6 @@ bool My3DSence::run()
 	XMStoreFloat4x4(&camPos, camera.GetPos());
 	skybox.draw(camPos._41, camPos._42, camPos._43);
 
-	/*D3D11_MAPPED_SUBRESOURCE mappedResource;
-	//ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
-	//hr = theContext->Map(shadercombuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	////memcpy(mappedResource.pData, &toShader, sizeof(toShader));
-	//theContext->Unmap(shadercombuffer, 0);
-
-	//theContext->VSSetConstantBuffers(0, 1, &shadercombuffer);
-
-	/*theContext->VSSetShader(vertexShader.Get(), NULL, 0);
-	theContext->PSSetShader(pixelShader.Get(), NULL, 0);
-
-	theContext->Draw(6, 0);*/
 	theSwapChain->Present(0, 0);
 	time.Signal();
 	return true;

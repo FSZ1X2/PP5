@@ -33,25 +33,6 @@ void DrawLight::initializeLigtht(float size)
 		{ XMFLOAT3( -0.1f, +0.1f, +0.1f), XMFLOAT3(0,1,0) , XMFLOAT3(0.0f, 0.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
 		{ XMFLOAT3(  0.1f, +0.1f, -0.1f), XMFLOAT3(0,1,0) , XMFLOAT3(1.0f, 1.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
 		{ XMFLOAT3(  0.1f, +0.1f, +0.1f), XMFLOAT3(0,1,0) , XMFLOAT3(1.0f, 0.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//pos, normal, uv, tagent, weight, indesic:
-		//{ XMFLOAT3(pos.x -0.5f, pos.y-0.5f, pos.z-0.5f), XMFLOAT3(-1,0,0), XMFLOAT3(0.0f, 0.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//{ XMFLOAT3(pos.x -0.5f, pos.y-0.5f, pos.z+0.5f), XMFLOAT3(-1,0,0), XMFLOAT3(0.0f, 1.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//{ XMFLOAT3(pos.x -0.5f, pos.y+0.5f, pos.z-0.5f), XMFLOAT3(-1,0,0), XMFLOAT3(1.0f, 0.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//{ XMFLOAT3(pos.x -0.5f, pos.y+0.5f, pos.z+0.5f), XMFLOAT3(-1,0,0), XMFLOAT3(1.0f, 1.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//{ XMFLOAT3(pos.x+0.5f,  pos.y-0.5f, pos.z-0.5f), XMFLOAT3(1,0,0) , XMFLOAT3(0.0f, 1.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//{ XMFLOAT3(pos.x+0.5f,  pos.y-0.5f, pos.z+0.5f), XMFLOAT3(1,0,0) , XMFLOAT3(0.0f, 0.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//{ XMFLOAT3(pos.x+0.5f,  pos.y+0.5f, pos.z-0.5f), XMFLOAT3(1,0,0) , XMFLOAT3(1.0f, 1.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//{ XMFLOAT3(pos.x+0.5f,  pos.y+0.5f, pos.z+0.5f), XMFLOAT3(1,0,0) , XMFLOAT3(1.0f, 0.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//									    			  							 
-		//{ XMFLOAT3(pos.x -0.5f, pos.y-0.5f, pos.z-0.5f), XMFLOAT3(0,-1,0), XMFLOAT3(0.0f, 1.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//{ XMFLOAT3(pos.x -0.5f, pos.y-0.5f, pos.z+0.5f), XMFLOAT3(0,-1,0), XMFLOAT3(0.0f, 0.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//{ XMFLOAT3(pos.x+0.5f,  pos.y-0.5f, pos.z-0.5f), XMFLOAT3(0,-1,0), XMFLOAT3(1.0f, 1.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//{ XMFLOAT3(pos.x+0.5f,  pos.y-0.5f, pos.z+0.5f), XMFLOAT3(0,-1,0), XMFLOAT3(1.0f, 0.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//						 			    			  							 
-		//{ XMFLOAT3(pos.x -0.5f, pos.y+0.5f, pos.z-0.5f), XMFLOAT3(0,1,0) , XMFLOAT3(0.0f, 1.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//{ XMFLOAT3(pos.x -0.5f, pos.y+0.5f, pos.z+0.5f), XMFLOAT3(0,1,0) , XMFLOAT3(0.0f, 0.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//{ XMFLOAT3(pos.x+0.5f,  pos.y+0.5f, pos.z-0.5f), XMFLOAT3(0,1,0) , XMFLOAT3(1.0f, 1.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
-		//{ XMFLOAT3(pos.x+0.5f,  pos.y+0.5f, pos.z+0.5f), XMFLOAT3(0,1,0) , XMFLOAT3(1.0f, 0.0f, 0.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f,0.0f), { 0.25f,0.25f ,0.25f ,0.25f },{ 0,0,0,0 }},
 	};
 
 	static const unsigned int BoxIndex[] =

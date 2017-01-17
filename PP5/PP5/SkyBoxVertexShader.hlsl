@@ -1,10 +1,6 @@
 #pragma pack_matrix(row_major)
 cbuffer CC_VRAM : register(b0)
 {
-	/*float4 constantColor;
-	matrix World;
-	matrix View;
-	matrix Projection;*/
 	float4x4 view;
 	float4x4 proj;
 	float4x4 viewproj;

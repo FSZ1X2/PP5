@@ -1,36 +1,9 @@
 #include "Animation.h"
 #include "Joint.h"
 
-//void Animation::initializeAnimation(FBXExportDATA * _fbxflie, Joint* _joint)
-//{
-//	joint = _joint;
-//	totaltime = _fbxflie->GetAnimationTime();
-//	framerate = _fbxflie->GetFrameRate();
-//	framerate_inv = _fbxflie->GetFrameRate_Inv();
-//	//KeyFrame newFrames;
-//	int num = _fbxflie->keys.size();
-//	for (int i = 0; i < num; i++)
-//	{
-//		std::vector<KeyFrame> frames;
-//		int numOfKeyFrames = _fbxflie->keys[i].size();
-//		for (int j = 0; j < numOfKeyFrames; j++)
-//		{
-//			KeyFrame newFrames;
-//			newFrames.pose = _fbxflie->keys[i][j];
-//			newFrames.time = _fbxflie->keytime[i][j];
-//			frames.push_back(newFrames);
-//		}
-//		keyframes.push_back(frames);
-//	}
-//}
-
 void Animation::initializeBinaryAnimation(const char * path, Joint * _joint)
 {
 	joint = _joint;
-	//totaltime = _fbxflie->GetAnimationTime();
-	//framerate = _fbxflie->GetFrameRate();
-	//framerate_inv = _fbxflie->GetFrameRate_Inv();
-	//int num = _fbxflie->keys.size();
 	ifstream file(path, ios::in | ios::binary | ios::ate);
 	file.seekg(0, ios::beg);
 	UINT num;
@@ -64,14 +37,14 @@ void Animation::initializeBinaryAnimation(const char * path, Joint * _joint)
 	file.read((char*)&framerate, sizeof(float));
 	file.read((char*)&framerate_inv, sizeof(float));
 	file.read((char*)&num, sizeof(UINT));
-	for (int i = 0; i < num; i++)
+	for (int i = 0; i < (int)num; i++)
 	{
 		std::vector<KeyFrame> frames;
 		//int numOfKeyFrames = _fbxflie->keys[i].size();
 		UINT numOfKeyFrames;
 		file.read((char*)&numOfKeyFrames, sizeof(UINT));
 		totalKeyframes = numOfKeyFrames;
-		for (int j = 0; j < numOfKeyFrames; j++)
+		for (int j = 0; j < (int)numOfKeyFrames; j++)
 		{
 			KeyFrame newFrames;
 			//newFrames.pose = _fbxflie->keys[i][j];
@@ -88,7 +61,7 @@ void Animation::initializeBinaryAnimation(const char * path, Joint * _joint)
 void Animation::sentToJoint(int _key)
 {
 	PosList list;
-	for (int i = 0; i < keyframes.size(); i++)
+	for (int i = 0; i < (int)keyframes.size(); i++)
 	{
 		XMMATRIX m0;
 		m0 = XMLoadFloat4x4(&keyframes[i][_key].pose);
@@ -100,7 +73,7 @@ void Animation::sentToJoint(int _key)
 void Animation::Interpolate(float delta)
 {
 	PosList list;
-	for (int i = 0; i < keyframes.size(); i++)
+	for (int i = 0; i < (int)keyframes.size(); i++)
 	{
 		XMVECTOR trans, rot, scale;
 		XMVECTOR trans1, rot1, scale1;
@@ -111,7 +84,7 @@ void Animation::Interpolate(float delta)
 		{
 			while (1)
 			{
-				if (key + 1 >= keyframes[i].size())
+				if (key + 1 >= (int)keyframes[i].size())
 				{
 					key = 0;
 					currtime = 0;

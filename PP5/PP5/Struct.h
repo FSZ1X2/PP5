@@ -20,12 +20,6 @@ using namespace DirectX;
 
 #include<wrl.h>
 using Microsoft::WRL::ComPtr;
-//
-//#include "Trivial_VS.csh"
-//#include "Trivial_PS.csh"
-
-//#include "../FBXLoader/FBXExportDATA.h"
-//FBX_API class FBXLoader;
 
 #define BACKBUFFER_WIDTH	1000
 #define BACKBUFFER_HEIGHT	1000
@@ -37,8 +31,6 @@ struct CameraConstantBuffer
 	XMFLOAT4X4 view;
 	XMFLOAT4X4 projection;
 	XMFLOAT4X4 viewProj;
-	//XMFLOAT4X4 lightViewMatrix;
-	//XMFLOAT4X4 lightProjectionMatrix;
 };
 
 struct BindPosition
