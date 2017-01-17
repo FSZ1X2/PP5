@@ -1,4 +1,0 @@
-﻿  FBXLoader.cpp
-c:\users\susud\desktop\pp5\milestone2\animation\pp5\fbxloader\fbxloader.cpp(304): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  FBXLoader.vcxproj -> C:\Users\susud\Desktop\PP5\Milestone2\Animation\PP5\Debug\FBXLoader.dll
-  FBXLoader.vcxproj -> C:\Users\susud\Desktop\PP5\Milestone2\Animation\PP5\Debug\FBXLoader.pdb (Full PDB)
