@@ -195,20 +195,49 @@ bool My3DSence::run()
 	if (renderBear)
 	{
 		theContext->PSSetShaderResources(0, 1, textureB.GetAddressOf());
-		bearAni.Interpolate(dt*0.5f);
+		if (isLoopAnimation)
+			bearAni.Interpolate(dt*0.5f);
+		else
+		{
+			if (frameBear < bearAni.GetTotalKeyframes())
+				bearAni.sentToJoint(frameBear);
+			else
+				frameBear = 0;
+		}
 		bearJoint.draw();
 		bear.draw();
 	}
 	else
 	{
 		theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
-		animate.Interpolate(dt);
+		if (isLoopAnimation)
+			animate.Interpolate(dt);
+		else
+		{
+			if (frameBox < animate.GetTotalKeyframes() - 1)
+				animate.sentToJoint(frameBox);
+			else
+				frameBox = 1;
+		}
 		joint.draw();
 		box.draw();
+	}
+	if (GetAsyncKeyState('8') & 0x1)
+	{
+		frameBear++;
+		frameBox++;
+	}
+	if (GetAsyncKeyState('0') & 0x1)
+	{
+		isLoopAnimation = !isLoopAnimation;
+		frameBear = 0;
+		frameBox = 1;
 	}
 	if (GetAsyncKeyState('9')&0x1)
 	{
 		renderBear = !renderBear;
+		frameBear = 0;
+		frameBox = 1;
 	}
 	shader.SetSkyBoxShader();
 	XMFLOAT4X4 camPos;

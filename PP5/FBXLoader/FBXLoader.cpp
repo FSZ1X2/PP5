@@ -225,87 +225,6 @@ void FBXLoader::ProcessSkeleton(FbxNode* pNode, FBXExportDATA* sdata)
 
 void FBXLoader::ProcessKeyframes(FBXExportDATA * sdata, FbxScene* pScene)
 {
-	//int numAnimations = pScene->GetSrcObjectCount();
-	//for (int animationIndex = 0; animationIndex < numAnimations; animationIndex++)
-	//{
-	//	FbxAnimStack *animStack = pScene->GetSrcObject<FbxAnimStack>(animationIndex);
-	//	//FbxAnimEvaluator *animEvaluator = pScene->GetAnimationEvaluator();
-	//	animStack->GetName();
-	//	XMFLOAT3 scaling;
-	//	XMFLOAT4 rotation;
-	//	XMFLOAT3 translation;
-	//	int numLayers = animStack->GetMemberCount();
-	//	for (int layerIndex = 0; layerIndex < numLayers; layerIndex++)
-	//	{
-	//		FbxAnimLayer *animLayer = (FbxAnimLayer*)animStack->GetMember(layerIndex);
-	//		animLayer->GetName();
-	//		FbxAnimCurve *translationCurve = pNode->LclTranslation.GetCurve(animLayer);
-	//		FbxAnimCurve *rotationCurve = pNode->LclRotation.GetCurve(animLayer);
-	//		FbxAnimCurve *scalingCurve = pNode->LclScaling.GetCurve(animLayer);
-	//		if (scalingCurve != 0)
-	//		{
-	//			int numKeys = scalingCurve->KeyGetCount();
-	//			for (int keyIndex = 0; keyIndex < numKeys; keyIndex++)
-	//			{
-	//				FbxTime frameTimeS = scalingCurve->KeyGetTime(keyIndex);
-	//				FbxDouble3 scalingVector = pNode->EvaluateLocalScaling(frameTimeS);
-	//				scaling.x = (float)scalingVector[0];
-	//				scaling.y = (float)scalingVector[1];
-	//				scaling.z = (float)scalingVector[2];
-	//				float frameSecondsS = (float)frameTimeS.GetSecondDouble();
-	//			}
-	//		}
-	//		else
-	//		{
-	//			FbxDouble3 scalingVector = pNode->LclScaling.Get();
-	//			scaling.x = (float)scalingVector[0];
-	//			scaling.y = (float)scalingVector[1];
-	//			scaling.z = (float)scalingVector[2];
-	//		}
-	//		if (rotationCurve != 0)
-	//		{
-	//			int numKeyr = rotationCurve->KeyGetCount();
-	//			for (int keyIndex = 0; keyIndex < numKeyr; keyIndex++)
-	//			{
-	//				FbxTime frameTimeR = rotationCurve->KeyGetTime(keyIndex);
-	//				FbxDouble4 rotationVector = pNode->EvaluateLocalRotation(frameTimeR);
-	//				rotation.x = (float)rotationVector[0];
-	//				rotation.y = (float)rotationVector[1];
-	//				rotation.z = (float)rotationVector[2];
-	//				rotation.w = (float)rotationVector[3];
-	//				float frameSecondsR = (float)frameTimeR.GetSecondDouble();
-	//			}
-	//		}
-	//		else
-	//		{
-	//			FbxDouble4 rotationVector = pNode->LclRotation.GetCurve(animLayer);
-	//			rotation.x = (float)rotationVector[0];
-	//			rotation.y = (float)rotationVector[1];
-	//			rotation.z = (float)rotationVector[2];
-	//			rotation.w = (float)rotationVector[3];
-	//		}
-	//		if (translationCurve != 0)
-	//		{
-	//			int numKeyt = translationCurve->KeyGetCount();
-	//			for (int keyIndex = 0; keyIndex < numKeyt; keyIndex++)
-	//			{
-	//				FbxTime frameTimeT = translationCurve->KeyGetTime(keyIndex);
-	//				FbxDouble3 translationVector = pNode->EvaluateLocalScaling(frameTimeT);
-	//				translation.x = (float)translationVector[0];
-	//				translation.y = (float)translationVector[1];
-	//				translation.z = (float)translationVector[2];
-	//				float frameSecondsT = (float)frameTimeT.GetSecondDouble();
-	//			}
-	//		}
-	//		else
-	//		{
-	//			FbxDouble3 translationVector = pNode->LclTranslation.Get();
-	//			translation.x = (float)translationVector[0];
-	//			translation.y = (float)translationVector[1];
-	//			translation.z = (float)translationVector[2];
-	//		}
-	//	}
-	//}
 	FbxTime::EMode timemode = pScene->GetGlobalSettings().GetTimeMode();
 	float framerate = (float)FbxTime::GetFrameRate(timemode);
 	sdata->SetFrameRate(framerate);
@@ -327,7 +246,7 @@ void FBXLoader::ProcessKeyframes(FBXExportDATA * sdata, FbxScene* pScene)
 		{
 			FbxAnimLayer* layer = stack->GetMember<FbxAnimLayer>(layerIndex);
 
-			ProcessAnimation(pNode,nullptr, layer, sdata);
+			ProcessAnimation(pNode, nullptr, layer, sdata);
 		}
 	}
 }
@@ -345,6 +264,7 @@ void FBXLoader::ProcessAnimation(FbxNode * pNode, FbxNode* parent, FbxAnimLayer 
 				std::vector<float> framestime;
 				std::vector<XMFLOAT4X4> keys;
 				int totalFrame = std::ceilf(sdata->GetAnimationTime() * sdata->GetFrameRate()) + 1;
+				
 				for (int i = 0; i < totalFrame; i++)
 				{
 					float keytime = i * sdata->GetFrameRate_Inv();

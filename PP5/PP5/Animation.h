@@ -9,9 +9,12 @@ class Animation
 	float framerate;
 	float framerate_inv;
 	float currtime = 0.0f;
+	int totalKeyframes;
 public:
 	void initializeAnimation(FBXExportDATA * _fbxflie, Joint* _joint);
-	void sentToJoint();
+	void sentToJoint(int _key);
 	void Interpolate(float delta);
+
+	int GetTotalKeyframes() { return totalKeyframes; };
 };
 

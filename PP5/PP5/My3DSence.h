@@ -62,6 +62,9 @@ class My3DSence
 	//ID3D11Buffer *shadercombuffer = nullptr;
 	//ID3D11Buffer *gridConstBuffer = nullptr;
 	bool renderBear = false;
+	bool isLoopAnimation = false;
+	int frameBear = 0;
+	int frameBox = 1;
 	
 
 	void CreateDirectionalLight();

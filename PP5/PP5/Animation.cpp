@@ -13,6 +13,7 @@ void Animation::initializeAnimation(FBXExportDATA * _fbxflie, Joint* _joint)
 	{
 		std::vector<KeyFrame> frames;
 		int numOfKeyFrames = _fbxflie->keys[i].size();
+		totalKeyframes = numOfKeyFrames;
 		for (int j = 0; j < numOfKeyFrames; j++)
 		{
 			KeyFrame newFrames;
@@ -24,8 +25,16 @@ void Animation::initializeAnimation(FBXExportDATA * _fbxflie, Joint* _joint)
 	}
 }
 
-void Animation::sentToJoint()
+void Animation::sentToJoint(int _key)
 {
+	PosList list;
+	for (int i = 0; i < keyframes.size(); i++)
+	{
+		XMMATRIX m0;
+		m0 = XMLoadFloat4x4(&keyframes[i][_key].pose);
+		XMStoreFloat4x4(&list.pose[i], XMLoadFloat4x4(&joint->BindList.pos[i])  * m0);
+	}
+	joint->poselist = list;
 }
 
 void Animation::Interpolate(float delta)

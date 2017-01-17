@@ -1,5 +1,11 @@
 
 FBX SDK: 2016.1.1 vs2015
+RUN IN x86
+
+Animation Control:
+8 for each frame
+9 for switch model
+0 for let the animation loop
 
 CAMERA:
 
