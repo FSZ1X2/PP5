@@ -1,5 +1,59 @@
 ﻿  FBXLoader.cpp
-c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxloader.cpp(409): warning C4018: '<': signed/unsigned mismatch
-c:\users\josue\documents\github\pp5\pp5\fbxloader\fbxloader.cpp(426): warning C4018: '<': signed/unsigned mismatch
-  FBXLoader.vcxproj -> C:\Users\Josue\Documents\GitHub\PP5\PP5\Debug\FBXLoader.dll
-  FBXLoader.vcxproj -> C:\Users\Josue\Documents\GitHub\PP5\PP5\Debug\FBXLoader.pdb (Full PDB)
+c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxloader.cpp(409): warning C4018: '<': signed/unsigned mismatch
+c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxloader.cpp(426): warning C4018: '<': signed/unsigned mismatch
+  FBXExportDATA.cpp
+c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxexportdata.h(18): warning C4251: 'FBXExportDATA::Outvertex': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxexportdata.h(19): warning C4251: 'FBXExportDATA::Outnormal': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxexportdata.h(20): warning C4251: 'FBXExportDATA::Outuv': class 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+  c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxexportdata.h(18): note: see declaration of 'std::vector<DirectX::XMFLOAT3,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT3
+          ]
+c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxexportdata.h(21): warning C4251: 'FBXExportDATA::Outtangent': class 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+  c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxexportdata.h(21): note: see declaration of 'std::vector<DirectX::XMFLOAT4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4
+          ]
+c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxexportdata.h(22): warning C4251: 'FBXExportDATA::OutJoint': class 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'FBXExportDATA'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  c:\users\susud\desktop\pp5\milestone2\pp5\pp5\fbxloader\fbxexportdata.h(22): note: see declaration of 'std::vector<DirectX::XMFLOAT4X4,std::allocator<_Ty>>'
+          with
+          [
+              _Ty=DirectX::XMFLOAT4X4
+          ]
+  Generating Code...
+  LINK : C:\Users\susud\Desktop\PP5\Milestone2\PP5\PP5\Debug\FBXLoader.dll not found or not built by the last incremental link; performing full link
+     Creating library C:\Users\susud\Desktop\PP5\Milestone2\PP5\PP5\Debug\FBXLoader.lib and object C:\Users\susud\Desktop\PP5\Milestone2\PP5\PP5\Debug\FBXLoader.exp
+  FBXLoader.vcxproj -> C:\Users\susud\Desktop\PP5\Milestone2\PP5\PP5\Debug\FBXLoader.dll
+  FBXLoader.vcxproj -> C:\Users\susud\Desktop\PP5\Milestone2\PP5\PP5\Debug\FBXLoader.pdb (Full PDB)
