@@ -40,7 +40,7 @@ void Mesh::initBinaryMesh(const char * path, float size, float x, float y, float
 
 		TriangleVertexList.push_back(vertex1);
 	}
-
+	file.close();
 	vertexcount = TriangleVertexList.size();
 
 	D3D11_BUFFER_DESC desc = {};
