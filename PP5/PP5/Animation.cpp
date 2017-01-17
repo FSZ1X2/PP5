@@ -1,28 +1,88 @@
 #include "Animation.h"
 #include "Joint.h"
 
-void Animation::initializeAnimation(FBXExportDATA * _fbxflie, Joint* _joint)
+//void Animation::initializeAnimation(FBXExportDATA * _fbxflie, Joint* _joint)
+//{
+//	joint = _joint;
+//	totaltime = _fbxflie->GetAnimationTime();
+//	framerate = _fbxflie->GetFrameRate();
+//	framerate_inv = _fbxflie->GetFrameRate_Inv();
+//	//KeyFrame newFrames;
+//	int num = _fbxflie->keys.size();
+//	for (int i = 0; i < num; i++)
+//	{
+//		std::vector<KeyFrame> frames;
+//		int numOfKeyFrames = _fbxflie->keys[i].size();
+//		for (int j = 0; j < numOfKeyFrames; j++)
+//		{
+//			KeyFrame newFrames;
+//			newFrames.pose = _fbxflie->keys[i][j];
+//			newFrames.time = _fbxflie->keytime[i][j];
+//			frames.push_back(newFrames);
+//		}
+//		keyframes.push_back(frames);
+//	}
+//}
+
+void Animation::initializeBinaryAnimation(const char * path, Joint * _joint)
 {
 	joint = _joint;
-	totaltime = _fbxflie->GetAnimationTime();
-	framerate = _fbxflie->GetFrameRate();
-	framerate_inv = _fbxflie->GetFrameRate_Inv();
-	//KeyFrame newFrames;
-	int num = _fbxflie->keys.size();
+	//totaltime = _fbxflie->GetAnimationTime();
+	//framerate = _fbxflie->GetFrameRate();
+	//framerate_inv = _fbxflie->GetFrameRate_Inv();
+	//int num = _fbxflie->keys.size();
+	ifstream file(path, ios::in | ios::binary | ios::ate);
+	file.seekg(0, ios::beg);
+	UINT num;
+	file.read((char*)&num, sizeof(UINT));
+	std::vector<VertexPositionUVNormal> TriangleVertexList;
+
+	for (unsigned int i = 0; i < num; i++)
+	{
+		VertexPositionUVNormal vertex1;
+		file.read((char*)&vertex1.pos, sizeof(XMFLOAT3));
+
+		file.read((char*)&vertex1.normal, sizeof(XMFLOAT3));
+
+		file.read((char*)&vertex1.uv, sizeof(XMFLOAT3));
+
+		file.read((char*)&vertex1.tangent, sizeof(XMFLOAT4));
+		file.read((char*)&vertex1.blendIndices, sizeof(XMINT4));
+		file.read((char*)&vertex1.blendWeight, sizeof(XMFLOAT4));
+	}
+
+	file.read((char*)&num, sizeof(UINT));
+	BindPosition BindList;
+	//file.read((char*)&BindList.pos, sizeof(XMFLOAT4));
+	for (unsigned int i = 0; i < num; i++)
+	{
+		file.read((char*)&BindList.pos[i], sizeof(XMFLOAT4X4));
+	}
+
+
+	file.read((char*)&totaltime, sizeof(float));
+	file.read((char*)&framerate, sizeof(float));
+	file.read((char*)&framerate_inv, sizeof(float));
+	file.read((char*)&num, sizeof(UINT));
 	for (int i = 0; i < num; i++)
 	{
 		std::vector<KeyFrame> frames;
-		int numOfKeyFrames = _fbxflie->keys[i].size();
+		//int numOfKeyFrames = _fbxflie->keys[i].size();
+		UINT numOfKeyFrames;
+		file.read((char*)&numOfKeyFrames, sizeof(UINT));
 		totalKeyframes = numOfKeyFrames;
 		for (int j = 0; j < numOfKeyFrames; j++)
 		{
 			KeyFrame newFrames;
-			newFrames.pose = _fbxflie->keys[i][j];
-			newFrames.time = _fbxflie->keytime[i][j];
+			//newFrames.pose = _fbxflie->keys[i][j];
+			//newFrames.time = _fbxflie->keytime[i][j];
+			file.read((char*)&newFrames.pose, sizeof(XMFLOAT4X4));
+			file.read((char*)&newFrames.time, sizeof(float));
 			frames.push_back(newFrames);
 		}
 		keyframes.push_back(frames);
 	}
+	file.close();
 }
 
 void Animation::sentToJoint(int _key)

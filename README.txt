@@ -36,3 +36,7 @@ LIGHTS:
 	(I,K) for Z axis
 	(J,L) for X axis
 	(U, O) for Y axis
+
+SWITCH MODEL:
+
+Press 9 to switch model

@@ -4,6 +4,7 @@
 #include "XTime.h"
 using namespace std;
 #include <vector>
+#include <fstream>
 
 #include <d3d11.h>
 #pragma comment (lib, "d3d11.lib")
@@ -23,7 +24,7 @@ using Microsoft::WRL::ComPtr;
 //#include "Trivial_VS.csh"
 //#include "Trivial_PS.csh"
 
-#include "../FBXLoader/FBXExportDATA.h"
+//#include "../FBXLoader/FBXExportDATA.h"
 //FBX_API class FBXLoader;
 
 #define BACKBUFFER_WIDTH	1000

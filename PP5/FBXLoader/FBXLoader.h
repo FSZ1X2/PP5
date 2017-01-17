@@ -2,6 +2,7 @@
 #include <fbxsdk.h>
 #include "FBXExportDATA.h"
 #include <set>
+#include <fstream>
 //#include <d3d11.h>
 //#include <DirectXMath.h>
 //#include <DirectXCollision.h>
@@ -96,7 +97,7 @@ private:
 	static void ReadUV(FbxMesh* pMesh, int ctrlPointIndex, int textureUVIndex, int uvLayer, XMFLOAT3* pUV);
 	static void ReadNormal(FbxMesh* pMesh, int ctrlPointIndex, int vertexCounter, XMFLOAT3* pNormal);
 	static void ReadTangent(FbxMesh* pMesh, int ctrlPointIndex, int vertecCounter, XMFLOAT4* pTangent);
-
+	static void WriteBinary(FBXExportDATA* sdata, char* path);
 };
 	//extern FBX_API FBXLoader fbxflie;
 
