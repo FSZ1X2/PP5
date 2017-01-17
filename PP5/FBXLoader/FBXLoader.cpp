@@ -1,4 +1,6 @@
 #include"FBXLoader.h"
+std::set<FbxNode*> FBXLoader::vaildbone;
+
 void FBXLoader::LoadFBX(char* path, FBXExportDATA* sdata)
 {
 	FbxManager* FbxSdkManager = nullptr;
@@ -25,6 +27,7 @@ void FBXLoader::LoadFBX(char* path, FBXExportDATA* sdata)
 	}
 
 	ProcessKeyframes(sdata, pFbxScene);
+	vaildbone.clear();
 	FbxSdkManager->Destroy();
 }
 
@@ -61,12 +64,26 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 	FbxMesh* pMesh = pNode->GetMesh();
 	if (pMesh == nullptr)
 		return;
+
+	int *boneVertexIndices;
+	double *boneVertexWeights;
+	int numBoneVertexIndices;
+
 	FbxSkin* skin = (FbxSkin*)pNode->GetMesh()->GetDeformer(0, FbxDeformer::eSkin);
 	int boneCount = skin->GetClusterCount();
+	int triangleCount = pMesh->GetPolygonCount();
+	int vertexCounter = 0;
+	FbxVector4* ctrlPoints = 0;
+	ctrlPoints = pMesh->GetControlPoints();
+	int cpcount = pMesh->GetControlPointsCount();
+	std::vector<JointInfluences> inf;
+	inf.resize(cpcount);
 	for (int boneIndex = 0; boneIndex < boneCount; boneIndex++)
 	{
 		FbxCluster* cluster = skin->GetCluster(boneIndex);
 		FbxNode* bone = cluster->GetLink();
+
+		vaildbone.insert(bone);
 
 		FbxAMatrix bindPoseMatrix;
 
@@ -90,22 +107,21 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 
 		int *boneVertexIndices = cluster->GetControlPointIndices();
 		double *boneVertexWeights = cluster->GetControlPointWeights();
-
 		int numBoneVertexIndices = cluster->GetControlPointIndicesCount();
+
+		
 		for (int boneVertexIndex = 0; boneVertexIndex < numBoneVertexIndices; boneVertexIndex++)
 		{
-			int BoneIndex = boneVertexIndices[boneVertexIndex];
+			int cpIndex = boneVertexIndices[boneVertexIndex];
 			float boneWeight = (float)boneVertexWeights[boneVertexIndex];
-			sdata->AddBoneIndex(BoneIndex);
-			sdata->AddWeight(boneWeight);
+			inf[cpIndex].influences.push_back(JointInfluence(cluster, boneIndex, boneWeight));
+			//sdata->AddBoneIndex(bIndex);
+			//sdata->AddWeight(bWeight);
 		}
 
 		sdata->AddJoint(newJoint);
 	}
-	int triangleCount = pMesh->GetPolygonCount();
-	int vertexCounter = 0;
-	FbxVector4* ctrlPoints = 0;
-	ctrlPoints = pMesh->GetControlPoints();
+	
 	for (int i = 0; i < triangleCount; ++i)
 	{
 		int polySize = pMesh->GetPolygonSize(i);
@@ -120,7 +136,11 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 			newTriangle.v[j].vertex.z = (float)ctrlPoints[ctrlPointIndex][2];
 			// Read the vertex  
 			//ReadVertex(pMesh, ctrlPointIndex, &newTriangle.v[j].vertex);
-
+			for (int iff = 0; iff < inf[ctrlPointIndex].influences.size(); iff++)
+			{
+				newTriangle.v[j].blendIndices.push_back(inf[ctrlPointIndex].influences[iff].jointindex);
+				newTriangle.v[j].blendWeight.push_back(inf[ctrlPointIndex].influences[iff].weight);
+			}
 			// Read the UV of each vertex  
 			for (int k = 0; k < 2; ++k)
 			{
@@ -135,7 +155,7 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 
 			vertexCounter++;
 		}
-		std::swap(newTriangle.v[1], newTriangle.v[2]);
+		//std::swap(newTriangle.v[1], newTriangle.v[2]);
 		/*XMVECTOR v0 = XMLoadFloat3(&newTriangle.v[0].vertex);
 		XMVECTOR v1 = XMLoadFloat3(&newTriangle.v[1].vertex);
 		XMVECTOR v2 = XMLoadFloat3(&newTriangle.v[2].vertex);
@@ -160,12 +180,28 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 		sdata->AddTangent(newTriangle.v[0].tangent);
 		sdata->AddTangent(newTriangle.v[1].tangent);
 		sdata->AddTangent(newTriangle.v[2].tangent);
+
+		
+
+		for (int ti = 0; ti < 3; ti++)
+		{
+			float bWeight[4] = { 0 };
+			int bIndex[4] = { 0 };
+			for (int bi = 0; bi < newTriangle.v[ti].blendIndices.size(); bi++)
+			{
+				bIndex[bi] = newTriangle.v[ti].blendIndices[bi];
+				bWeight[bi] = newTriangle.v[ti].blendWeight[bi];
+			}
+			sdata->AddBoneIndex(XMINT4(bIndex[0], bIndex[1], bIndex[2], bIndex[3]));
+			sdata->AddWeight(XMFLOAT4(bWeight[0], bWeight[1], bWeight[2], bWeight[3]));
+		}
 		//pOutVertexVector.push_back(newTriangle);
 	}
 }
 
 void FBXLoader::ProcessSkeleton(FbxNode* pNode, FBXExportDATA* sdata)
 {
+
 	//XMFLOAT4X4 newJoint;
 	//FbxMatrix newbindpose;
 	//
@@ -284,6 +320,7 @@ void FBXLoader::ProcessKeyframes(FBXExportDATA * sdata, FbxScene* pScene)
 		for (int layerIndex = 0; layerIndex < numLayer; layerIndex++)
 		{
 			FbxAnimLayer* layer = stack->GetMember<FbxAnimLayer>(layerIndex);
+
 			ProcessAnimation(pNode,nullptr, layer, sdata);
 		}
 	}
@@ -323,8 +360,11 @@ void FBXLoader::ProcessAnimation(FbxNode * pNode, FbxNode* parent, FbxAnimLayer 
 					}
 					keys.push_back(outm);
 				}
-				sdata->keytime.push_back(framestime);
-				sdata->keys.push_back(keys);
+				if (vaildbone.find(pNode) != vaildbone.end())
+				{
+					sdata->keytime.push_back(framestime);
+					sdata->keys.push_back(keys);
+				}
 			}
 		}
 	}

@@ -20,8 +20,8 @@ private:
 	std::vector<XMFLOAT3> Outuv;
 	std::vector<XMFLOAT4> Outtangent;
 	std::vector<XMFLOAT4X4> OutJoint;
-	std::vector<float> OutWeight;
-	std::vector<int> OutBoneIndex;
+	std::vector<XMFLOAT4> OutWeight;
+	std::vector<XMINT4> OutBoneIndex;
 	float framerate;
 	float framerate_inv;
 	float animationTime;
@@ -38,8 +38,8 @@ public:
 	void AddUv(const XMFLOAT3& uv);
 	void AddTangent(const XMFLOAT4& t);
 	void AddJoint(const XMFLOAT4X4& v);
-	void AddWeight(const float& v);
-	void AddBoneIndex(const int& v);
+	void AddWeight(const XMFLOAT4& v);
+	void AddBoneIndex(const XMINT4& v);
 	void SetFrameRate(const float& v);
 	void SetTotalTime(const float& v);
 
@@ -48,8 +48,8 @@ public:
 	const XMFLOAT3* GetUv()const;
 	const XMFLOAT4* GetTangent()const;
 	const XMFLOAT4X4* GetJoint()const;
-	const float* GetWeight()const;
-	const int* GetIndex()const;
+	const XMFLOAT4* GetWeight()const;
+	const XMINT4* GetIndex()const;
 	const float GetAnimationTime()const;
 	const float GetFrameRate()const;
 	const float GetFrameRate_Inv()const;

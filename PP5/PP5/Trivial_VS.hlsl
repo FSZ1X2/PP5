@@ -88,18 +88,21 @@ OUTPUT_VERTEX main(INPUT_VERTEX input)
 {
 	OUTPUT_VERTEX output = (OUTPUT_VERTEX)0;
 
-	float4x4 finalPos   = BoneOffset[0] * input.weight[0]
-						+ BoneOffset[1] * input.weight[1]
-						+ BoneOffset[2] * input.weight[2]
-						+ BoneOffset[3] * input.weight[3];
+	float4x4 finalPos   = BoneOffset[input.indices[0]] * input.weight[0]
+						+ BoneOffset[input.indices[1]] * input.weight[1]
+						+ BoneOffset[input.indices[2]] * input.weight[2]
+						+ BoneOffset[input.indices[3]] * input.weight[3];
 
-	//float4 coordinate = mul(float4(input.vertex,1), finalPos);
-	float4 coordinate = float4(input.vertex,1);
+	float4 coordinate = mul(float4(input.vertex,1), finalPos);
+
+	//float4 coordinate = float4(input.vertex,1);
 	coordinate = mul(coordinate, trans);
 	output.WorldPos = coordinate;
 
 	output.projectedCoordinate = mul(coordinate, viewproj);
-	output.normal = mul(input.normal, (float3x3)trans);
+
+	output.normal = mul(input.normal, (float3x3)finalPos);
+	output.normal = mul(output.normal, (float3x3)trans);
 	output.uv = input.uv;
 	//sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, View);
 	//sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, Projection);

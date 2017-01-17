@@ -27,75 +27,19 @@ void Mesh::initializeMesh(FBXExportDATA * fbxflie, float size)
 	{
 		VertexPositionUVNormal vertex1;
 		vertex1.pos = fbxflie->GetVertex()[i];
-		vertex1.pos.x *= -1;
-		//XMVECTOR v = XMLoadFloat3(&vertex1.pos);
-		//v = XMVector3TransformCoord(v, mFix);
-		//XMStoreFloat3(&vertex1.pos, v);
-		//vertex1.pos.y = fbxflie->Outvertex[i].y;
-		//vertex1.pos.z = fbxflie->Outvertex[i].z;
+		//vertex1.pos.x *= -1;
+
 		vertex1.normal = fbxflie->GetNormal()[i];
-		vertex1.normal.x *= -1;
-		//v = XMLoadFloat3(&vertex1.normal);
-		//v = XMVector3TransformCoord(v, mFix);
-		//XMStoreFloat3(&vertex1.normal, v);
-		//vertex1.normal.y = fbxflie->Outnormal[i].y;
-		//vertex1.normal.z = fbxflie->Outnormal[i].z;
+		//vertex1.normal.x *= -1;
+
 		vertex1.uv = fbxflie->GetUv()[i];
-		//vertex1.uv.y = fbxflie.GetVertex()[i].v[0].uv.y;
-		//vertex1.uv.z = 1.0f;
+
 		vertex1.tangent = fbxflie->GetTangent()[i];
-		//vertex1.tangent.y = fbxflie.GetVertex()[i].v[0].tangent.y;
-		//vertex1.tangent.z = fbxflie.GetVertex()[i].v[0].tangent.z;
-		//vertex1.tangent.w = 0.0f;
 
-		vertex1.blendWeight[0] = 0.25f;
-		vertex1.blendWeight[1] = 0.25f;
-		vertex1.blendWeight[2] = 0.25f;
-		vertex1.blendWeight[3] = 0.25f;
-
-		/*VertexPositionUVNormal vertex2;
-		vertex2.pos.x = fbxflie.GetVertex()[i].v[1].vertex.x;
-		vertex2.pos.y = fbxflie.GetVertex()[i].v[1].vertex.y;
-		vertex2.pos.z = fbxflie.GetVertex()[i].v[1].vertex.z;
-		vertex2.normal.x = fbxflie.GetVertex()[i].v[1].normal.x;
-		vertex2.normal.y = fbxflie.GetVertex()[i].v[1].normal.y;
-		vertex2.normal.z = fbxflie.GetVertex()[i].v[1].normal.z;
-		vertex2.uv.x = fbxflie.GetVertex()[i].v[1].uv.x;
-		vertex2.uv.y = fbxflie.GetVertex()[i].v[1].uv.y;
-		vertex2.uv.z = 1.0f;
-		vertex2.tangent.x = fbxflie.GetVertex()[i].v[1].tangent.x;
-		vertex2.tangent.y = fbxflie.GetVertex()[i].v[1].tangent.y;
-		vertex2.tangent.z = fbxflie.GetVertex()[i].v[1].tangent.z;
-		vertex2.tangent.w = 0.0f;
-
-		vertex2.blendWeight[0] = 0.25f;
-		vertex2.blendWeight[1] = 0.25f;
-		vertex2.blendWeight[2] = 0.25f;
-		vertex2.blendWeight[3] = 0.25f;
-
-		VertexPositionUVNormal vertex3;
-		vertex3.pos.x = fbxflie.GetVertex()[i].v[2].vertex.x;
-		vertex3.pos.y = fbxflie.GetVertex()[i].v[2].vertex.y;
-		vertex3.pos.z = fbxflie.GetVertex()[i].v[2].vertex.z;
-		vertex3.normal.x = fbxflie.GetVertex()[i].v[2].normal.x;
-		vertex3.normal.y = fbxflie.GetVertex()[i].v[2].normal.y;
-		vertex3.normal.z = fbxflie.GetVertex()[i].v[2].normal.z;
-		vertex3.uv.x = fbxflie.GetVertex()[i].v[2].uv.x;
-		vertex3.uv.y = fbxflie.GetVertex()[i].v[2].uv.y;
-		vertex3.uv.z = 1.0f;
-		vertex3.tangent.x = fbxflie.GetVertex()[i].v[2].tangent.x;
-		vertex3.tangent.y = fbxflie.GetVertex()[i].v[2].tangent.y;
-		vertex3.tangent.z = fbxflie.GetVertex()[i].v[2].tangent.z;
-		vertex3.tangent.w = 0.0f;
-
-		vertex3.blendWeight[0] = 0.25f;
-		vertex3.blendWeight[1] = 0.25f;
-		vertex3.blendWeight[2] = 0.25f;
-		vertex3.blendWeight[3] = 0.25f;*/
+		memcpy(vertex1.blendIndices, &fbxflie->GetIndex()[i], sizeof(XMINT4));
+		memcpy(vertex1.blendWeight, &fbxflie->GetWeight()[i], sizeof(XMFLOAT4));
 
 		TriangleVertexList.push_back(vertex1);
-		/*TriangleVertexList.push_back(vertex2);
-		TriangleVertexList.push_back(vertex3)*/;
 	}
 
 	vertexcount = TriangleVertexList.size();
@@ -119,21 +63,21 @@ void Mesh::initializeMesh(FBXExportDATA * fbxflie, float size)
 
 	dev->CreateBuffer(&desc, 0, constantBuffer.GetAddressOf());
 
-	desc.ByteWidth = sizeof(PosList);
+	//desc.ByteWidth = sizeof(PosList);
 
-	dev->CreateBuffer(&desc, 0, poseBuffer.GetAddressOf());
+	//dev->CreateBuffer(&desc, 0, poseBuffer.GetAddressOf());
 }
-
-void Mesh::setPos(BindPosition * Bindpose)
-{
-	for (int i = 0; i < 4; i++)
-	{
-		//XMStoreFloat4x4(&poselist.pose[i], XMMatrixIdentity());
-		//poselist.pose[i] = Bindpose->pos[i];
-		XMStoreFloat4x4(&poselist.pose[i], XMMatrixInverse(nullptr, XMLoadFloat4x4(&Bindpose->pos[i])) * XMLoadFloat4x4(&Bindpose->pos[i]));
-		//XMMatrixInverse(nullptr, XMLoadFloat4x4(&Bindpose->pos[i]))
-	}
-}
+//
+//void Mesh::setPos(BindPosition * Bindpose)
+//{
+//	for (int i = 0; i < 64; i++)
+//	{
+//		//XMStoreFloat4x4(&poselist.pose[i], XMMatrixIdentity());
+//		//poselist.pose[i] = Bindpose->pos[i];
+//		XMStoreFloat4x4(&poselist.pose[i], XMMatrixInverse(nullptr, XMLoadFloat4x4(&Bindpose->pos[i])) * XMLoadFloat4x4(&Bindpose->pos[i]));
+//		//XMMatrixInverse(nullptr, XMLoadFloat4x4(&Bindpose->pos[i]))
+//	}
+//}
 
 void Mesh::draw()
 {
@@ -144,11 +88,11 @@ void Mesh::draw()
 
 	con->VSSetConstantBuffers(1, 1, constantBuffer.GetAddressOf());
 
-	con->Map(poseBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &maps);
-	memcpy(maps.pData, &poselist, sizeof(PosList));
-	con->Unmap(poseBuffer.Get(), 0);
+	//con->Map(poseBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &maps);
+	//memcpy(maps.pData, &poselist, sizeof(PosList));
+	//con->Unmap(poseBuffer.Get(), 0);
 
-	con->VSSetConstantBuffers(2, 1, poseBuffer.GetAddressOf());
+	//con->VSSetConstantBuffers(2, 1, poseBuffer.GetAddressOf());
 
 	unsigned int stride = sizeof(VertexPositionUVNormal);
 	UINT offset = 0;

@@ -1,6 +1,7 @@
 #pragma once
 #include <fbxsdk.h>
 #include "FBXExportDATA.h"
+#include <set>
 //#include <d3d11.h>
 //#include <DirectXMath.h>
 //#include <DirectXCollision.h>
@@ -24,7 +25,9 @@ public:
 		XMFLOAT3 vertex;
 		XMFLOAT3 normal;
 		XMFLOAT3 uv;
-		XMFLOAT4 tangent;		
+		XMFLOAT4 tangent;	
+		std::vector<float> blendWeight;
+		std::vector<int> blendIndices;
 	};
 
 	struct FBXTriangle
@@ -36,10 +39,46 @@ public:
 	{
 		XMFLOAT4X4 bindposinverse;
 	};	
+
+	struct JointInfluence
+	{
+		FbxCluster* joint;
+		int jointindex;
+		float weight;
+
+		JointInfluence(FbxCluster* _joint, int _index, float _weight) :joint(_joint), jointindex(_index), weight(_weight) {}
+	};
+
+	struct JointInfluences
+	{
+		std::vector<JointInfluence> influences;
+
+		JointInfluences()
+		{
+			influences.reserve(8);
+		}
+
+		void NormalizeWeights()
+		{
+			float totalWeight = 0;
+			int i = 0;
+			for (i = 0; i < influences.size(); i++)
+			{
+				totalWeight += influences[i].weight;
+			}
+			float invTotalWeight = 1.0f / totalWeight;
+			for (i = 0; i < influences.size(); i++)
+			{
+				influences[i].weight *= invTotalWeight;
+			}
+		}
+	};
 private:
+	static std::set<FbxNode*> vaildbone;
 	//std::vector<FBXTriangle> pOutVertexVector;
 	//std::vector<FBXJoint> pOutJoint;
 	//XMFLOAT4X4 transL;
+	//static std::vector<JointInfluences> influences;
 public:
 	static void LoadFBX(char* path, FBXExportDATA* sdata);
 	//FBXTriangle* GetVertex() { return pOutVertexVector.data(); }

@@ -65,10 +65,10 @@ bool My3DSence::Initialize(HWND wnd)
 	theViewPort.Width = BACKBUFFER_WIDTH;
 
 	theContext->RSSetViewports(1, &theViewPort);
-	FBXExportDATA fbxflie;
-	fbxflie.LoadFBX("Teddy_Attack1.fbx");
 	FBXExportDATA boxfile;
 	boxfile.LoadFBX("Box_Attack.fbx");
+	FBXExportDATA fbxflie;
+	fbxflie.LoadFBX("Teddy_Attack1.fbx");
 	Shape::InitDevice(theDevice.Get(), theContext.Get());
 	Mesh::InitDevice(theDevice.Get(), theContext.Get());
 	Shader::InitDevice(theDevice.Get(), theContext.Get());
@@ -108,10 +108,16 @@ bool My3DSence::Initialize(HWND wnd)
 	Plight.initializeLigtht();
 	Slight.initializeLigtht();
 	shape.initializeShape(10);
-	bear.initializeMesh(&fbxflie, 0.03f);
+
+	bear.initializeMesh(&fbxflie);
 	box.initializeMesh(&boxfile);
-	joint.initializeMesh(&fbxflie);
-	animate.initializeAnimation(&fbxflie,&joint);
+
+	joint.initializeMesh(&boxfile);
+	bearJoint.initializeMesh(&fbxflie);
+
+	animate.initializeAnimation(&boxfile, &joint);
+	bearAni.initializeAnimation(&fbxflie, &bearJoint);
+
 	camera.InitCamera();
 	camera.SetProjection(camera.DegreeToRadian(75), BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 0.01f, 1000.0f);
 
@@ -180,23 +186,24 @@ bool My3DSence::run()
 	Slight.draw();
 
 	shader.SetCommonShader();	
-	animate.Interpolate(dt);
-	joint.draw();
 	shape.draw();
 	//theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
 	//theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
 	shader.SetGroundShader();
 	//mesh.setPos(joint.GetBindPose());
+	theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
 	if (renderBear)
 	{
 		theContext->PSSetShaderResources(0, 1, textureB.GetAddressOf());
-		theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
+		bearAni.Interpolate(dt);
+		bearJoint.draw();
 		bear.draw();
 	}
 	else
 	{
 		theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
-		theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
+		animate.Interpolate(dt);
+		joint.draw();
 		box.draw();
 	}
 	if (GetAsyncKeyState('9')&0x1)

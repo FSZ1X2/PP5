@@ -65,8 +65,10 @@ void Animation::Interpolate(float delta)
 			rot = XMQuaternionNormalize(XMQuaternionSlerp(rot, rot1, ratio));
 			scale = XMVectorLerp(scale, scale1, ratio);
 			m0 = XMMatrixAffineTransformation(scale, XMQuaternionIdentity(), rot, trans);
+
+
 		}
-		XMStoreFloat4x4(&list.pose[i],m0);
+		XMStoreFloat4x4(&list.pose[i],XMLoadFloat4x4(&joint->BindList.pos[i])  * m0);
 	}
 	joint->poselist = list;
 	currtime += delta;

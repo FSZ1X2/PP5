@@ -57,7 +57,7 @@ struct VertexPositionUVNormal
 	XMFLOAT3 uv;
 	XMFLOAT4 tangent;
 	float blendWeight[4];
-	unsigned char blendIndices[4];
+	int blendIndices[4];
 };
 
 struct KeyFrame

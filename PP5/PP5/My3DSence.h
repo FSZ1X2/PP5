@@ -50,7 +50,9 @@ class My3DSence
 	Mesh bear;
 	Mesh box;
 	Joint joint;
+	Joint bearJoint;
 	Animation animate;
+	Animation bearAni;
 	Camera camera;
 	XTime time;
 	DrawLight Plight;
