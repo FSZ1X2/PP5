@@ -1,5 +1,4 @@
 #include"My3DSence.h"
-
 #define SAFE_RELEASE(p) { if(p) { p->Release(); p = nullptr; } }
 POINT mousepos;
 WPARAM keyState;

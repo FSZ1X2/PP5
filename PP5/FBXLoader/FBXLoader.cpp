@@ -66,10 +66,6 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 	if (pMesh == nullptr)
 		return;
 
-	int *boneVertexIndices;
-	double *boneVertexWeights;
-	int numBoneVertexIndices;
-
 	FbxSkin* skin = (FbxSkin*)pNode->GetMesh()->GetDeformer(0, FbxDeformer::eSkin);
 	int boneCount = skin->GetClusterCount();
 	int triangleCount = pMesh->GetPolygonCount();
@@ -143,7 +139,7 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 
 			// Read the vertex  
 			//ReadVertex(pMesh, ctrlPointIndex, &newTriangle.v[j].vertex);
-			for (int iff = 0; iff < inf[ctrlPointIndex].influences.size(); iff++)
+			for (int iff = 0; iff < (int)inf[ctrlPointIndex].influences.size(); iff++)
 			{
 				newTriangle.v[j].blendIndices.push_back(inf[ctrlPointIndex].influences[iff].jointindex);
 				newTriangle.v[j].blendWeight.push_back(inf[ctrlPointIndex].influences[iff].weight);
@@ -194,7 +190,7 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 		{
 			float bWeight[4] = { 0 };
 			int bIndex[4] = { 0 };
-			for (int bi = 0; bi < newTriangle.v[ti].blendIndices.size(); bi++)
+			for (int bi = 0; bi < (int)newTriangle.v[ti].blendIndices.size(); bi++)
 			{
 				bIndex[bi] = newTriangle.v[ti].blendIndices[bi];
 				bWeight[bi] = newTriangle.v[ti].blendWeight[bi];
@@ -239,20 +235,20 @@ void FBXLoader::ProcessKeyframes(FBXExportDATA * sdata, FbxScene* pScene)
 		int numLayer = stack->GetMemberCount<FbxAnimLayer>();
 		FbxTimeSpan timeSpan;
 		pNode->GetAnimationInterval(timeSpan, stack);
-		FbxTime time;
-		time.Set(timeSpan.GetDuration().Get());
+		
+		FbxTime time = timeSpan.GetStop() - timeSpan.GetStart();
 		FbxLongLong ms = time.GetMilliSeconds();
 		sdata->SetTotalTime((float)ms * 0.001f);
 		for (int layerIndex = 0; layerIndex < numLayer; layerIndex++)
 		{
 			FbxAnimLayer* layer = stack->GetMember<FbxAnimLayer>(layerIndex);
 
-			ProcessAnimation(pNode, nullptr, layer, sdata);
+			ProcessAnimation(pNode, nullptr, &timeSpan, layer, sdata);
 		}
 	}
 }
 
-void FBXLoader::ProcessAnimation(FbxNode * pNode, FbxNode* parent, FbxAnimLayer * layer, FBXExportDATA * sdata)
+void FBXLoader::ProcessAnimation(FbxNode * pNode, FbxNode* parent, FbxTimeSpan* timeSpan, FbxAnimLayer * layer, FBXExportDATA * sdata)
 {
 	FbxNodeAttribute* attributeType = pNode->GetNodeAttribute();
 	if (attributeType)
@@ -264,18 +260,18 @@ void FBXLoader::ProcessAnimation(FbxNode * pNode, FbxNode* parent, FbxAnimLayer 
 			{
 				std::vector<float> framestime;
 				std::vector<XMFLOAT4X4> keys;
-				int totalFrame = std::ceilf(sdata->GetAnimationTime() * sdata->GetFrameRate()) + 1;
-				
+				int totalFrame = (int)std::ceilf(sdata->GetAnimationTime() * sdata->GetFrameRate()) + 1;
+				float start = (float)timeSpan->GetStart().GetSecondDouble();
+
 				for (int i = 0; i < totalFrame; i++)
 				{
 					float keytime = i * sdata->GetFrameRate_Inv();
-					framestime.push_back(keytime);
+					framestime.push_back(keytime + start);
 					//EvaluateGlobalTransform
 					//EvaluateLocalTransform
 					FbxTime time;
-					time.SetSecondDouble(keytime);
+					time.SetSecondDouble(start + keytime);
 					FbxAMatrix m = pNode->EvaluateGlobalTransform(time);
-
 					XMFLOAT4X4 outm;
 					for (int row = 0; row < 4; row++)
 					{
@@ -305,7 +301,7 @@ void FBXLoader::ProcessAnimation(FbxNode * pNode, FbxNode* parent, FbxAnimLayer 
 
 	for (int i = 0; i < pNode->GetChildCount(); ++i)
 	{
-		ProcessAnimation(pNode->GetChild(i),pNode, layer, sdata);
+		ProcessAnimation(pNode->GetChild(i), pNode, timeSpan, layer, sdata);
 	}
 }
 
@@ -579,7 +575,7 @@ void FBXLoader::WriteBinary(FBXExportDATA * sdata, char * path)
 	UINT vsize = sdata->GetVertexSize();
 	file.write((char*)&vsize, sizeof(UINT));
 	
-	for (int i = 0; i < vsize; i++)
+	for (int i = 0; i < (int)vsize; i++)
 	{
 		file.write((char*)&sdata->GetVertex()[i], sizeof(XMFLOAT3));
 		file.write((char*)&sdata->GetNormal()[i], sizeof(XMFLOAT3));
@@ -592,7 +588,7 @@ void FBXLoader::WriteBinary(FBXExportDATA * sdata, char * path)
 	vsize = sdata->GetJointSize();
 	file.write((char*)&vsize, sizeof(UINT));
 	const XMFLOAT4X4* Joints = sdata->GetJoint();
-	for (int i = 0; i < vsize; i++)
+	for (int i = 0; i < (int)vsize; i++)
 	{
 		XMFLOAT4X4 tmp = Joints[i];
 		file.write((char*)&tmp, sizeof(XMFLOAT4X4));
@@ -605,11 +601,11 @@ void FBXLoader::WriteBinary(FBXExportDATA * sdata, char * path)
 	file.write((char*)&tmp, sizeof(float));
 	vsize = sdata->keys.size();
 	file.write((char*)&vsize, sizeof(UINT));
-	for (int i = 0; i < vsize; i++)
+	for (int i = 0; i < (int)vsize; i++)
 	{
 		UINT keynum = sdata->keys[i].size();
 		file.write((char*)&keynum, sizeof(UINT));
-		for (int j = 0; j < keynum; j++)
+		for (int j = 0; j < (int)keynum; j++)
 		{
 			file.write((char*)&sdata->keys[i][j], sizeof(XMFLOAT4X4));
 			file.write((char*)&sdata->keytime[i][j], sizeof(float));

@@ -2,10 +2,17 @@
 FBX SDK: 2016.1.1 vs2015
 RUN IN x86
 
-Animation Control:
-8 for each frame
+RENDER CONTROL:
+
+6 for toggle render mesh
+7 for toggle render joint
+(default all true)
+
+ANIMATION CONTROL:
+
+8 for frame based animation
 9 for switch model
-0 for let the animation loop
+0 for toggle animation loop mode
 
 CAMERA:
 
@@ -36,7 +43,3 @@ LIGHTS:
 	(I,K) for Z axis
 	(J,L) for X axis
 	(U, O) for Y axis
-
-SWITCH MODEL:
-
-Press 9 to switch model

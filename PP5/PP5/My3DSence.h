@@ -54,8 +54,10 @@ class My3DSence
 	//ID3D11Buffer *gridConstBuffer = nullptr;
 	bool renderBear = false;
 	bool isLoopAnimation = false;
+	bool drawBone = true;
+	bool drawMesh = true;
 	int frameBear = 0;
-	int frameBox = 1;
+	int frameBox = 0;
 	
 
 	void CreateDirectionalLight();

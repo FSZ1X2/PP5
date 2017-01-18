@@ -63,12 +63,12 @@ public:
 		{
 			float totalWeight = 0;
 			int i = 0;
-			for (i = 0; i < influences.size(); i++)
+			for (i = 0; i < (int)influences.size(); i++)
 			{
 				totalWeight += influences[i].weight;
 			}
 			float invTotalWeight = 1.0f / totalWeight;
-			for (i = 0; i < influences.size(); i++)
+			for (i = 0; i < (int)influences.size(); i++)
 			{
 				influences[i].weight *= invTotalWeight;
 			}
@@ -91,7 +91,7 @@ private:
 	static void ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata);
 	static void ProcessSkeleton(FbxNode* pNode, FBXExportDATA* sdata);
 	static void ProcessKeyframes(FBXExportDATA* sdata, FbxScene* pScene);
-	static void ProcessAnimation(FbxNode* pNode, FbxNode* parent,FbxAnimLayer* layer, FBXExportDATA* sdata);
+	static void ProcessAnimation(FbxNode* pNode, FbxNode* parent, FbxTimeSpan* timeSpan, FbxAnimLayer* layer, FBXExportDATA* sdata);
 	static void ReadVertex(FbxMesh* pMesh, int ctrlPointIndex, XMFLOAT3* pVertex);
 	//void ReadColor(FbxMesh* pMesh, int ctrlPointIndex, int vertexCounter, XMFLOAT4* pColor);
 	static void ReadUV(FbxMesh* pMesh, int ctrlPointIndex, int textureUVIndex, int uvLayer, XMFLOAT3* pUV);

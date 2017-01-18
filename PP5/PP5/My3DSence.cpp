@@ -1,5 +1,6 @@
 #include "My3DSence.h"
 #include "DDSTextureLoader.h"
+
 My3DSence::My3DSence()
 {
 }
@@ -11,6 +12,11 @@ My3DSence::~My3DSence()
 
 bool My3DSence::Initialize(HWND wnd)
 {
+	//FBXExportDATA boxbbb;
+	//boxbbb.LoadFBX("Box_Attack.fbx");
+	//FBXExportDATA bearbbb;
+	//bearbbb.LoadFBX("Teddy_Attack1.fbx");
+
 	time.Restart();
 	DXGI_SWAP_CHAIN_DESC description;
 	ZeroMemory(&description, sizeof(DXGI_SWAP_CHAIN_DESC));
@@ -109,7 +115,7 @@ bool My3DSence::Initialize(HWND wnd)
 	box.initBinaryMesh("Box_Attack.bin");
 
 	joint.initBinaryMesh("Box_Attack.bin");
-	bearJoint.initBinaryMesh("Teddy_Attack1.bin");
+	bearJoint.initBinaryMesh("Teddy_Attack1.bin", 0.15f);
 
 	animate.initializeBinaryAnimation("Box_Attack.bin", &joint);
 	bearAni.initializeBinaryAnimation("Teddy_Attack1.bin", &bearJoint);
@@ -178,7 +184,6 @@ bool My3DSence::run()
 	shader.SetCommonShader();	
 	shape.draw();
 
-	shader.SetGroundShader();
 	theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
 	if (renderBear)
 	{
@@ -192,8 +197,11 @@ bool My3DSence::run()
 			else
 				frameBear = 0;
 		}
-		bearJoint.draw();
-		bear.draw();
+		shader.SetCommonShader();
+		bearJoint.draw(drawBone);
+
+		shader.SetGroundShader();
+		bear.draw(drawMesh);
 	}
 	else
 	{
@@ -202,13 +210,24 @@ bool My3DSence::run()
 			animate.Interpolate(dt);
 		else
 		{
-			if (frameBox < animate.GetTotalKeyframes() - 1)
+			if (frameBox < animate.GetTotalKeyframes())
 				animate.sentToJoint(frameBox);
 			else
-				frameBox = 1;
+				frameBox = 0;
 		}
-		joint.draw();
-		box.draw();
+		shader.SetCommonShader();
+		joint.draw(drawBone);
+
+		shader.SetGroundShader();
+		box.draw(drawMesh);
+	}
+	if (GetAsyncKeyState('6') & 0x1)
+	{
+		drawMesh = !drawMesh;
+	}
+	if (GetAsyncKeyState('7') & 0x1)
+	{
+		drawBone = !drawBone;
 	}
 	if (GetAsyncKeyState('8') & 0x1)
 	{
@@ -219,13 +238,13 @@ bool My3DSence::run()
 	{
 		isLoopAnimation = !isLoopAnimation;
 		frameBear = 0;
-		frameBox = 1;
+		frameBox = 0;
 	}
 	if (GetAsyncKeyState('9')&0x1)
 	{
 		renderBear = !renderBear;
 		frameBear = 0;
-		frameBox = 1;
+		frameBox = 0;
 	}
 	shader.SetSkyBoxShader();
 	XMFLOAT4X4 camPos;

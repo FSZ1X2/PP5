@@ -73,7 +73,7 @@ void Mesh::initBinaryMesh(const char * path, float size, float x, float y, float
 	modelsize.x = size;
 }
 
-void Mesh::draw()
+void Mesh::draw(bool drawMesh)
 {
 	D3D11_MAPPED_SUBRESOURCE maps;
 	con->Map(constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &maps);
@@ -95,7 +95,8 @@ void Mesh::draw()
 	con->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP
 	//D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
-	con->Draw(vertexcount, 0);
+	if (drawMesh)
+		con->Draw(vertexcount, 0);
 }
 
 
