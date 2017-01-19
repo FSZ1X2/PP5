@@ -17,11 +17,11 @@ void SkyBox::LoadSkyBoxTexture(std::string name)
 		NULL, m_SRV.GetAddressOf());
 }
 
-void SkyBox::initializeShape(float size)
+void SkyBox::initializeShape(std::string name,float size)
 {
 	XMStoreFloat4x4(&transform, DirectX::XMMatrixIdentity()*size);
 	transform._44 = 1;
-	LoadSkyBoxTexture("SunsetSkybox.dds");
+	LoadSkyBoxTexture(name);
 	float s = 200.0f;
 	static const VertexPositionUVNormal cubeVertices[] =
 			{
