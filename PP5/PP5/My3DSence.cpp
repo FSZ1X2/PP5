@@ -12,10 +12,10 @@ My3DSence::~My3DSence()
 
 bool My3DSence::Initialize(HWND wnd)
 {
-	/*FBXExportDATA boxbbb;
-	boxbbb.LoadFBX("Box_Attack.fbx");
-	FBXExportDATA bearbbb;
-	bearbbb.LoadFBX("Teddy_Attack1.fbx");*/
+	//FBXExportDATA boxbbb;
+	//boxbbb.LoadFBX("Mage_Death.fbx");
+	//FBXExportDATA bearbbb;
+	//bearbbb.LoadFBX("Teddy_Attack1.fbx");
 
 	time.Restart();
 	DXGI_SWAP_CHAIN_DESC description;
@@ -114,18 +114,22 @@ bool My3DSence::Initialize(HWND wnd)
 
 	bear.initBinaryMesh("Teddy_Attack1.bin", 0.15f);
 	box.initBinaryMesh("Box_Attack.bin");
+	Mage.initBinaryMesh("Mage_Death.bin");
 
 	joint.initBinaryMesh("Box_Attack.bin");
 	bearJoint.initBinaryMesh("Teddy_Attack1.bin", 0.15f);
+	MageJoint.initBinaryMesh("Mage_Death.bin");
 
 	animate.initializeBinaryAnimation("Box_Attack_Animation.bin", &joint);
 	bearAni.initializeBinaryAnimation("Teddy_Attack1_Animation.bin", &bearJoint);
+	mageAni.initializeBinaryAnimation("Mage_Death_Animation.bin", &MageJoint);
 
 	camera.InitCamera();
 	camera.SetProjection(camera.DegreeToRadian(75), BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 0.01f, 1000.0f);
 
 	CreateDDSTextureFromFile(theDevice.Get(),L"TestCube.dds" ,nullptr, textureV.GetAddressOf());
 	CreateDDSTextureFromFile(theDevice.Get(), L"Teddy_D.dds", nullptr, textureB.GetAddressOf());
+	CreateDDSTextureFromFile(theDevice.Get(), L"MageSkin.dds", nullptr, textureM.GetAddressOf());
 
 	D3D11_SAMPLER_DESC sdesc = {};
 	sdesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -186,7 +190,7 @@ bool My3DSence::run()
 	shape.draw();
 
 	theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
-	if (renderBear)
+	if (meshIndex == 0)
 	{
 		theContext->PSSetShaderResources(0, 1, textureB.GetAddressOf());
 		if (isLoopAnimation)
@@ -204,7 +208,7 @@ bool My3DSence::run()
 		shader.SetGroundShader();
 		bear.draw(drawMesh);
 	}
-	else
+	else if (meshIndex == 1)
 	{
 		theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
 		if (isLoopAnimation)
@@ -222,6 +226,24 @@ bool My3DSence::run()
 		shader.SetGroundShader();
 		box.draw(drawMesh);
 	}
+	else if (meshIndex == 2)
+	{
+		theContext->PSSetShaderResources(0, 1, textureM.GetAddressOf());
+		if (isLoopAnimation)
+			mageAni.Interpolate(dt);
+		else
+		{
+			if (frameMage < mageAni.GetTotalKeyframes())
+				mageAni.sentToJoint(frameMage);
+			else
+				frameMage = 0;
+		}
+		shader.SetCommonShader();
+		MageJoint.draw(drawBone);
+
+		shader.SetGroundShader();
+		Mage.draw(drawMesh);
+	}
 	if (GetAsyncKeyState('6') & 0x1)
 	{
 		drawMesh = !drawMesh;
@@ -234,23 +256,28 @@ bool My3DSence::run()
 	{
 		frameBear++;
 		frameBox++;
+		frameMage++;
 	}
 	if (GetAsyncKeyState('0') & 0x1)
 	{
 		isLoopAnimation = !isLoopAnimation;
 		frameBear = 0;
 		frameBox = 0;
+		frameMage = 0;
 	}
 	if (GetAsyncKeyState('9')&0x1)
 	{
-		renderBear = !renderBear;
+		meshIndex++;
+		meshIndex = meshIndex % 3;
 		frameBear = 0;
 		frameBox = 0;
+		frameMage = 0;
 	}
 	if (GetAsyncKeyState('P') & 0x1)
 	{
 		SunsetSky = !SunsetSky;
 	}
+	
 	shader.SetSkyBoxShader();
 	XMFLOAT4X4 camPos;
 	XMStoreFloat4x4(&camPos, camera.GetPos());

@@ -20,6 +20,7 @@ class My3DSence
 	ComPtr<ID3D11Texture2D> depthBuff;
 	ComPtr<ID3D11ShaderResourceView> textureV;
 	ComPtr<ID3D11ShaderResourceView> textureB;
+	ComPtr<ID3D11ShaderResourceView> textureM;
 
 	ComPtr<ID3D11SamplerState> binsample;
 	
@@ -40,10 +41,13 @@ class My3DSence
 	Shape shape;
 	Mesh bear;
 	Mesh box;
+	Mesh Mage; 
 	Joint joint;
 	Joint bearJoint;
+	Joint MageJoint;
 	Animation animate;
 	Animation bearAni;
+	Animation mageAni;
 	Camera camera;
 	XTime time;
 	DrawLight Plight;
@@ -60,7 +64,9 @@ class My3DSence
 	bool SunsetSky = true;
 	int frameBear = 0;
 	int frameBox = 0;
-	
+	int frameMage = 0;
+
+	int meshIndex = 0;
 
 	void CreateDirectionalLight();
 	void CreatePointLight();
