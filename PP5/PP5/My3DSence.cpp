@@ -12,10 +12,10 @@ My3DSence::~My3DSence()
 
 bool My3DSence::Initialize(HWND wnd)
 {
-	//FBXExportDATA boxbbb;
-	//boxbbb.LoadFBX("Box_Attack.fbx");
-	//FBXExportDATA bearbbb;
-	//bearbbb.LoadFBX("Teddy_Attack1.fbx");
+	/*FBXExportDATA boxbbb;
+	boxbbb.LoadFBX("Box_Attack.fbx");
+	FBXExportDATA bearbbb;
+	bearbbb.LoadFBX("Teddy_Attack1.fbx");*/
 
 	time.Restart();
 	DXGI_SWAP_CHAIN_DESC description;
@@ -117,8 +117,8 @@ bool My3DSence::Initialize(HWND wnd)
 	joint.initBinaryMesh("Box_Attack.bin");
 	bearJoint.initBinaryMesh("Teddy_Attack1.bin", 0.15f);
 
-	animate.initializeBinaryAnimation("Box_Attack.bin", &joint);
-	bearAni.initializeBinaryAnimation("Teddy_Attack1.bin", &bearJoint);
+	animate.initializeBinaryAnimation("Box_Attack_Animation.bin", &joint);
+	bearAni.initializeBinaryAnimation("Teddy_Attack1_Animation.bin", &bearJoint);
 
 	camera.InitCamera();
 	camera.SetProjection(camera.DegreeToRadian(75), BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 0.01f, 1000.0f);

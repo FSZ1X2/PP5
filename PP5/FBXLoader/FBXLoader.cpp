@@ -593,23 +593,29 @@ void FBXLoader::WriteBinary(FBXExportDATA * sdata, char * path)
 		XMFLOAT4X4 tmp = Joints[i];
 		file.write((char*)&tmp, sizeof(XMFLOAT4X4));
 	}
+	file.close();
+
+	/////////////////////////
+
+	name.replace(name.end() - 4, name.end(), "_Animation.bin");
+	std::ofstream Afile(name, std::ios::binary);
 	float tmp = sdata->GetAnimationTime();
-	file.write((char*)&tmp, sizeof(float));
+	Afile.write((char*)&tmp, sizeof(float));
 	tmp = sdata->GetFrameRate();
-	file.write((char*)&tmp, sizeof(float));
+	Afile.write((char*)&tmp, sizeof(float));
 	tmp = sdata->GetFrameRate_Inv();
-	file.write((char*)&tmp, sizeof(float));
+	Afile.write((char*)&tmp, sizeof(float));
 	vsize = sdata->keys.size();
-	file.write((char*)&vsize, sizeof(UINT));
+	Afile.write((char*)&vsize, sizeof(UINT));
 	for (int i = 0; i < (int)vsize; i++)
 	{
 		UINT keynum = sdata->keys[i].size();
-		file.write((char*)&keynum, sizeof(UINT));
+		Afile.write((char*)&keynum, sizeof(UINT));
 		for (int j = 0; j < (int)keynum; j++)
 		{
-			file.write((char*)&sdata->keys[i][j], sizeof(XMFLOAT4X4));
-			file.write((char*)&sdata->keytime[i][j], sizeof(float));
+			Afile.write((char*)&sdata->keys[i][j], sizeof(XMFLOAT4X4));
+			Afile.write((char*)&sdata->keytime[i][j], sizeof(float));
 		}
 	}
-	file.close();
+	Afile.close();
 }

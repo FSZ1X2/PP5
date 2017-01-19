@@ -15,7 +15,7 @@ using namespace std;
 #include <DirectXCollision.h>
 #include <d3dcompiler.h>
 //#pragma comment (lib, "d3dcompiler.lib")
-
+#include "../FBXLoader/FBXExportDATA.h"
 using namespace DirectX;
 
 #include<wrl.h>

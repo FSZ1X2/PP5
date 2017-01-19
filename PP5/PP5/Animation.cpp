@@ -7,31 +7,6 @@ void Animation::initializeBinaryAnimation(const char * path, Joint * _joint)
 	ifstream file(path, ios::in | ios::binary | ios::ate);
 	file.seekg(0, ios::beg);
 	UINT num;
-	file.read((char*)&num, sizeof(UINT));
-	std::vector<VertexPositionUVNormal> TriangleVertexList;
-
-	for (unsigned int i = 0; i < num; i++)
-	{
-		VertexPositionUVNormal vertex1;
-		file.read((char*)&vertex1.pos, sizeof(XMFLOAT3));
-
-		file.read((char*)&vertex1.normal, sizeof(XMFLOAT3));
-
-		file.read((char*)&vertex1.uv, sizeof(XMFLOAT3));
-
-		file.read((char*)&vertex1.tangent, sizeof(XMFLOAT4));
-		file.read((char*)&vertex1.blendIndices, sizeof(XMINT4));
-		file.read((char*)&vertex1.blendWeight, sizeof(XMFLOAT4));
-	}
-
-	file.read((char*)&num, sizeof(UINT));
-	BindPosition BindList;
-	//file.read((char*)&BindList.pos, sizeof(XMFLOAT4));
-	for (unsigned int i = 0; i < num; i++)
-	{
-		file.read((char*)&BindList.pos[i], sizeof(XMFLOAT4X4));
-	}
-
 
 	file.read((char*)&totaltime, sizeof(float));
 	file.read((char*)&framerate, sizeof(float));
