@@ -1,6 +1,8 @@
 #include "My3DSence.h"
 #include "DDSTextureLoader.h"
 
+//#include"../FBXLoader/FBXExportDATA.h"
+
 My3DSence::My3DSence()
 {
 }
@@ -12,10 +14,10 @@ My3DSence::~My3DSence()
 
 bool My3DSence::Initialize(HWND wnd)
 {
-	/*FBXExportDATA boxbbb;
-	boxbbb.LoadFBX("Box_Attack.fbx");
-	FBXExportDATA bearbbb;
-	bearbbb.LoadFBX("Teddy_Attack1.fbx");*/
+	//FBXExportDATA boxbbb;
+	//boxbbb.LoadFBX("Box_Idle.fbx");
+	//FBXExportDATA bearbbb;
+	//bearbbb.LoadFBX("Teddy_Run.fbx");
 
 	time.Restart();
 	DXGI_SWAP_CHAIN_DESC description;
@@ -111,14 +113,27 @@ bool My3DSence::Initialize(HWND wnd)
 	Slight.initializeLigtht();
 	shape.initializeShape(10);
 
-	bear.initBinaryMesh("Teddy_Attack1.bin", 0.15f);
-	box.initBinaryMesh("Box_Attack.bin");
+	bear.initBinaryMesh("Teddy_Run.bin", 0.15f);
+	box.initBinaryMesh("Box_Idle.bin");
 
-	joint.initBinaryMesh("Box_Attack.bin");
-	bearJoint.initBinaryMesh("Teddy_Attack1.bin", 0.15f);
+	joint.initBinaryMesh("Box_Idle.bin");
+	bearJoint.initBinaryMesh("Teddy_Run.bin", 0.15f);
 
-	animate.initializeBinaryAnimation("Box_Attack_Animation.bin", &joint);
-	bearAni.initializeBinaryAnimation("Teddy_Attack1_Animation.bin", &bearJoint);
+	animate1.initializeBinaryAnimation("Box_Idle_Animation.bin");
+	bearAni1.initializeBinaryAnimation("Teddy_Run_Animation.bin");
+	animate2.initializeBinaryAnimation("Box_Attack_Animation.bin");
+	bearAni2.initializeBinaryAnimation("Teddy_Attack1_Animation.bin");
+
+	boxanimation.joint = &joint;
+	bearanimation.joint = &bearJoint;
+
+	boxanimation.Clip1 = &animate1;
+	boxanimation.Clip2 = &animate2;
+	bearanimation.Clip1 = &bearAni1;
+	bearanimation.Clip2 = &bearAni2;
+
+	boxanimation.current = boxanimation.Clip1;
+	bearanimation.current = bearanimation.Clip1;
 
 	camera.InitCamera();
 	camera.SetProjection(camera.DegreeToRadian(75), BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 0.01f, 1000.0f);
@@ -189,11 +204,27 @@ bool My3DSence::run()
 	{
 		theContext->PSSetShaderResources(0, 1, textureB.GetAddressOf());
 		if (isLoopAnimation)
-			bearAni.Interpolate(dt*0.5f);
+		{
+			if (bearanimation.ifBlend)
+			{
+				if (bearanimation.current == bearanimation.Clip1)
+					bearanimation.BlendAnimation(dt*0.5f, bearanimation.Clip2);
+				else							   
+					bearanimation.BlendAnimation(dt*0.5f, bearanimation.Clip1);
+			}
+			else
+				bearanimation.Interpolate(dt*0.5f, bearanimation.current);
+			bearanimation.setJoint();
+			//bearAni.Interpolate(dt*0.5f);
+		}
 		else
 		{
-			if (frameBear < bearAni.GetTotalKeyframes())
-				bearAni.sentToJoint(frameBear);
+			if (frameBear < bearanimation.current->GetTotalKeyframes())
+			{
+				bearanimation.sentToJoint(frameBear, bearanimation.current);
+				bearanimation.setJoint();
+				//bearAni.sentToJoint(frameBear);
+			}
 			else
 				frameBear = 0;
 		}
@@ -207,11 +238,27 @@ bool My3DSence::run()
 	{
 		theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
 		if (isLoopAnimation)
-			animate.Interpolate(dt);
+		{
+			if (boxanimation.ifBlend)
+			{
+				if (boxanimation.current == boxanimation.Clip1)
+					boxanimation.BlendAnimation(dt*0.5f, boxanimation.Clip2);
+				else								 
+					boxanimation.BlendAnimation(dt*0.5f, boxanimation.Clip1);
+			}
+			else
+				boxanimation.Interpolate(dt*0.5f, boxanimation.current);
+			boxanimation.setJoint();
+			//animate.Interpolate(dt);
+		}
 		else
 		{
-			if (frameBox < animate.GetTotalKeyframes())
-				animate.sentToJoint(frameBox);
+			if (frameBox < boxanimation.current->GetTotalKeyframes())
+			{
+				boxanimation.sentToJoint(frameBox, boxanimation.current);
+				boxanimation.setJoint();
+				//animate.sentToJoint(frameBox);
+			}
 			else
 				frameBox = 0;
 		}
@@ -220,6 +267,35 @@ bool My3DSence::run()
 
 		shader.SetGroundShader();
 		box.draw(drawMesh);
+	}
+	if (GetAsyncKeyState('5') & 0x1)
+	{
+		if (renderBear)
+		{
+			if (bearanimation.ifBlend)
+			{
+				bearanimation.current->currtime = 0.0f;
+				if (bearanimation.current == bearanimation.Clip1)
+					bearanimation.current = bearanimation.Clip2;
+				else
+					bearanimation.current = bearanimation.Clip1;
+			}
+			bearanimation.ifBlend = true;
+			bearanimation.timer = 0.0f;
+		}
+		else
+		{
+			if (boxanimation.ifBlend)
+			{
+				boxanimation.current->currtime = 0.0f;
+				if (boxanimation.current == boxanimation.Clip1)
+					boxanimation.current = boxanimation.Clip2;
+				else
+					boxanimation.current = boxanimation.Clip1;
+			}
+			boxanimation.ifBlend = true;
+			boxanimation.timer = 0.0f;
+		}
 	}
 	if (GetAsyncKeyState('6') & 0x1)
 	{

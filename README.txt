@@ -4,6 +4,7 @@ RUN IN x86
 
 RENDER CONTROL:
 
+5 for blend animation
 6 for toggle render mesh
 7 for toggle render joint
 (default all true)

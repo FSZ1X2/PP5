@@ -1,9 +1,9 @@
 #include "Animation.h"
 #include "Joint.h"
 
-void Animation::initializeBinaryAnimation(const char * path, Joint * _joint)
+void Animation::initializeBinaryAnimation(const char * path)
 {
-	joint = _joint;
+	//joint = _joint;
 	ifstream file(path, ios::in | ios::binary | ios::ate);
 	file.seekg(0, ios::beg);
 	UINT num;
@@ -33,60 +33,60 @@ void Animation::initializeBinaryAnimation(const char * path, Joint * _joint)
 	file.close();
 }
 
-void Animation::sentToJoint(int _key)
-{
-	PosList list;
-	for (int i = 0; i < (int)keyframes.size(); i++)
-	{
-		XMMATRIX m0;
-		m0 = XMLoadFloat4x4(&keyframes[i][_key].pose);
-		XMStoreFloat4x4(&list.pose[i], XMLoadFloat4x4(&joint->BindList.pos[i])  * m0);
-	}
-	joint->poselist = list;
-}
+//void Animation::sentToJoint(int _key)
+//{
+//	PosList list;
+//	for (int i = 0; i < (int)keyframes.size(); i++)
+//	{
+//		XMMATRIX m0;
+//		m0 = XMLoadFloat4x4(&keyframes[i][_key].pose);
+//		XMStoreFloat4x4(&list.pose[i], XMLoadFloat4x4(&joint->BindList.pos[i])  * m0);
+//	}
+//	joint->poselist = list;
+//}
 
-void Animation::Interpolate(float delta)
-{
-	PosList list;
-	for (int i = 0; i < (int)keyframes.size(); i++)
-	{
-		XMVECTOR trans, rot, scale;
-		XMVECTOR trans1, rot1, scale1;
-		XMMATRIX m0, m1;
-		int key = 0;
-		m0 = XMLoadFloat4x4(&keyframes[i][key].pose);
-		if (keyframes[i].size() > 1)
-		{
-			while (1)
-			{
-				if (key + 1 >= (int)keyframes[i].size())
-				{
-					key = 0;
-					currtime = 0;
-					break;
-				}
-				if (currtime >= keyframes[i][key].time && currtime < keyframes[i][key + 1].time)
-				{
-					break;
-				}
-				key++;
-			}
-			m0 = XMLoadFloat4x4(&keyframes[i][key].pose);
-			m1 = XMLoadFloat4x4(&keyframes[i][key + 1].pose);
-			float interval = keyframes[i][key + 1].time - keyframes[i][key].time;
-			float ratio = (currtime - keyframes[i][key].time) / interval;
-			XMMatrixDecompose(&scale, &rot, &trans, m0);
-			XMMatrixDecompose(&scale1, &rot1, &trans1, m1);
-
-			trans = XMVectorLerp(trans, trans1, ratio);
-			rot = XMQuaternionNormalize(XMQuaternionSlerp(rot, rot1, ratio));
-			scale = XMVectorLerp(scale, scale1, ratio);
-			m0 = XMMatrixAffineTransformation(scale, XMQuaternionIdentity(), rot, trans);
-
-
-		}
-		XMStoreFloat4x4(&list.pose[i],XMLoadFloat4x4(&joint->BindList.pos[i])  * m0);
-	}
-	joint->poselist = list;
-	currtime += delta;
-}
+//void Animation::Interpolate(float delta, PosList& list)
+//{
+//	//PosList list;
+//	for (int i = 0; i < (int)keyframes.size(); i++)
+//	{
+//		XMVECTOR trans, rot, scale;
+//		XMVECTOR trans1, rot1, scale1;
+//		XMMATRIX m0, m1;
+//		int key = 0;
+//		m0 = XMLoadFloat4x4(&keyframes[i][key].pose);
+//		if (keyframes[i].size() > 1)
+//		{
+//			while (1)
+//			{
+//				if (key + 1 >= (int)keyframes[i].size())
+//				{
+//					key = 0;
+//					currtime = 0;
+//					break;
+//				}
+//				if (currtime >= keyframes[i][key].time && currtime < keyframes[i][key + 1].time)
+//				{
+//					break;
+//				}
+//				key++;
+//			}
+//			m0 = XMLoadFloat4x4(&keyframes[i][key].pose);
+//			m1 = XMLoadFloat4x4(&keyframes[i][key + 1].pose);
+//			float interval = keyframes[i][key + 1].time - keyframes[i][key].time;
+//			float ratio = (currtime - keyframes[i][key].time) / interval;
+//			XMMatrixDecompose(&scale, &rot, &trans, m0);
+//			XMMatrixDecompose(&scale1, &rot1, &trans1, m1);
+//
+//			trans = XMVectorLerp(trans, trans1, ratio);
+//			rot = XMQuaternionNormalize(XMQuaternionSlerp(rot, rot1, ratio));
+//			scale = XMVectorLerp(scale, scale1, ratio);
+//			m0 = XMMatrixAffineTransformation(scale, XMQuaternionIdentity(), rot, trans);
+//
+//
+//		}
+//		XMStoreFloat4x4(&list.pose[i],XMLoadFloat4x4(&joint->BindList.pos[i])  * m0);
+//	}
+//	//joint->poselist = list;
+//	currtime += delta;
+//}

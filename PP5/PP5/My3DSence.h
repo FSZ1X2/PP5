@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "DrawLight.h"
 #include "SkyBox.h"
+#include "AnimationSystem.h"
 class My3DSence
 {
 	ComPtr<ID3D11Device> theDevice;
@@ -42,8 +43,14 @@ class My3DSence
 	Mesh box;
 	Joint joint;
 	Joint bearJoint;
-	Animation animate;
-	Animation bearAni;
+
+	AnimationSystem boxanimation;
+	AnimationSystem bearanimation;
+	Animation animate1;
+	Animation animate2;
+	Animation bearAni1;
+	Animation bearAni2;
+
 	Camera camera;
 	XTime time;
 	DrawLight Plight;

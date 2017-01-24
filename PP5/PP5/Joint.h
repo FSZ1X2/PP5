@@ -15,9 +15,9 @@ class Joint
 	std::vector<VertexPositionUVNormal> pointsforshere;
 	std::vector<unsigned int> index;
 	float JointsSize;
-	unsigned int numOfJoint;
 
 public:
+	unsigned int numOfJoint;
 	PosList poselist;
 	BindPosition BindList;
 	static void InitDevice(ID3D11Device* _dev, ID3D11DeviceContext* _con);
