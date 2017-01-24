@@ -16,6 +16,9 @@ struct OUTPUT_VERTEX
 	float3 normal				: NORMAL;
 	float3 uv					: TEXCOORD0;
 	float4 WorldPos             : WORLDPOSITION;
+	float4 CamWorldPos          : CAMWORLDPOS;
+	float4 tangent              : TANGENT;
+	float4 bitangent            : BiTANGENT;
 };
 
 // TODO: PART 3 STEP 2a
@@ -24,6 +27,7 @@ cbuffer CC_VRAM : register(b0)
 	float4x4 view;
 	float4x4 proj;
 	float4x4 viewproj;
+	float4 camera;
 };
 
 cbuffer TRANS_VRAM : register(b1)
@@ -35,6 +39,11 @@ cbuffer cbChangesEveryFrame : register(b2)
 {
 	float4x4 BoneOffset[64];
 };
+
+//cbuffer OTHERTANGENTS : register(b3)
+//{
+//	float4 m_tang;
+//};
 
 cbuffer scaling: register(b4)
 {
@@ -67,6 +76,9 @@ OUTPUT_VERTEX main(INPUT_VERTEX input)
 	output.normal = mul(input.normal, (float3x3)finalPos);
 	output.normal = mul(output.normal, (float3x3)trans);
 	output.uv = input.uv;
+	output.CamWorldPos = camera;
+	output.tangent = input.tangent;
+	output.bitangent = mul(float4(cross(input.normal.xyz, input.tangent.xyz), 0.0f), trans);
 	//sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, View);
 	//sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, Projection);
 	return output;

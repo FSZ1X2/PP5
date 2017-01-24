@@ -80,7 +80,8 @@ void Camera::Update(float dt)
 	XMStoreFloat4x4(&ccb.view, GetViewMatrix());
 	XMStoreFloat4x4(&ccb.projection, GetProjectionMatrix());
 	XMStoreFloat4x4(&ccb.viewProj, GetViewProjectionMatrix());
-
+	XMVECTOR camPos = { transform._41, transform._42, transform._43, transform._44 };
+	XMStoreFloat4(&ccb.camera, camPos);
 	D3D11_MAPPED_SUBRESOURCE mr;
 	con->Map(constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mr);
 	memcpy(mr.pData, &ccb, sizeof(CameraConstantBuffer));

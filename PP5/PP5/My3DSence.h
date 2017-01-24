@@ -21,8 +21,12 @@ class My3DSence
 	ComPtr<ID3D11ShaderResourceView> textureV;
 	ComPtr<ID3D11ShaderResourceView> textureB;
 	ComPtr<ID3D11ShaderResourceView> textureM;
+	ComPtr<ID3D11ShaderResourceView> SpecularText;
+	ComPtr<ID3D11ShaderResourceView> NormalText;
 
 	ComPtr<ID3D11SamplerState> binsample;
+	ComPtr<ID3D11SamplerState> Specsample;
+	ComPtr<ID3D11SamplerState> Normsample;
 	
 	ComPtr<ID3D11Texture2D> textBuff;
 	HRESULT hr;

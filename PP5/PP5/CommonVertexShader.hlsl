@@ -15,6 +15,7 @@ struct OUTPUT_VERTEX
 	float3 normal				: NORMAL;
 	float3 uv					: TEXCOORD0;
 	float4 WorldPos             : WORLDPOSITION;
+	float4 CamWorldPos          : CAMWORLDPOS;
 };
 
 // TODO: PART 3 STEP 2a

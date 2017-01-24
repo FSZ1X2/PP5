@@ -31,6 +31,7 @@ struct CameraConstantBuffer
 	XMFLOAT4X4 view;
 	XMFLOAT4X4 projection;
 	XMFLOAT4X4 viewProj;
+	XMFLOAT4 camera;
 };
 
 struct BindPosition

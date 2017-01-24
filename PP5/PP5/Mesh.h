@@ -16,6 +16,7 @@ class Mesh
 	XMFLOAT4 modelsize;
 public:
 	static void InitDevice(ID3D11Device* _dev, ID3D11DeviceContext* _con);
+	void Calculatenormal(VertexPositionUVNormal &V1, VertexPositionUVNormal &V2, VertexPositionUVNormal &V3);
 	void initBinaryMesh(const char* path, float size = 1, float x = 0, float y = 0, float z = 0);
 	//void setPos(BindPosition *Bindpose);
 	void draw(bool drawMesh);

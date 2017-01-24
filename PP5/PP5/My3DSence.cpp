@@ -37,7 +37,7 @@ bool My3DSence::Initialize(HWND wnd)
 
 	hr = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, 
 		swapchainFlag, NULL, NULL, D3D11_SDK_VERSION, 
-		&description, theSwapChain.GetAddressOf(), theDevice.GetAddressOf(), 
+		&description, theSwapChain.GetAddressOf(), theDevice.GetAddressOf(),  
 		NULL, theContext.GetAddressOf());
 	HR(hr);
 
@@ -130,6 +130,8 @@ bool My3DSence::Initialize(HWND wnd)
 	CreateDDSTextureFromFile(theDevice.Get(),L"TestCube.dds" ,nullptr, textureV.GetAddressOf());
 	CreateDDSTextureFromFile(theDevice.Get(), L"Teddy_D.dds", nullptr, textureB.GetAddressOf());
 	CreateDDSTextureFromFile(theDevice.Get(), L"MageSkin.dds", nullptr, textureM.GetAddressOf());
+	CreateDDSTextureFromFile(theDevice.Get(), L"MageSpecular.dds", nullptr, SpecularText.GetAddressOf());
+	CreateDDSTextureFromFile(theDevice.Get(), L"MageNormal.dds", nullptr, NormalText.GetAddressOf());
 
 	D3D11_SAMPLER_DESC sdesc = {};
 	sdesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -140,6 +142,8 @@ bool My3DSence::Initialize(HWND wnd)
 	sdesc.MaxLOD = D3D11_FLOAT32_MAX;
 	sdesc.MaxAnisotropy = D3D11_REQ_MAXANISOTROPY;
 	theDevice->CreateSamplerState(&sdesc, binsample.GetAddressOf());
+	theDevice->CreateSamplerState(&sdesc, Specsample.GetAddressOf());
+	theDevice->CreateSamplerState(&sdesc, Normsample.GetAddressOf());
 	return true;
 }
 
@@ -228,7 +232,11 @@ bool My3DSence::run()
 	}
 	else if (meshIndex == 2)
 	{
+		theContext->PSSetSamplers(1, 1, Specsample.GetAddressOf());
+		theContext->PSSetSamplers(2, 1, Normsample.GetAddressOf());
 		theContext->PSSetShaderResources(0, 1, textureM.GetAddressOf());
+		theContext->PSSetShaderResources(1, 1, SpecularText.GetAddressOf());
+		theContext->PSSetShaderResources(2, 1, NormalText.GetAddressOf());
 		if (isLoopAnimation)
 			mageAni.Interpolate(dt);
 		else
@@ -241,7 +249,7 @@ bool My3DSence::run()
 		shader.SetCommonShader();
 		MageJoint.draw(drawBone);
 
-		shader.SetGroundShader();
+		shader.SetMageShader();
 		Mage.draw(drawMesh);
 	}
 	if (GetAsyncKeyState('6') & 0x1)

@@ -37,6 +37,13 @@ void Shader::SetSkyBoxShader()
 	con->IASetInputLayout(layout.Get());
 }
 
+void Shader::SetMageShader()
+{
+	con->VSSetShader(gvshader.Get(), 0, 0);
+	con->PSSetShader(magePShader.Get(), 0, 0);
+	con->IASetInputLayout(layout.Get());
+}
+
 void Shader::Init()
 {
 	D3D_SHADER_MACRO macro[] = { nullptr, nullptr };
@@ -112,6 +119,16 @@ void Shader::Init()
 	HR(hr);
 
 	hr = dev->CreatePixelShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, skyPShader.GetAddressOf());
+	HR(hr);
+
+	blobshader->Release();
+	if (error)
+		error->Release();
+
+	hr = D3DCompileFromFile(L"MagePixelShader.hlsl", macro, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ps_4_0", flag, 0, &blobshader, &error);
+	HR(hr);
+
+	hr = dev->CreatePixelShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, magePShader.GetAddressOf());
 	HR(hr);
 
 	blobshader->Release();
