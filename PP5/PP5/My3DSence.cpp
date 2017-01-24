@@ -108,7 +108,8 @@ bool My3DSence::Initialize(HWND wnd)
 	theDevice->CreateBuffer(&lightdesc, 0, lightscolor.GetAddressOf());
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-	skybox.initializeShape(1);
+	skybox.initializeShape("SunsetSkybox.dds",1);
+	Otherskybox.initializeShape("SkyboxOcean.dds", 1);
 	Plight.initializeLigtht();
 	Slight.initializeLigtht();
 	shape.initializeShape(10);
@@ -322,10 +323,18 @@ bool My3DSence::run()
 		frameBear = 0;
 		frameBox = 0;
 	}
+	if (GetAsyncKeyState('P') & 0x1)
+	{
+		SunsetSky = !SunsetSky;
+	}
 	shader.SetSkyBoxShader();
 	XMFLOAT4X4 camPos;
 	XMStoreFloat4x4(&camPos, camera.GetPos());
-	skybox.draw(camPos._41, camPos._42, camPos._43);
+	if (SunsetSky)
+		skybox.draw(camPos._41, camPos._42, camPos._43);
+
+	else
+		Otherskybox.draw(camPos._41, camPos._42, camPos._43);
 
 	theSwapChain->Present(0, 0);
 	time.Signal();

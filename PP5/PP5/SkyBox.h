@@ -15,7 +15,7 @@ class SkyBox
 public:
 	static void InitDevice(ID3D11Device* _dev, ID3D11DeviceContext* _con);
 	void LoadSkyBoxTexture(std::string name);
-	void initializeShape(float size = 1);
+	void initializeShape(std::string name, float size = 1);
 	void draw(float x, float y, float z);
 };
 

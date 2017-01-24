@@ -56,6 +56,7 @@ class My3DSence
 	DrawLight Plight;
 	DrawLight Slight;
 	SkyBox skybox;
+	SkyBox Otherskybox;
 	//ID3D11Resource *resource = nullptr;
 	//ID3D11Buffer *shadercombuffer = nullptr;
 	//ID3D11Buffer *gridConstBuffer = nullptr;
@@ -63,6 +64,7 @@ class My3DSence
 	bool isLoopAnimation = false;
 	bool drawBone = true;
 	bool drawMesh = true;
+	bool SunsetSky = true;
 	int frameBear = 0;
 	int frameBox = 0;
 	
