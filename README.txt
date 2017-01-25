@@ -44,3 +44,6 @@ LIGHTS:
 	(I,K) for Z axis
 	(J,L) for X axis
 	(U, O) for Y axis
+
+CHANGE SKYBOX:
+P for switch skybox
