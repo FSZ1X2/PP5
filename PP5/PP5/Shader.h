@@ -14,6 +14,8 @@ class Shader
 
 	ComPtr<ID3D11VertexShader> commonshader;
 	ComPtr<ID3D11PixelShader> lightshader;
+	ComPtr<ID3D11PixelShader> boxshader;
+	ComPtr<ID3D11PixelShader> mageshader;
 
 	ComPtr<ID3D11InputLayout> layout;
 
@@ -23,6 +25,8 @@ public:
 	void SetCommonShader();
 	void SetLightShader();
 	void SetSkyBoxShader();
+	void SetBoxShader();
+	void SetMageShader();
 	void Init();
 };
 

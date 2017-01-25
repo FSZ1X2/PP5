@@ -37,6 +37,20 @@ void Shader::SetSkyBoxShader()
 	con->IASetInputLayout(layout.Get());
 }
 
+void Shader::SetBoxShader()
+{
+	con->VSSetShader(gvshader.Get(), 0, 0);
+	con->PSSetShader(boxshader.Get(), 0, 0);
+	con->IASetInputLayout(layout.Get());
+}
+
+void Shader::SetMageShader()
+{
+	con->VSSetShader(gvshader.Get(), 0, 0);
+	con->PSSetShader(mageshader.Get(), 0, 0);
+	con->IASetInputLayout(layout.Get());
+}
+
 void Shader::Init()
 {
 	D3D_SHADER_MACRO macro[] = { nullptr, nullptr };
@@ -108,10 +122,31 @@ void Shader::Init()
 	blobshader->Release();
 	if (error)
 		error->Release();
+
 	hr = D3DCompileFromFile(L"SkyBoxPixelShader.hlsl", macro, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ps_4_0", flag, 0, &blobshader, &error);
 	HR(hr);
 
 	hr = dev->CreatePixelShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, skyPShader.GetAddressOf());
+	HR(hr);
+
+	blobshader->Release();
+	if (error)
+		error->Release();
+
+	hr = D3DCompileFromFile(L"BoxPixelShader.hlsl", macro, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ps_4_0", flag, 0, &blobshader, &error);
+	HR(hr);
+
+	hr = dev->CreatePixelShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, boxshader.GetAddressOf());
+	HR(hr);
+
+	blobshader->Release();
+	if (error)
+		error->Release();
+
+	hr = D3DCompileFromFile(L"MagePixelShader.hlsl", macro, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ps_4_0", flag, 0, &blobshader, &error);
+	HR(hr);
+
+	hr = dev->CreatePixelShader(blobshader->GetBufferPointer(), blobshader->GetBufferSize(), 0, mageshader.GetAddressOf());
 	HR(hr);
 
 	blobshader->Release();

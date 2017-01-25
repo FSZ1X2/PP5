@@ -65,7 +65,8 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 	FbxMesh* pMesh = pNode->GetMesh();
 	if (pMesh == nullptr)
 		return;
-
+	pMesh->GenerateNormals(true);
+	pMesh->GenerateTangentsDataForAllUVSets(true);
 	FbxSkin* skin = (FbxSkin*)pNode->GetMesh()->GetDeformer(0, FbxDeformer::eSkin);
 	int boneCount = skin->GetClusterCount();
 	int triangleCount = pMesh->GetPolygonCount();
@@ -502,8 +503,8 @@ void FBXLoader::ReadNormal(FbxMesh* pMesh, int ctrlPointIndex, int vertexCounter
 
 void FBXLoader::ReadTangent(FbxMesh* pMesh, int ctrlPointIndex, int vertecCounter, XMFLOAT4* pTangent)
 {
-	if (pMesh->GetElementTangentCount() < 1)
-		return;
+	//pMesh->GenerateTangentsData(0, true);
+	
 
 	FbxGeometryElementTangent* leTangent = pMesh->GetElementTangent(0);
 
@@ -518,6 +519,7 @@ void FBXLoader::ReadTangent(FbxMesh* pMesh, int ctrlPointIndex, int vertecCounte
 			pTangent->x = (float)leTangent->GetDirectArray().GetAt(ctrlPointIndex)[0];
 			pTangent->y = (float)leTangent->GetDirectArray().GetAt(ctrlPointIndex)[1];
 			pTangent->z = (float)leTangent->GetDirectArray().GetAt(ctrlPointIndex)[2];
+			pTangent->w = (float)leTangent->GetDirectArray().GetAt(ctrlPointIndex).mData[3];
 		}
 		break;
 
@@ -527,6 +529,7 @@ void FBXLoader::ReadTangent(FbxMesh* pMesh, int ctrlPointIndex, int vertecCounte
 			pTangent->x = (float)leTangent->GetDirectArray().GetAt(id)[0];
 			pTangent->y = (float)leTangent->GetDirectArray().GetAt(id)[1];
 			pTangent->z = (float)leTangent->GetDirectArray().GetAt(id)[2];
+			pTangent->w = (float)leTangent->GetDirectArray().GetAt(id).mData[3];
 		}
 		break;
 
@@ -545,6 +548,7 @@ void FBXLoader::ReadTangent(FbxMesh* pMesh, int ctrlPointIndex, int vertecCounte
 			pTangent->x = (float)leTangent->GetDirectArray().GetAt(vertecCounter)[0];
 			pTangent->y = (float)leTangent->GetDirectArray().GetAt(vertecCounter)[1];
 			pTangent->z = (float)leTangent->GetDirectArray().GetAt(vertecCounter)[2];
+			pTangent->w = (float)leTangent->GetDirectArray().GetAt(vertecCounter).mData[3];
 		}
 		break;
 
@@ -554,6 +558,7 @@ void FBXLoader::ReadTangent(FbxMesh* pMesh, int ctrlPointIndex, int vertecCounte
 			pTangent->x = (float)leTangent->GetDirectArray().GetAt(id)[0];
 			pTangent->y = (float)leTangent->GetDirectArray().GetAt(id)[1];
 			pTangent->z = (float)leTangent->GetDirectArray().GetAt(id)[2];
+			pTangent->w = (float)leTangent->GetDirectArray().GetAt(id).mData[3];
 		}
 		break;
 

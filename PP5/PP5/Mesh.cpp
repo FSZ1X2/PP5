@@ -83,7 +83,7 @@ void Mesh::draw(bool drawMesh)
 	con->VSSetConstantBuffers(1, 1, constantBuffer.GetAddressOf());
 
 	con->Map(scaleBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &maps);
-	memcpy(maps.pData, &modelsize, sizeof(float));
+	memcpy(maps.pData, &modelsize, sizeof(XMFLOAT4));
 	con->Unmap(scaleBuffer.Get(), 0);
 
 	con->VSSetConstantBuffers(4, 1, scaleBuffer.GetAddressOf());

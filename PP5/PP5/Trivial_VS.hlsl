@@ -16,6 +16,9 @@ struct OUTPUT_VERTEX
 	float3 normal				: NORMAL;
 	float3 uv					: TEXCOORD0;
 	float4 WorldPos             : WORLDPOSITION;
+	float3 tangent              : TANGENT;
+	float3 binormal             : BINORMAL;
+	float3 viewdir              : TEXCOORD1;
 };
 
 // TODO: PART 3 STEP 2a
@@ -61,11 +64,16 @@ OUTPUT_VERTEX main(INPUT_VERTEX input)
 	//float4 coordinate = float4(input.vertex,1);
 	coordinate = mul(coordinate, trans);
 	output.WorldPos = coordinate;
-
+	output.viewdir = -view[3].xyz;
 	output.projectedCoordinate = mul(coordinate, viewproj);
 
 	output.normal = mul(input.normal, (float3x3)finalPos);
 	output.normal = mul(output.normal, (float3x3)trans);
+	output.tangent = mul(input.tangent.xyz, (float3x3)finalPos);
+	output.tangent = mul(output.tangent, (float3x3)trans) * input.tangent.w;
+	
+	output.binormal = cross(output.tangent, output.normal) * -input.tangent.w;
+
 	output.uv = input.uv;
 	//sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, View);
 	//sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, Projection);

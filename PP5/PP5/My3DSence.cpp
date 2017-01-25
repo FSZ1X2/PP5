@@ -1,8 +1,11 @@
 #include "My3DSence.h"
 #include "DDSTextureLoader.h"
 
-//#include"../FBXLoader/FBXExportDATA.h"
+//#define EXPORT_FBX
 
+#ifdef EXPORT_FBX
+#include"../FBXLoader/FBXExportDATA.h"
+#endif
 My3DSence::My3DSence()
 {
 }
@@ -14,10 +17,14 @@ My3DSence::~My3DSence()
 
 bool My3DSence::Initialize(HWND wnd)
 {
-	//FBXExportDATA boxbbb;
-	//boxbbb.LoadFBX("Box_Idle.fbx");
-	//FBXExportDATA bearbbb;
-	//bearbbb.LoadFBX("Teddy_Run.fbx");
+
+#ifdef EXPORT_FBX
+	FBXExportDATA boxbbb;
+	boxbbb.LoadFBX("Death.fbx");
+	FBXExportDATA bearbbb;
+	bearbbb.LoadFBX("Battle Mage with Rig and textures.fbx");
+	int adsfasdf = 0;
+#endif
 
 	time.Restart();
 	DXGI_SWAP_CHAIN_DESC description;
@@ -114,33 +121,45 @@ bool My3DSence::Initialize(HWND wnd)
 	Slight.initializeLigtht();
 	shape.initializeShape(10);
 
-	bear.initBinaryMesh("Teddy_Run.bin", 0.15f);
 	box.initBinaryMesh("Box_Idle.bin");
+	bear.initBinaryMesh("Teddy_Idle.bin", 0.15f);
+	mage.initBinaryMesh("Battle Mage with Rig and textures.bin");
 
 	joint.initBinaryMesh("Box_Idle.bin");
-	bearJoint.initBinaryMesh("Teddy_Run.bin", 0.15f);
+	bearJoint.initBinaryMesh("Teddy_Idle.bin", 0.15f);
+	mageJoint.initBinaryMesh("Battle Mage with Rig and textures.bin");
 
 	animate1.initializeBinaryAnimation("Box_Idle_Animation.bin");
-	bearAni1.initializeBinaryAnimation("Teddy_Run_Animation.bin");
+	bearAni1.initializeBinaryAnimation("Teddy_Idle_Animation.bin");
+	mageAni1.initializeBinaryAnimation("Battle Mage with Rig and textures_Animation.bin");
 	animate2.initializeBinaryAnimation("Box_Attack_Animation.bin");
 	bearAni2.initializeBinaryAnimation("Teddy_Attack1_Animation.bin");
+	mageAni2.initializeBinaryAnimation("Death_Animation.bin");
 
 	boxanimation.joint = &joint;
 	bearanimation.joint = &bearJoint;
+	mageanimation.joint = &mageJoint;
 
 	boxanimation.Clip1 = &animate1;
 	boxanimation.Clip2 = &animate2;
 	bearanimation.Clip1 = &bearAni1;
 	bearanimation.Clip2 = &bearAni2;
+	mageanimation.Clip1 = &mageAni1;
+	mageanimation.Clip2 = &mageAni2;
 
 	boxanimation.current = boxanimation.Clip1;
 	bearanimation.current = bearanimation.Clip1;
+	mageanimation.current = mageanimation.Clip1;
 
 	camera.InitCamera();
 	camera.SetProjection(camera.DegreeToRadian(75), BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT, 0.01f, 1000.0f);
 
 	CreateDDSTextureFromFile(theDevice.Get(),L"TestCube.dds" ,nullptr, textureV.GetAddressOf());
 	CreateDDSTextureFromFile(theDevice.Get(), L"Teddy_D.dds", nullptr, textureB.GetAddressOf());
+	CreateDDSTextureFromFile(theDevice.Get(), L"BlendTestCube.dds", nullptr, textureL.GetAddressOf());
+	CreateDDSTextureFromFile(theDevice.Get(), L"PPG_3D_Player_D.dds", nullptr, textureMdiff.GetAddressOf());
+	CreateDDSTextureFromFile(theDevice.Get(), L"PPG_3D_Player_N.dds", nullptr, textureMnorm.GetAddressOf());
+	CreateDDSTextureFromFile(theDevice.Get(), L"PPG_3D_Player_spec.dds", nullptr, textureMspec.GetAddressOf());
 
 	D3D11_SAMPLER_DESC sdesc = {};
 	sdesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -151,6 +170,7 @@ bool My3DSence::Initialize(HWND wnd)
 	sdesc.MaxLOD = D3D11_FLOAT32_MAX;
 	sdesc.MaxAnisotropy = D3D11_REQ_MAXANISOTROPY;
 	theDevice->CreateSamplerState(&sdesc, binsample.GetAddressOf());
+
 	return true;
 }
 
@@ -201,7 +221,7 @@ bool My3DSence::run()
 	shape.draw();
 
 	theContext->PSSetSamplers(0, 1, binsample.GetAddressOf());
-	if (renderBear)
+	if (modelindex==1)
 	{
 		theContext->PSSetShaderResources(0, 1, textureB.GetAddressOf());
 		if (isLoopAnimation)
@@ -209,12 +229,12 @@ bool My3DSence::run()
 			if (bearanimation.ifBlend)
 			{
 				if (bearanimation.current == bearanimation.Clip1)
-					bearanimation.BlendAnimation(dt*0.5f, bearanimation.Clip2);
+					bearanimation.BlendAnimation2(dt, bearanimation.Clip2);
 				else							   
-					bearanimation.BlendAnimation(dt*0.5f, bearanimation.Clip1);
+					bearanimation.BlendAnimation2(dt, bearanimation.Clip1);
 			}
 			else
-				bearanimation.Interpolate(dt*0.5f, bearanimation.current);
+				bearanimation.Interpolate(dt, bearanimation.current);
 			bearanimation.setJoint();
 			//bearAni.Interpolate(dt*0.5f);
 		}
@@ -235,20 +255,19 @@ bool My3DSence::run()
 		shader.SetGroundShader();
 		bear.draw(drawMesh);
 	}
-	else
+	else if(modelindex==0)
 	{
-		theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
 		if (isLoopAnimation)
 		{
 			if (boxanimation.ifBlend)
 			{
 				if (boxanimation.current == boxanimation.Clip1)
-					boxanimation.BlendAnimation(dt*0.5f, boxanimation.Clip2);
-				else								 
-					boxanimation.BlendAnimation(dt*0.5f, boxanimation.Clip1);
+					boxanimation.BlendAnimation2(dt, boxanimation.Clip2);
+				else								
+					boxanimation.BlendAnimation2(dt, boxanimation.Clip1);
 			}
 			else
-				boxanimation.Interpolate(dt*0.5f, boxanimation.current);
+				boxanimation.Interpolate(dt, boxanimation.current);
 			boxanimation.setJoint();
 			//animate.Interpolate(dt);
 		}
@@ -266,9 +285,51 @@ bool My3DSence::run()
 		shader.SetCommonShader();
 		joint.draw(drawBone);
 
-		shader.SetGroundShader();
+		shader.SetBoxShader();
+		theContext->PSSetShaderResources(0, 1, textureV.GetAddressOf());
+		theContext->PSSetShaderResources(1, 1, textureL.GetAddressOf());
+		//theContext->OMSetBlendState(blendsample.Get(), 0, 0xffffffff);
 		box.draw(drawMesh);
 	}
+	else
+	{
+		theContext->PSSetShaderResources(0, 1, textureMdiff.GetAddressOf());
+		theContext->PSSetShaderResources(1, 1, textureMnorm.GetAddressOf());
+		theContext->PSSetShaderResources(2, 1, textureMspec.GetAddressOf());
+		if (isLoopAnimation)
+		{
+			if (mageanimation.ifBlend)
+			{
+				if (mageanimation.current == mageanimation.Clip1)
+					mageanimation.BlendAnimation2(dt, mageanimation.Clip2);
+				else
+					mageanimation.BlendAnimation2(dt, mageanimation.Clip1);
+			}
+			else
+				mageanimation.Interpolate(dt, mageanimation.current);
+			mageanimation.setJoint();
+			//animate.Interpolate(dt);
+		}
+		else
+		{
+			if (frameBox < mageanimation.current->GetTotalKeyframes())
+			{
+				mageanimation.sentToJoint(frameBox, mageanimation.current);
+				mageanimation.setJoint();
+				//animate.sentToJoint(frameBox);
+			}
+			else
+				frameBox = 0;
+		}
+		//mageanimation.sentToJoint(0, mageanimation.current);
+		//mageanimation.setJoint();
+		shader.SetCommonShader();
+		mageJoint.draw(drawBone);
+
+		shader.SetMageShader();
+		mage.draw(drawMesh);
+	}
+
 	if (GetAsyncKeyState('5') & 0x1)
 	{
 		if (renderBear)
@@ -298,35 +359,46 @@ bool My3DSence::run()
 			boxanimation.timer = 0.0f;
 		}
 	}
+
 	if (GetAsyncKeyState('6') & 0x1)
 	{
 		drawMesh = !drawMesh;
 	}
+
 	if (GetAsyncKeyState('7') & 0x1)
 	{
 		drawBone = !drawBone;
 	}
+
 	if (GetAsyncKeyState('8') & 0x1)
 	{
 		frameBear++;
 		frameBox++;
 	}
+
 	if (GetAsyncKeyState('0') & 0x1)
 	{
 		isLoopAnimation = !isLoopAnimation;
 		frameBear = 0;
 		frameBox = 0;
 	}
+
 	if (GetAsyncKeyState('9')&0x1)
 	{
 		renderBear = !renderBear;
+		if (modelindex == 2)
+			modelindex = 0;
+		else
+			modelindex++;
 		frameBear = 0;
 		frameBox = 0;
 	}
+
 	if (GetAsyncKeyState('P') & 0x1)
 	{
 		SunsetSky = !SunsetSky;
 	}
+
 	shader.SetSkyBoxShader();
 	XMFLOAT4X4 camPos;
 	XMStoreFloat4x4(&camPos, camera.GetPos());

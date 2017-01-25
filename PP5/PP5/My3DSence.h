@@ -21,8 +21,14 @@ class My3DSence
 	ComPtr<ID3D11Texture2D> depthBuff;
 	ComPtr<ID3D11ShaderResourceView> textureV;
 	ComPtr<ID3D11ShaderResourceView> textureB;
+	ComPtr<ID3D11ShaderResourceView> textureL;
+
+	ComPtr<ID3D11ShaderResourceView> textureMdiff;
+	ComPtr<ID3D11ShaderResourceView> textureMnorm;
+	ComPtr<ID3D11ShaderResourceView> textureMspec;
 
 	ComPtr<ID3D11SamplerState> binsample;
+	//ComPtr<ID3D11BlendState> blendsample;
 	
 	ComPtr<ID3D11Texture2D> textBuff;
 	HRESULT hr;
@@ -41,15 +47,20 @@ class My3DSence
 	Shape shape;
 	Mesh bear;
 	Mesh box;
+	Mesh mage;
 	Joint joint;
 	Joint bearJoint;
+	Joint mageJoint;
 
 	AnimationSystem boxanimation;
 	AnimationSystem bearanimation;
+	AnimationSystem mageanimation;
 	Animation animate1;
 	Animation animate2;
 	Animation bearAni1;
 	Animation bearAni2;
+	Animation mageAni1;
+	Animation mageAni2;
 
 	Camera camera;
 	XTime time;
@@ -65,6 +76,7 @@ class My3DSence
 	bool drawBone = true;
 	bool drawMesh = true;
 	bool SunsetSky = true;
+	int modelindex = 0;
 	int frameBear = 0;
 	int frameBox = 0;
 	
