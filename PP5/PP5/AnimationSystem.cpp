@@ -43,7 +43,7 @@ void AnimationSystem::BlendAnimation2(float delta, Animation * next)
 {
 	Interpolate(delta, current);
 	PosList currentPose = list;
-	sentToJoint(0, next);
+	sentToJoint(1, next);
 
 	float ratio = std::fmin(timer / blendtotal, 1);
 	XMVECTOR trans, rot, scale;
@@ -86,6 +86,9 @@ void AnimationSystem::Interpolate(float delta, Animation* Clip)
 		XMMATRIX m0, m1;
 		int key = 0;
 		m0 = XMLoadFloat4x4(&Clip->keyframes[i][key].pose);
+
+		//XMMATRIX check = XMLoadFloat4x4(&joint->BindList.pos[i]);
+
 		if (Clip->keyframes[i].size() > 1)
 		{
 			while (1)
@@ -114,7 +117,11 @@ void AnimationSystem::Interpolate(float delta, Animation* Clip)
 			scale = XMVectorLerp(scale, scale1, ratio);
 			m0 = XMMatrixAffineTransformation(scale, XMQuaternionIdentity(), rot, trans);
 
-
+		}
+		if (key == 0)
+		{
+			key++;
+			continue;
 		}
 		XMStoreFloat4x4(&list.pose[i], XMLoadFloat4x4(&joint->BindList.pos[i])  * m0);
 	}

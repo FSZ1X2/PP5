@@ -123,11 +123,11 @@ bool My3DSence::Initialize(HWND wnd)
 
 	box.initBinaryMesh("Box_Idle.bin");
 	bear.initBinaryMesh("Teddy_Idle.bin", 0.15f);
-	mage.initBinaryMesh("MageIdle.bin");
+	mage.initBinaryMesh("Death.bin");
 
 	joint.initBinaryMesh("Box_Idle.bin");
 	bearJoint.initBinaryMesh("Teddy_Idle.bin", 0.15f);
-	mageJoint.initBinaryMesh("MageIdle.bin");
+	mageJoint.initBinaryMesh("Death.bin");
 
 	animate1.initializeBinaryAnimation("Box_Idle_Animation.bin");
 	bearAni1.initializeBinaryAnimation("Teddy_Idle_Animation.bin");

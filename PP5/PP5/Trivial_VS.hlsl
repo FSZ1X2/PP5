@@ -72,7 +72,7 @@ OUTPUT_VERTEX main(INPUT_VERTEX input)
 	output.tangent = mul(input.tangent.xyz, (float3x3)finalPos);
 	output.tangent = mul(output.tangent, (float3x3)trans) * input.tangent.w;
 	
-	output.binormal = cross(output.tangent, output.normal) * -input.tangent.w;
+	output.binormal = cross(output.tangent, output.normal);// *-input.tangent.w;
 
 	output.uv = input.uv;
 	//sendToRasterizer.projectedCoordinate = mul(sendToRasterizer.projectedCoordinate, View);

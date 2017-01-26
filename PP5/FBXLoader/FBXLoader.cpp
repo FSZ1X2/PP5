@@ -136,7 +136,6 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 			newTriangle.v[j].vertex.y = (float)ctrlPoints[ctrlPointIndex][1];
 			newTriangle.v[j].vertex.z = (float)ctrlPoints[ctrlPointIndex][2];
 
-			newTriangle.v[j].vertex.z *= -1;//change
 
 			// Read the vertex  
 			//ReadVertex(pMesh, ctrlPointIndex, &newTriangle.v[j].vertex);
@@ -156,6 +155,8 @@ void FBXLoader::ProcessMesh(FbxNode* pNode, FBXExportDATA* sdata)
 
 			// Read the tangent of each vertex  
 			ReadTangent(pMesh, ctrlPointIndex, vertexCounter, &newTriangle.v[j].tangent);
+
+			newTriangle.v[j].vertex.z *= -1;//change
 
 			vertexCounter++;
 		}

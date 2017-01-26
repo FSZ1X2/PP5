@@ -74,6 +74,7 @@ float4 main(OUTPUT_VERTEX input) : SV_TARGET
 	float3 dcolor = DLcolor.xyz *(dotD + 0.2f);
 	float3 scolor = spotfactor*SLcolor.xyz;
 
+	/////////////////////half vector:
 	float3 H = normalize(viewdir + lightDirP);
 	float S_intensity = pow(saturate( dot(H, normal) ), 22);
 	float3 specular = S_intensity * spec / distanceP;
@@ -85,12 +86,23 @@ float4 main(OUTPUT_VERTEX input) : SV_TARGET
 	H = normalize(viewdir + DirectionalLight.xyz);
 	S_intensity = pow(saturate(dot(H, normal)), 22);
 	specular += S_intensity * spec;
+	/////////////////////////////////////////////////////////////
+	//float3 ReflectionDirectionD = DirectionalLight.xyz - ((DirectionalLight.xyz + DirectionalLight.xyz) + (normal * 2 * (dot(normal, -DirectionalLight.xyz))));
+	//float3 ReflectionDirectionP = lightDirP.xyz - ((lightDirP.xyz + lightDirP.xyz) + (normal * 2 * (dot(normal, -lightDirP.xyz))));
+	//float3 ReflectionDirectionS = lightDirS.xyz - ((lightDirS.xyz + lightDirS.xyz) + (normal * 2 * (dot(normal, -lightDirS.xyz))));
+
+	//float specScaleD = 0 * pow(saturate(dot(ReflectionDirectionD, viewdir)), 22);
+	//float specScaleP = 1.0f * pow(saturate(dot(ReflectionDirectionP, viewdir)), 22);
+	//float specScaleS = 0.1f * pow(saturate(dot(ReflectionDirectionS, viewdir)), 22);
+
+	//float3 specular = specScaleD*spec + specScaleP*spec + specScaleS*spec;
+	/////////////////////////////////////////////////////////////////////////
 
 	float3 combinecolor = saturate(dcolor + pcolor + scolor);
 
 	float4 diffcolor = DiffTexture.Sample(tsampler, input.uv.xy);
 	//float4 blendcolor = BlendTexture.Sample(tsampler, input.uv.xy);
-	float4 color =diffcolor * float4(combinecolor, 1) + saturate(float4(specular,0));
+	float4 color = diffcolor * float4(combinecolor, 1) +saturate(float4(specular, 0));
 	if (any(color))
 		return color;
 	return float4(combinecolor, 1);
