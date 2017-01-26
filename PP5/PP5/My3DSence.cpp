@@ -22,7 +22,7 @@ bool My3DSence::Initialize(HWND wnd)
 	FBXExportDATA boxbbb;
 	boxbbb.LoadFBX("Death.fbx");
 	FBXExportDATA bearbbb;
-	bearbbb.LoadFBX("Battle Mage with Rig and textures.fbx");
+	bearbbb.LoadFBX("MageIdle.fbx");
 	int adsfasdf = 0;
 #endif
 
@@ -123,15 +123,15 @@ bool My3DSence::Initialize(HWND wnd)
 
 	box.initBinaryMesh("Box_Idle.bin");
 	bear.initBinaryMesh("Teddy_Idle.bin", 0.15f);
-	mage.initBinaryMesh("Battle Mage with Rig and textures.bin");
+	mage.initBinaryMesh("MageIdle.bin");
 
 	joint.initBinaryMesh("Box_Idle.bin");
 	bearJoint.initBinaryMesh("Teddy_Idle.bin", 0.15f);
-	mageJoint.initBinaryMesh("Battle Mage with Rig and textures.bin");
+	mageJoint.initBinaryMesh("MageIdle.bin");
 
 	animate1.initializeBinaryAnimation("Box_Idle_Animation.bin");
 	bearAni1.initializeBinaryAnimation("Teddy_Idle_Animation.bin");
-	mageAni1.initializeBinaryAnimation("Battle Mage with Rig and textures_Animation.bin");
+	mageAni1.initializeBinaryAnimation("MageIdle_Animation.bin");
 	animate2.initializeBinaryAnimation("Box_Attack_Animation.bin");
 	bearAni2.initializeBinaryAnimation("Teddy_Attack1_Animation.bin");
 	mageAni2.initializeBinaryAnimation("Death_Animation.bin");
@@ -332,7 +332,7 @@ bool My3DSence::run()
 
 	if (GetAsyncKeyState('5') & 0x1)
 	{
-		if (renderBear)
+		if (modelindex == 1)
 		{
 			if (bearanimation.ifBlend)
 			{
@@ -345,7 +345,7 @@ bool My3DSence::run()
 			bearanimation.ifBlend = true;
 			bearanimation.timer = 0.0f;
 		}
-		else
+		else if(modelindex == 0)
 		{
 			if (boxanimation.ifBlend)
 			{
@@ -357,6 +357,19 @@ bool My3DSence::run()
 			}
 			boxanimation.ifBlend = true;
 			boxanimation.timer = 0.0f;
+		}
+		else
+		{
+			if (mageanimation.ifBlend)
+			{
+				mageanimation.current->currtime = 0.0f;
+				if (mageanimation.current == mageanimation.Clip1)
+					mageanimation.current = mageanimation.Clip2;
+				else
+					mageanimation.current = mageanimation.Clip1;
+			}
+			mageanimation.ifBlend = true;
+			mageanimation.timer = 0.0f;
 		}
 	}
 
